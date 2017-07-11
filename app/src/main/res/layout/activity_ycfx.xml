@@ -1,0 +1,443 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:orientation="vertical"
+    tools:context="com.ruiduoyi.activity.YcfxActivity">
+    <FrameLayout
+        android:layout_width="match_parent"
+        android:layout_height="80dp"
+        android:background="@color/blue_sl_false">
+
+        <Button
+            android:id="@+id/cancle_btn"
+            android:layout_width="70dp"
+            android:layout_height="70dp"
+            android:layout_gravity="center_vertical|right"
+            android:layout_marginRight="20dp"
+            android:background="@drawable/cmdclose_sl" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_gravity="center"
+            android:text="异常分析"
+            android:textColor="@android:color/white"
+            android:textSize="30dp" />
+    </FrameLayout>
+    <LinearLayout
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:layout_width="match_parent"
+        android:layout_height="375dp"
+        android:orientation="vertical"
+        >
+        <LinearLayout
+            android:background="@color/blue_sl_false"
+            android:layout_gravity="center_horizontal"
+            android:layout_width="1266dp"
+            android:layout_height="35dp"
+            android:orientation="horizontal">
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                />
+            <TextView
+                android:text="关键ID"
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                />
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="发生日期"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="模具编号"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="物料代码"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="品名规格"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="指令"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="指令名称"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="开始时间"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="结束时间"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="用时(Min)"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="95dp"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="标准(Min)"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="开始人员"/>
+            <TextView
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:layout_width="@dimen/b7_lable"
+                android:layout_height="match_parent"
+                android:textColor="@android:color/black"
+                android:text="结束人员"/>
+        </LinearLayout>
+        <ListView
+            android:layout_gravity="center_horizontal"
+            android:layout_width="1266dp"
+            android:layout_height="match_parent"
+            android:id="@+id/list_b7"
+            android:divider="@color/touming"></ListView>
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_margin="10dp"
+        android:background="@color/blue_sl_false"></LinearLayout>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="发生日期"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_1"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="指令名称"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_2"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="模具编号"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_3"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="物料代码"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_4"
+            android:layout_height="36dp"
+            android:layout_width="340dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="品名规格"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_5"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="关键ID"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_key"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="开始时间"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_6"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="结束时间"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_7"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+        <TextView
+            android:layout_width="55dp"
+            android:layout_height="35dp"
+            android:textSize="13dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="用时(Min)"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_8"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="标准(Min)"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_9"
+            android:layout_width="335dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="开始人员"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_10"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="结束人员"
+            android:textColor="@android:color/black" />
+
+        <TextView
+            android:id="@+id/text_11"
+            android:layout_width="340dp"
+            android:layout_height="36dp"
+            android:background="@drawable/text_bg"
+            android:gravity="center_vertical"
+            android:textColor="@android:color/black" />
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginTop="5dp">
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="原因类别"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:background="@drawable/spnner_bg"
+            android:layout_marginBottom="10dp"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:id="@+id/spinner_1"/>
+
+        <TextView
+            android:layout_gravity="center_vertical"
+            android:layout_width="wrap_content"
+            android:layout_height="35dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="原因描述"
+            android:textColor="@android:color/black" />
+
+        <Button
+            android:background="@drawable/spnner_bg"
+            android:layout_marginBottom="10dp"
+            android:layout_width="340dp"
+            android:layout_height="50dp"
+            android:id="@+id/spinner_2"
+             />
+        <Button
+            android:layout_gravity="center_vertical"
+            android:layout_width="130dp"
+            android:layout_height="60dp"
+            android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
+            android:gravity="center"
+            android:text="提交"
+            android:id="@+id/sub_btn"
+            android:textColor="@android:color/black" />
+
+
+    </LinearLayout>
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:layout_marginRight="10dp"
+        android:layout_marginLeft="10dp"
+        android:layout_marginTop="10dp"
+        android:layout_marginBottom="10dp"
+        android:background="@color/blue_sl_false"></LinearLayout>
+</LinearLayout>
