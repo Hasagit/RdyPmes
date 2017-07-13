@@ -17,6 +17,7 @@
     <color name="color_5">#1e07f9</color>
     <color name="color_6">#c307f9</color>
     <color name="color_7">#f9071e</color>
+    <color name="color_7_33">#33f9071e</color>
     <color name="color_8">#81a6d7</color>
     <color name="color_9">#8d8c92</color>
     <color name="color_10">#FF4081</color>
@@ -30,4 +31,6 @@
     <color name="gdgl_1">#a6ffa6</color>
     <color name="gdgl_2">#ffbebe</color>
     <color name="gdgl_3">#d5d5d5</color>
+    <color name="g_true">#99ccff</color>
+    <color name="g_false">#8899ccff</color>
 </resources>

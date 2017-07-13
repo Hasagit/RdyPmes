@@ -49,69 +49,10 @@
                 android:textColor="@android:color/black"
                 android:textSize="18dp" />
         </LinearLayout>
-        <View
+        <Button
+            android:visibility="invisible"
             android:layout_width="match_parent"
-            android:layout_height="match_parent"></View>
-    </FrameLayout>
-    <FrameLayout
-        android:visibility="gone"
-        android:id="@+id/yy_bg"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_weight="2">
-        <LinearLayout
-            android:layout_gravity="center"
-            android:layout_width="wrap_content"
-            android:layout_height="wrap_content"
-            android:orientation="vertical">
-            <LinearLayout
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:text="原因类别"
-                    android:textColor="@android:color/black"
-                    android:textSize="18dp" />
-
-                <Button
-                    android:gravity="left|center_vertical"
-                    android:text=" 锄禾日当午"
-                    android:id="@+id/yylb"
-                    android:layout_width="300dp"
-                    android:layout_height="45dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/spnner_bg"
-                    android:textColor="@android:color/black"
-                    android:textSize="18dp" />
-            </LinearLayout>
-            <LinearLayout
-                android:layout_marginTop="15dp"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:orientation="horizontal">
-                <TextView
-                    android:layout_gravity="center_vertical"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginRight="15dp"
-                    android:text="原因类别"
-                    android:textColor="@android:color/black"
-                    android:textSize="18dp" />
-
-                <Button
-                    android:id="@+id/yymc"
-                    android:layout_width="300dp"
-                    android:layout_height="45dp"
-                    android:layout_marginRight="15dp"
-                    android:background="@drawable/spnner_bg"
-                    android:textColor="@android:color/black"
-                    android:textSize="18dp" />
-            </LinearLayout>
-        </LinearLayout>
+            android:layout_height="match_parent"></Button>
     </FrameLayout>
     <LinearLayout
         android:layout_marginLeft="20dp"
@@ -131,14 +72,15 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"></View>
-            <TextView
+           <!-- <TextView
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"
-                android:textSize="18dp"
+                android:textSize="18dp"-->
                 />
             <TextView
                 android:id="@+id/tip"
+                android:singleLine="false"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:textColor="@android:color/black"

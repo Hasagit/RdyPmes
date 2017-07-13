@@ -15,7 +15,10 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
+import android.widget.ScrollView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import java.io.File;
 import java.io.FileOutputStream;
@@ -38,6 +41,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.ruiduoyi.R;
+import com.ruiduoyi.activity.ScrzActivity;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.utils.MyAxisValueFormatter;
@@ -62,6 +66,7 @@ public class InfoFragment extends Fragment {
     private SharedPreferences sharedPreferences;
     private ImageView img_1,img_2,img_3,img_4,img_5,img_6,img_7,img_pho1,img_pho2;
     private CardView cardView;
+    private ScrollView tip_layout;
     private String filePhath;
     private Timer updateTimer;
     private String mac;
@@ -159,6 +164,7 @@ public class InfoFragment extends Fragment {
         img_pho1=(ImageView)view.findViewById(R.id.photo_1);
         img_pho2=(ImageView)view.findViewById(R.id.photo_2);
         cardView=(CardView)view.findViewById(R.id.cardView);
+        tip_layout=(ScrollView)view.findViewById(R.id.tip_bg);
         filePhath=getContext().getCacheDir().getPath();
         getNetDate();
         updateDataOntime();
@@ -180,8 +186,18 @@ public class InfoFragment extends Fragment {
                         dq_2.setText(item.get(1));
 
                         SharedPreferences.Editor editor=sharedPreferences.edit();
+                        editor.putString("sjsx",item.get(0));
                         editor.putString("zzdh",item.get(1));//制造单号
+                        editor.putString("gddh",item.get(2));
+                        editor.putString("scph",item.get(3));
                         editor.putString("mjbh",item.get(4));//模具编号
+                        editor.putString("cpbh",item.get(5));
+                        editor.putString("pmgg",item.get(6));
+                        editor.putString("ysdm",item.get(7));
+                        editor.putString("mjmc",item.get(16));
+                        editor.putString("jhsl",item.get(21));
+                        editor.putString("lpsl",item.get(23));
+                        editor.putString("blsl",item.get(24));
                         editor.commit();
 
                         dq_3.setText(item.get(2));
@@ -321,6 +337,12 @@ public class InfoFragment extends Fragment {
                     break;
                 case 0x109:
                     img_pho2.setImageResource(R.drawable.b_img);
+                    break;
+                case 0x110://网络异常
+                    tip_layout.setBackgroundColor(getResources().getColor(R.color.color_7_33));
+                    break;
+                case 0x111:
+                    tip_layout.setBackgroundColor(Color.WHITE);
                     break;
             }
         }
@@ -745,6 +767,7 @@ public class InfoFragment extends Fragment {
                 public void run() {
                     List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_OrderInfo  '"+jtbh+"'");
                     if(list!=null){
+                        handler.sendEmptyMessage(0x111);
                         if(list.size()>0){
                             if (list.get(0).size()>26){
                                 Message msg=handler.obtainMessage();
@@ -755,7 +778,7 @@ public class InfoFragment extends Fragment {
                         }
                     }else {
                         AppUtils.uploadNetworkError("Exec PAD_Get_OrderInfo NetWorkError",jtbh,mac);
-                        handler.sendEmptyMessage(0x101);
+                        handler.sendEmptyMessage(0x110);
                     }
 
 
@@ -763,6 +786,7 @@ public class InfoFragment extends Fragment {
 
                     List<List<String>>list2= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+jtbh+"'");
                     if(list2!=null){
+                        handler.sendEmptyMessage(0x111);
                         Message msg=handler.obtainMessage();
                         msg.what=0x104;
                         msg.obj=list2;
@@ -770,11 +794,13 @@ public class InfoFragment extends Fragment {
                     }else {
                         AppUtils.uploadNetworkError("Exec PAD_Get_JtmZtInfo NetWordError",jtbh,mac);
                         //handler.sendEmptyMessage(0x101);
+                        handler.sendEmptyMessage(0x110);
                     }
 
 
                     List<List<String>>list3= NetHelper.getQuerysqlResult("Exec PAD_Get_FhChartInfo '"+jtbh+"'");
                     if(list3!=null){
+                        handler.sendEmptyMessage(0x111);
                         if (list3.size()>0){
                             Message msg=handler.obtainMessage();
                             msg.what=0x103;
@@ -783,19 +809,20 @@ public class InfoFragment extends Fragment {
                         }
                     }else {
                         AppUtils.uploadNetworkError("Exec PAD_Get_FhChartInfo NetWordError",jtbh,mac);
-                        handler.sendEmptyMessage(0x101);
+                        handler.sendEmptyMessage(0x110);
                     }
 
 
                     List<List<String>>list4= NetHelper.getQuerysqlResult("Exec PAD_Get_PhotoInfo '"+jtbh+"'");
                     if(list4!=null){
+                        handler.sendEmptyMessage(0x111);
                         Message msg=handler.obtainMessage();
                         msg.what=0x105;
                         msg.obj=list4;
                         handler.sendMessage(msg);
                     }else {
                         AppUtils.uploadNetworkError("Exec PAD_Get_PhotoInfo NetWordError",jtbh,mac);
-                        handler.sendEmptyMessage(0x101);
+                        handler.sendEmptyMessage(0x110);
                     }
 
                     SharedPreferences.Editor editor=sharedPreferences.edit();
@@ -804,79 +831,6 @@ public class InfoFragment extends Fragment {
                 }
             }).start();
         }
-
-
-
-
-        /*//机台状态
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+jtbh+"'");
-                if(list!=null){
-                    Message msg=handler.obtainMessage();
-                    msg.what=0x104;
-                    msg.obj=list;
-                    handler.sendMessage(msg);
-                }else {
-                    AppUtils.uploadNetworkError("Exec PAD_Get_JtmZtInfo NetWordError",jtbh,mac);
-                    //handler.sendEmptyMessage(0x101);
-                }
-            }
-        }).start();
-
-
-        //计划负荷线程
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_FhChartInfo '"+jtbh+"'");
-                if(list!=null){
-                    if (list.size()>0){
-                        Message msg=handler.obtainMessage();
-                        msg.what=0x103;
-                        msg.obj=list;
-                        handler.sendMessage(msg);
-                    }
-                }else {
-                    AppUtils.uploadNetworkError("Exec PAD_Get_FhChartInfo NetWordError",jtbh,mac);
-                    handler.sendEmptyMessage(0x101);
-                }
-            }
-        }).start();
-
-        //基础信息线程
-       *//* new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_BasicInfoShow '"+jtbh+"'");
-                if(list!=null){
-                    Message msg=handler.obtainMessage();
-                    msg.what=0x104;
-                    msg.obj=list;
-                    handler.sendMessage(msg);
-                }else {
-                    handler.sendEmptyMessage(0x101);
-                }
-            }
-        }).start();*//*
-
-        //图片信息线程
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_PhotoInfo '"+jtbh+"'");
-                if(list!=null){
-                    Message msg=handler.obtainMessage();
-                    msg.what=0x105;
-                    msg.obj=list;
-                    handler.sendMessage(msg);
-                }else {
-                    AppUtils.uploadNetworkError("Exec PAD_Get_PhotoInfo NetWordError",jtbh,mac);
-                    handler.sendEmptyMessage(0x101);
-                }
-            }
-        }).start();*/
 
     }
 

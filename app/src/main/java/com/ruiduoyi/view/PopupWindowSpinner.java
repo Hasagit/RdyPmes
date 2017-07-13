@@ -2,6 +2,7 @@ package com.ruiduoyi.view;
 
 import android.content.Context;
 import android.graphics.drawable.ColorDrawable;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -9,6 +10,7 @@ import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
 import android.widget.ListView;
 import android.widget.PopupWindow;
+import android.widget.TextView;
 
 import com.ruiduoyi.R;
 
@@ -26,10 +28,12 @@ public class PopupWindowSpinner {
     private ListView listView;
     private ArrayAdapter adapter;
     private View contentView;
+    private int textViewId;
     public PopupWindowSpinner(Context context,List<String>data,int resouse,int id,int width) {
         this.context=context;
         this.data=data;
         this.resouse=resouse;
+        textViewId=id;
         contentView= LayoutInflater.from(context).inflate(R.layout.popupwindow_spinner,null);
         listView=(ListView)contentView.findViewById(R.id.pwspinner);
         adapter=new ArrayAdapter(context,resouse,id,data);
@@ -58,7 +62,6 @@ public class PopupWindowSpinner {
     public void dismiss(){
         popupWindow.dismiss();
     }
-
 
     public void showDownOn(View view){
         popupWindow.showAsDropDown(view);

@@ -1,5 +1,6 @@
 package com.ruiduoyi.Fragment;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
 import android.os.Handler;
@@ -15,6 +16,7 @@ import android.widget.Button;
 import android.widget.Toast;
 
 import com.ruiduoyi.R;
+import com.ruiduoyi.activity.BlYyfxActivity;
 import com.ruiduoyi.activity.SbxxActivity;
 import com.ruiduoyi.activity.MjxxActivity;
 import com.ruiduoyi.activity.PzglActivity;
@@ -23,7 +25,10 @@ import com.ruiduoyi.activity.ScrzActivity;
 import com.ruiduoyi.activity.OeeActivity;
 import com.ruiduoyi.activity.DialogGActivity;
 import com.ruiduoyi.activity.DialogG2Activity;
+import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
+
+import java.util.List;
 
 public class StatusFragment extends Fragment implements View.OnClickListener{
     private CardView cardView_g1,cardView_g2,cardView_g3,cardView_g4,cardView_g5,cardView_g6,
@@ -31,6 +36,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             cardView_g14,cardView_g15,cardView_g16,cardView_g17,cardView_g18,cardView_g19,cardView_g20,cardView_g21,
             cardView_b1,cardView_b2,cardView_b3,cardView_b4,cardView_b5,cardView_b6,cardView_b7,
             cardView_b8;
+    private String startType,startZldm,startZlmc;
     private Animation anim;
 
     public StatusFragment() {
@@ -63,10 +69,12 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0x100:
-                    Toast.makeText(getContext(),"数据库连接成功",Toast.LENGTH_SHORT).show();
+                    List<String>list=(List<String>)msg.obj;
+                    startType=list.get(2);
+                    startZldm=list.get(0);
+                    startZlmc=list.get(1);
                     break;
                 case 0x101:
-                    Toast.makeText(getContext(),"数据库连接失败",Toast.LENGTH_SHORT).show();
                     break;
             }
         }
@@ -134,7 +142,53 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b8.setOnClickListener(this);
     }
 
-
+    private void startActivityByNetResult(final String zldm, final String title, final String type){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A','"+zldm+"'");
+                if (list!=null){
+                    if (list.size()>0){
+                        if (list.get(0).size()>2){
+                            Message msg=handler.obtainMessage();
+                            msg.obj=list.get(0);
+                            msg.what=0x100;
+                            handler.sendMessage(msg);
+                            Intent intent;
+                            switch (list.get(0).get(2)){
+                                case "A":
+                                    intent=new Intent(getContext(), BlYyfxActivity.class);
+                                    intent.putExtra("title",title);
+                                    intent.putExtra("zldm",zldm);
+                                    startActivity(intent);
+                                    break;
+                                case "B":
+                                    intent=new Intent(getContext(), DialogGActivity.class);
+                                    intent.putExtra("title",title);
+                                    intent.putExtra("zldm",zldm);
+                                    intent.putExtra("type",type);
+                                    startActivity(intent);
+                                    break;
+                                case "C":
+                                    intent=new Intent(getContext(), BlYyfxActivity.class);
+                                    intent.putExtra("title",title);
+                                    intent.putExtra("zldm",zldm);
+                                    startActivity(intent);
+                                    break;
+                                default:
+                                    intent=new Intent(getContext(), DialogGActivity.class);
+                                    intent.putExtra("title",title);
+                                    intent.putExtra("zldm",zldm);
+                                    intent.putExtra("type",type);
+                                    startActivity(intent);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }).start();
+    }
 
     @Override
     public void onClick(View v) {
@@ -192,172 +246,114 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 break;
             case  R.id.zmsw:
                 cardView_g1.startAnimation(anim);
-                Intent intent_g1=new Intent(getContext(), DialogGActivity.class);
-                intent_g1.putExtra("title","装模升温");
-                intent_g1.putExtra("zldm",getContext().getString(R.string.zmsw));
-                intent_g1.putExtra("type","OPR");
-                startActivity(intent_g1);
+                startActivityByNetResult(getContext().getString(R.string.zmsw),"装模升温","OPR");
                 break;
             case  R.id.cxpt:
                 cardView_g2.startAnimation(anim);
-                Intent intent_g2=new Intent(getContext(), DialogGActivity.class);
-                intent_g2.putExtra("title","冲洗炮筒");
-                intent_g2.putExtra("zldm",getContext().getString(R.string.cxpt));
-                intent_g2.putExtra("type","OPR");
-                startActivity(intent_g2);
+                startActivityByNetResult(getContext().getString(R.string.cxpt),"冲洗炮筒","OPR");
                 break;
             case  R.id.kjsl:
                 cardView_g3.startAnimation(anim);
-                Intent intent_g3=new Intent(getContext(), DialogGActivity.class);
-                intent_g3.putExtra("title","开机试料");
-                intent_g3.putExtra("zldm",getContext().getString(R.string.kjsl));
-                intent_g3.putExtra("type","OPR");
-                startActivity(intent_g3);
+                startActivityByNetResult(getContext().getString(R.string.kjsl),"开机试料","OPR");
                 break;
             case  R.id.ds:
                 cardView_g4.startAnimation(anim);
-                Intent intent_g4=new Intent(getContext(), DialogGActivity.class);
-                intent_g4.putExtra("title","定色");
-                intent_g4.putExtra("zldm",getContext().getString(R.string.ds));
-                intent_g4.putExtra("type","OPR");
-                startActivity(intent_g4);
+                startActivityByNetResult(getContext().getString(R.string.ds),"定色","OPR");
                 break;
             case  R.id.sjqc:
                 cardView_g5.startAnimation(anim);
-                Intent intent_g5=new Intent(getContext(), DialogGActivity.class);
-                intent_g5.putExtra("title","三级清场");
-                intent_g5.putExtra("zldm",getContext().getString(R.string.sjqc));
-                intent_g5.putExtra("type","OPR");
-                startActivity(intent_g5);
+                startActivityByNetResult(getContext().getString(R.string.sjqc),"三级清场","OPR");
                 break;
             case  R.id.sjjc:
                 cardView_g6.startAnimation(anim);
-                Intent intent_g6=new Intent(getContext(), DialogGActivity.class);
-                intent_g6.putExtra("title","首件检查");
-                intent_g6.putExtra("zldm",getContext().getString(R.string.sjjc));
-                intent_g6.putExtra("type","OPR");
-                startActivity(intent_g6);
+                startActivityByNetResult(getContext().getString(R.string.sjjc),"首件检查","OPR");
                 break;
             case  R.id.pzyc:
                 cardView_g7.startAnimation(anim);
-                Intent intent_g7=new Intent(getContext(), DialogGActivity.class);
-                intent_g7.putExtra("title","品质异常");
-                intent_g7.putExtra("zldm",getContext().getString(R.string.pzyc));
-                intent_g7.putExtra("type","OPR");
-                startActivity(intent_g7);
+                startActivityByNetResult(getContext().getString(R.string.pzyc),"品质异常","OPR");
                 break;
             case  R.id.tiaoji:
                 cardView_g8.startAnimation(anim);
-                Intent intent_g8=new Intent(getContext(), DialogGActivity.class);
-                intent_g8.putExtra("title","调机");
-                intent_g8.putExtra("zldm",getContext().getString(R.string.tiaoji));
-                intent_g8.putExtra("type","OPR");
-                startActivity(intent_g8);
+                startActivityByNetResult(getContext().getString(R.string.tiaoji),"调机","OPR");
                 break;
             case  R.id.ts:
                 cardView_g9.startAnimation(anim);
-                Intent intent_g9=new Intent(getContext(), DialogGActivity.class);
-                intent_g9.putExtra("title","调色");
-                intent_g9.putExtra("zldm",getContext().getString(R.string.ts));
-                intent_g9.putExtra("type","OPR");
-                startActivity(intent_g9);
+                startActivityByNetResult(getContext().getString(R.string.ts),"调色","OPR");
                 break;
             case  R.id.tingji:
                 cardView_g10.startAnimation(anim);
-                Intent intent_g10=new Intent(getContext(), DialogGActivity.class);
-                intent_g10.putExtra("title","停机");
-                intent_g10.putExtra("zldm",getContext().getString(R.string.tingji));
-                intent_g10.putExtra("type","OPR");
-                startActivity(intent_g10);
+                startActivityByNetResult(getContext().getString(R.string.tingji),"停机","OPR");
                 break;
             case  R.id.dl:
                 cardView_g11.startAnimation(anim);
-                Intent intent_g11=new Intent(getContext(), DialogGActivity.class);
-                intent_g11.putExtra("title","待料");
-                intent_g11.putExtra("zldm",getContext().getString(R.string.dl));
-                intent_g11.putExtra("type","OPR");
-                startActivity(intent_g11);
+                startActivityByNetResult(getContext().getString(R.string.dl),"待料","OPR");
                 break;
             case R.id.by:
                 cardView_g12.startAnimation(anim);
-                Intent intent_g12=new Intent(getContext(), DialogGActivity.class);
-                intent_g12.putExtra("title","保养");
-                intent_g12.putExtra("zldm",getContext().getString(R.string.by));
-                intent_g12.putExtra("type","OPR");
-                startActivity(intent_g12);
+                startActivityByNetResult(getContext().getString(R.string.by),"保养","OPR");
                 break;
             case  R.id.sm:
                 cardView_g13.startAnimation(anim);
-                Intent intent_g13=new Intent(getContext(), DialogGActivity.class);
-                intent_g13.putExtra("title","试模");
-                intent_g13.putExtra("zldm",getContext().getString(R.string.sm));
-                intent_g13.putExtra("type","OPR");
-                startActivity(intent_g13);
+                startActivityByNetResult(getContext().getString(R.string.sm),"试模","OPR");
                 break;
             case  R.id.sl:
                 cardView_g14.startAnimation(anim);
-                Intent intent_g14=new Intent(getContext(), DialogGActivity.class);
-                intent_g14.putExtra("zldm",getContext().getString(R.string.sl));
-                intent_g14.putExtra("title","试料");
-                intent_g14.putExtra("type","OPR");
-                startActivity(intent_g14);
+                startActivityByNetResult(getContext().getString(R.string.sl),"试料","OPR");
                 break;
             case  R.id.mjwx:
                 cardView_g15.startAnimation(anim);
                 //getActivity().finish();
-                Intent intent_g15=new Intent(getContext(), DialogGActivity.class);
-                intent_g15.putExtra("zldm",getContext().getString(R.string.mjwx));
-                intent_g15.putExtra("title","模具维修");
-                intent_g15.putExtra("type","OPR");
-                startActivity(intent_g15);
+                startActivityByNetResult(getContext().getString(R.string.mjwx),"模具维修","OPR");
                 break;
             case R.id.jtwx:
                 cardView_g16.startAnimation(anim);
-                Intent intent_g16=new Intent(getContext(), DialogGActivity.class);
-                intent_g16.putExtra("zldm",getContext().getString(R.string.jtwx));
-                intent_g16.putExtra("title","机台维修");
-                intent_g16.putExtra("type","OPR");
-                startActivity(intent_g16);
+                startActivityByNetResult(getContext().getString(R.string.jtwx),"机台维修","OPR");
                 break;
             case R.id.zyg:
                 cardView_g17.startAnimation(anim);
-                Intent intent_g17=new Intent(getContext(), DialogGActivity.class);
-                intent_g17.putExtra("zldm",getContext().getString(R.string.zyg));
-                intent_g17.putExtra("title","粘样盖");
-                intent_g17.putExtra("type","OPR");
-                startActivity(intent_g17);
+                startActivityByNetResult(getContext().getString(R.string.zyg),"粘样盖","OPR");
                 break;
             case R.id.cm:
                 cardView_g18.startAnimation(anim);
-                Intent intent_g18=new Intent(getContext(), DialogGActivity.class);
-                intent_g18.putExtra("zldm",getContext().getString(R.string.cm));
-                intent_g18.putExtra("title","拆模");
-                intent_g18.putExtra("type","OPR");
-                startActivity(intent_g18);
+                startActivityByNetResult(getContext().getString(R.string.cm),"拆模","OPR");
                 break;
             case R.id.rysg:
                 cardView_g19.startAnimation(anim);
-                Intent intent_g19=new Intent(getContext(), DialogGActivity.class);
-                intent_g19.putExtra("zldm",getContext().getString(R.string.rysg));
-                intent_g19.putExtra("title","人员上岗");
-                intent_g19.putExtra("type","OPR");
-                startActivity(intent_g19);
+                startActivityByNetResult(getContext().getString(R.string.rysg),"人员上岗","OPR");
                 break;
             case R.id.pgxj:
-                cardView_g20.startAnimation(anim);
-                Intent intent_g20=new Intent(getContext(), DialogGActivity.class);
-                intent_g20.putExtra("zldm",getContext().getString(R.string.pgxj));
-                intent_g20.putExtra("title","品管巡机");
-                intent_g20.putExtra("type","OPR");
-                startActivity(intent_g20);
+                startActivityByNetResult(getContext().getString(R.string.pgxj),"品管巡机","OPR");
                 break;
             case R.id.js:
                 cardView_g21.startAnimation(anim);
-                Intent intent_g21=new Intent(getContext(), DialogGActivity.class);
-                intent_g21.putExtra("zldm",getContext().getString(R.string.js));
-                intent_g21.putExtra("title","结束");
-                intent_g21.putExtra("type","OPR");
-                startActivity(intent_g21);
+                switch (startType){
+                    case "A":
+                        Intent intent_g21=new Intent(getContext(), DialogGActivity.class);
+                        intent_g21.putExtra("zldm",getContext().getString(R.string.js));
+                        intent_g21.putExtra("title","结束");
+                        intent_g21.putExtra("type","OPR");
+                        startActivity(intent_g21);
+                        break;
+                    case "B":
+                        Intent intent1=new Intent(getContext(), BlYyfxActivity.class);
+                        intent1.putExtra("title",startZlmc);
+                        intent1.putExtra("zldm",startZldm);
+                        startActivity(intent1);
+                        break;
+                    case "C":
+                        Intent intent2=new Intent(getContext(), BlYyfxActivity.class);
+                        intent2.putExtra("title",startZlmc);
+                        intent2.putExtra("zldm",startZldm);
+                        startActivity(intent2);
+                        break;
+                    default:
+                        Intent intent_g3=new Intent(getContext(), DialogGActivity.class);
+                        intent_g3.putExtra("zldm",getContext().getString(R.string.js));
+                        intent_g3.putExtra("title","结束");
+                        intent_g3.putExtra("type","OPR");
+                        startActivity(intent_g3);
+                        break;
+                }
                 break;
         }
     }

@@ -13,5 +13,8 @@
     <dimen name="status_btn_height">90dp</dimen>
     <dimen name="status_btn_width">170dp</dimen>
     <dimen name="status_ele">3dp</dimen>
-    <dimen name="status_rad">2dp</dimen>
+    <dimen name="status_rad">20dp</dimen>
+    <dimen name="blyyfx_text_width">230dp</dimen>
+    <dimen name="num_widht">100dp</dimen>
+    <dimen name="num_height">78dp</dimen>
 </resources>

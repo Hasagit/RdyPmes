@@ -21,66 +21,73 @@
         android:supportsRtl="true"
         android:theme="@style/AppTheme"
         tools:replace="Android:icon, android:theme,android:name">
-        <activity android:name=".activity.MainActivity"
-            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".activity.MainActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.BaseActivity"
             android:label="@string/title_activity_base"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.SbxxActivity"
-            android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Dialog" />
         <activity
             android:name=".activity.BaseDialogActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Dialog"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"
-            android:screenOrientation="landscape"/>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".activity.DialogGActivity"
             android:configChanges="orientation|keyboardHidden"
+            android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Dialog"
-            android:windowSoftInputMode="adjustUnspecified|stateHidden"
-            android:screenOrientation="landscape"/>
+            android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".activity.ScrzActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.MjxxActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
         <activity
             android:name=".activity.OeeActivity"
-            android:theme="@style/AppTheme"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".activity.BlfxActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@style/AppTheme" />
+        <activity
+            android:name=".activity.BlfxActivity"
+            android:screenOrientation="landscape" />
 
         <service
             android:name=".service.SerialPortService"
             android:enabled="true"
             android:exported="true" />
 
-        <activity android:name=".activity.GdglActivity"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".activity.YcfxActivity"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".activity.DialogB5Activty"
-            android:screenOrientation="landscape"/>
+        <activity
+            android:name=".activity.GdglActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.YcfxActivity"
+            android:screenOrientation="landscape" />
+        <activity
+            android:name=".activity.DialogB5Activty"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.DialogG2Activity"
-            android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".activity.PzglActivity"
-            android:screenOrientation="landscape"/>
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".activity.PzglActivity"
+            android:screenOrientation="landscape" />
         <activity
             android:name=".activity.DialogSGActivity"
-            android:theme="@android:style/Theme.Dialog"
-            android:screenOrientation="landscape"/>
-        <activity android:name=".activity.FirstActivity"
+            android:screenOrientation="landscape"
+            android:theme="@android:style/Theme.Dialog" />
+        <activity
+            android:name=".activity.FirstActivity"
             android:screenOrientation="landscape">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
@@ -102,7 +109,9 @@
         <service
             android:name=".service.GpioService"
             android:enabled="true"
-            android:exported="true"></service>
+            android:exported="true" />
+
+        <activity android:name=".activity.BlYyfxActivity"></activity>
     </application>
 
 </manifest>

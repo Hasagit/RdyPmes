@@ -52,7 +52,6 @@ public class FirstActivity extends BaseActivity{
         setContentView(R.layout.activity_first);
         initView();
         initData();
-        Log.e("","test");
     }
 
 
@@ -122,7 +121,7 @@ public class FirstActivity extends BaseActivity{
                 String mac = "";
                 WifiManager wifiManager=((WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE));
                 String mac_temp=wifiManager.getConnectionInfo().getMacAddress();
-                //mac_temp="c0:21:0d:94:26:ff";
+                //mac_temp="c0:21:0d:94:26:f4";
                 String[] mac_sz = mac_temp.split(":");
                 for (int i = 0; i < mac_sz.length; i++) {
                     mac = mac + mac_sz[i];
@@ -175,7 +174,7 @@ public class FirstActivity extends BaseActivity{
                     isJtbh=false;
                     if (!dialog2.isShowing()){
                         Button cancle_btn2=(Button)contenView2.findViewById(R.id.cancle_btn);
-                        Button try_again2=(Button)contenView2.findViewById(R.id.again_btn);
+                        final Button try_again2=(Button)contenView2.findViewById(R.id.again_btn);
                         TextView msg_text2=(TextView)contenView2.findViewById(R.id.msg_text);
                         msg_text2.setText("【设备物理地址】："+sharedPreferences.getString("mac","")+"\n未设置机台，请重新设置");
                         cancle_btn2.setOnClickListener(new View.OnClickListener() {
@@ -193,6 +192,8 @@ public class FirstActivity extends BaseActivity{
                                 Toast.makeText(FirstActivity.this,"请先选择机台号",Toast.LENGTH_SHORT).show();
                             }else {
                                 //dialog2.dismiss();
+                                try_again2.setText("系统设置中...");
+                                try_again2.setEnabled(false);
                                 new Thread(new Runnable() {//设置机台编号
                                     @Override
                                     public void run() {
@@ -346,7 +347,7 @@ public class FirstActivity extends BaseActivity{
                 String mac = "";
                 WifiManager wifiManager=((WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE));
                 String mac_temp=wifiManager.getConnectionInfo().getMacAddress();
-                //mac_temp="c0:21:0d:94:26:ff";
+                //mac_temp="c0:21:0d:94:26:f4";
                 if(mac_temp==null&&sharedPreferences.getString("mac","").equals("")) {
                    // Toast.makeText(FirstActivity.this,"获取网卡物理地址失败，请连接wifi",Toast.LENGTH_LONG).show();
                 }else {

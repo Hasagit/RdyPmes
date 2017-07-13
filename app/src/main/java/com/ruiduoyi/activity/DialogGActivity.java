@@ -32,31 +32,14 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
     private String num;
     private String title,type,zldm,jtbh;
     private FrameLayout yy_bg;
+    private boolean isFromBlyyfx;
     //接收刷卡串口广播
     private BroadcastReceiver receiver=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
             num=intent.getStringExtra("num");
             num_edit.setText(num);
-            new Thread(new Runnable() {
-                @Override
-                public void run() {
-                    List<List<String>>list=NetHelper.getQuerysqlResult("PAD_Read_CardID '"
-                            +type+"','"+zldm+"','"+num+"'");
-                    if (list!=null){
-                        if (list.size()>0){
-                            if (list.get(0).size()>0){
-                                Message msg=handler.obtainMessage();
-                                msg.what=0x100;
-                                msg.obj=list.get(0).get(0);
-                                handler.sendMessage(msg);
-                            }
-                        }
-                    }else {
-                        AppUtils.uploadNetworkError("PAD_Read_CardID",jtbh,sharedPreferences.getString("mac",""));
-                    }
-                }
-            }).start();
+            getNetData(0x100);
         }
     };
 
@@ -86,15 +69,20 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                                         if (list.size()>0){
                                             if (list.get(0).size()>0){
                                                 if (list.get(0).get(0).trim().equals("OK")){
-                                                    Intent intent=new Intent();
-                                                    intent.setAction("UpdateInfoFragment");
-                                                    sendBroadcast(intent);
-                                                    if (!(title.equals("结束")|title.equals("人员上岗")|title.equals("品管巡机"))){
-                                                        Intent intent2=new Intent();
-                                                        intent2.setAction("com.Ruiduoyi.returnToInfoReceiver");
-                                                        sendBroadcast(intent2);
-                                                    }
-                                                    finish();
+                                                  if (isFromBlyyfx){//从BlyyfxActivity启动来的
+                                                      type="DOC";
+                                                      getNetData(0x101);
+                                                  }else {//从statusFragment启动来的
+                                                      Intent intent=new Intent();
+                                                      intent.setAction("UpdateInfoFragment");
+                                                      sendBroadcast(intent);
+                                                      if (!(title.equals("结束")|title.equals("人员上岗")|title.equals("品管巡机"))){
+                                                          Intent intent2=new Intent();
+                                                          intent2.setAction("com.Ruiduoyi.returnToInfoReceiver");
+                                                          sendBroadcast(intent2);
+                                                      }
+                                                      finish();
+                                                  }
                                                 }else {
                                                     Message msg=handler.obtainMessage();
                                                     msg.what=0x102;
@@ -128,6 +116,14 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                         tip_text.setTextColor(Color.RED);
                     }
                     break;
+                case 0x101:
+                    String result= (String) msg.obj;
+                    String wkno=result.substring(2,result.length());
+                    Intent intent=new Intent();
+                    intent.putExtra("wkno",wkno);
+                    setResult(0,intent);
+                    finish();
+                    break;
                 case 0x102://操作失败
                     String tip_str=(String)msg.obj;
                     tip_text.setText(tip_str);
@@ -146,12 +142,13 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         title_text=(TextView)findViewById(R.id.title_text);
         tip_text=(TextView)findViewById(R.id.tip);
         intent_from=getIntent();
-        yy_bg=(FrameLayout)findViewById(R.id.yy_bg);
+        /*yy_bg=(FrameLayout)findViewById(R.id.yy_bg);
         yylb_spinner=(Button)findViewById(R.id.yylb);
-        yymc_spinner=(Button)findViewById(R.id.yymc);
+        yymc_spinner=(Button)findViewById(R.id.yymc);*/
         title=intent_from.getStringExtra("title");
         zldm=intent_from.getStringExtra("zldm");
         type=intent_from.getStringExtra("type");
+        isFromBlyyfx=intent_from.getBooleanExtra("isFromBlyyfx",false);
         title_text.setText(title);
         ok_btn.setOnClickListener(this);
         cancle_btn.setOnClickListener(this);
@@ -165,14 +162,42 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         registerReceiver(receiver,receiverfilter);
     }
 
+    private void getNetData(final int what){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<List<String>>list=NetHelper.getQuerysqlResult("PAD_Read_CardID '"
+                        +type+"','"+zldm+"','"+num+"'");
+                if (list!=null){
+                    if (list.size()>0){
+                        if (list.get(0).size()>0){
+                            Message msg=handler.obtainMessage();
+                            msg.what=what;
+                            msg.obj=list.get(0).get(0);
+                            handler.sendMessage(msg);
+                        }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("PAD_Read_CardID",jtbh,sharedPreferences.getString("mac",""));
+                }
+            }
+        }).start();
+    }
+
+
+
     @Override
     public void onClick(View v) {
         switch (v.getId()){
             case R.id.ok_btn:
+                Intent intent=new Intent();
+                setResult(1,intent);
                 AppUtils.sendCountdownReceiver(DialogGActivity.this);
                 finish();
                 break;
             case R.id.cancle_btn:
+                Intent intent2=new Intent();
+                setResult(1,intent2);
                 AppUtils.sendCountdownReceiver(DialogGActivity.this);
                 finish();
                 break;

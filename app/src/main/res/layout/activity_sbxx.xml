@@ -272,14 +272,14 @@
                         android:layout_width="70dp"
                         android:layout_height="match_parent"
                         android:textColor="@android:color/black"
-                        android:text="和模次数"/>
+                        android:text="合模次数"/>
                     <TextView
                         android:background="@drawable/text_bg"
                         android:gravity="center"
                         android:layout_width="70dp"
                         android:layout_height="match_parent"
                         android:textColor="@android:color/black"
-                        android:text="合格率"/>
+                        android:text="良品率"/>
                     <TextView
                         android:background="@drawable/text_bg"
                         android:gravity="center"
