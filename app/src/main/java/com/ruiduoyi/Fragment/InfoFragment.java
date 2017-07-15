@@ -199,7 +199,6 @@ public class InfoFragment extends Fragment {
                         editor.putString("lpsl",item.get(23));
                         editor.putString("blsl",item.get(24));
                         editor.commit();
-
                         dq_3.setText(item.get(2));
                         dq_4.setText(item.get(3));
                         dq_5.setText(item.get(4));
@@ -227,13 +226,13 @@ public class InfoFragment extends Fragment {
                         tong_5.setText(item.get(25));
                         tong_6.setText(item.get(26));
 
-                        if (!(dq_5.getText().toString().trim().equals("")||xy_5.getText().toString().trim().equals(""))){
-                            if(!dq_5.getText().toString().equals(xy_5.getText().toString())){
+                        if (!(item.get(4).trim().equals("")||item.get(12).trim().equals(""))){
+                            if(!item.get(4).trim().equals(item.get(12).trim())){
                                 xy_5.setBackgroundColor(getResources().getColor(R.color.text_bg));
                             }
                         }
-                        if (!(dq_6.getText().toString().trim().equals("")||xy_6.getText().toString().trim().equals(""))){
-                            if(!dq_6.getText().toString().equals(xy_6.getText().toString())){
+                        if (!(item.get(5).trim().equals("")||item.get(13).trim().equals(""))){
+                            if(!item.get(5).trim().equals(item.get(13).trim() )){
                                 xy_6.setBackgroundColor(getResources().getColor(R.color.text_bg));
                             }
                         }
@@ -320,6 +319,9 @@ public class InfoFragment extends Fragment {
                 break;
                 case 0x104:
                     List<List<String>>list_jcxx=(List<List<String>>)msg.obj;
+                    SharedPreferences.Editor editor=sharedPreferences.edit();
+                    editor.putString("zldm_ss",list_jcxx.get(0).get(1));
+                    editor.commit();
                     initBasicInfo(list_jcxx);
                     break;
                 case 0x105:

@@ -1,12 +1,15 @@
 package com.ruiduoyi.Fragment;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -38,7 +41,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             cardView_b8;
     private String startType,startZldm,startZlmc;
     private Animation anim;
-
+    private SharedPreferences sharedPreferences;
     public StatusFragment() {
 
     }
@@ -53,6 +56,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         anim= AnimationUtils.loadAnimation(getContext(),R.anim.scale_anim);
+        sharedPreferences=getContext().getSharedPreferences("info", Context.MODE_PRIVATE);
     }
 
 
@@ -80,6 +84,53 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         }
     };
 
+
+    private void getStartType(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                Log.w("zldm_ss",sharedPreferences.getString("zldm_ss",""));
+                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A','"+sharedPreferences.getString("zldm_ss","")+"'");
+                if (list!=null){
+                    if (list.size()>0){
+                        if (list.get(0).size()>2){
+                            String startType=list.get(0).get(2);
+                            String startZlmc=list.get(0).get(1);
+                            String startZldm=list.get(0).get(0);
+                            switch (startType) {
+                                case "A":
+                                    Intent intent_g21 = new Intent(getContext(), DialogGActivity.class);
+                                    intent_g21.putExtra("zldm", getContext().getString(R.string.js));
+                                    intent_g21.putExtra("title", "结束");
+                                    intent_g21.putExtra("type", "OPR");
+                                    startActivity(intent_g21);
+                                    break;
+                                case "B":
+                                    Intent intent1 = new Intent(getContext(), BlYyfxActivity.class);
+                                    intent1.putExtra("title", startZlmc);
+                                    intent1.putExtra("zldm", startZldm);
+                                    startActivity(intent1);
+                                    break;
+                                case "C":
+                                    Intent intent2 = new Intent(getContext(), BlYyfxActivity.class);
+                                    intent2.putExtra("title", startZlmc);
+                                    intent2.putExtra("zldm", startZldm);
+                                    startActivity(intent2);
+                                    break;
+                                default:
+                                    Intent intent_g3 = new Intent(getContext(), DialogGActivity.class);
+                                    intent_g3.putExtra("zldm", getContext().getString(R.string.js));
+                                    intent_g3.putExtra("title", "结束");
+                                    intent_g3.putExtra("type", "OPR");
+                                    startActivity(intent_g3);
+                                    break;
+                            }
+                        }
+                    }
+                }
+            }
+        }).start();
+    }
 
     public void initView(View view){
         cardView_b1=(CardView)view.findViewById(R.id.sbxx);
@@ -207,7 +258,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             case R.id.gdgl:
                 cardView_b3.startAnimation(anim);
                 Intent intent_b3=new Intent(getContext(),DialogGActivity.class );
-                intent_b3.putExtra("title","【工单管理】");
+                intent_b3.putExtra("title","工单管理");
                 intent_b3.putExtra("zldm",getContext().getString(R.string.gdgl));
                 intent_b3.putExtra("type","DOC");
                 startActivity(intent_b3);
@@ -326,33 +377,37 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.js:
                 cardView_g21.startAnimation(anim);
-                switch (startType){
-                    case "A":
-                        Intent intent_g21=new Intent(getContext(), DialogGActivity.class);
-                        intent_g21.putExtra("zldm",getContext().getString(R.string.js));
-                        intent_g21.putExtra("title","结束");
-                        intent_g21.putExtra("type","OPR");
-                        startActivity(intent_g21);
-                        break;
-                    case "B":
-                        Intent intent1=new Intent(getContext(), BlYyfxActivity.class);
-                        intent1.putExtra("title",startZlmc);
-                        intent1.putExtra("zldm",startZldm);
-                        startActivity(intent1);
-                        break;
-                    case "C":
-                        Intent intent2=new Intent(getContext(), BlYyfxActivity.class);
-                        intent2.putExtra("title",startZlmc);
-                        intent2.putExtra("zldm",startZldm);
-                        startActivity(intent2);
-                        break;
-                    default:
-                        Intent intent_g3=new Intent(getContext(), DialogGActivity.class);
-                        intent_g3.putExtra("zldm",getContext().getString(R.string.js));
-                        intent_g3.putExtra("title","结束");
-                        intent_g3.putExtra("type","OPR");
-                        startActivity(intent_g3);
-                        break;
+                if (startType!=null){
+                    switch (startType){
+                        case "A":
+                            Intent intent_g21=new Intent(getContext(), DialogGActivity.class);
+                            intent_g21.putExtra("zldm",getContext().getString(R.string.js));
+                            intent_g21.putExtra("title","结束");
+                            intent_g21.putExtra("type","OPR");
+                            startActivity(intent_g21);
+                            break;
+                        case "B":
+                            Intent intent1=new Intent(getContext(), BlYyfxActivity.class);
+                            intent1.putExtra("title",startZlmc);
+                            intent1.putExtra("zldm",startZldm);
+                            startActivity(intent1);
+                            break;
+                        case "C":
+                            Intent intent2=new Intent(getContext(), BlYyfxActivity.class);
+                            intent2.putExtra("title",startZlmc);
+                            intent2.putExtra("zldm",startZldm);
+                            startActivity(intent2);
+                            break;
+                        default:
+                            Intent intent_g3=new Intent(getContext(), DialogGActivity.class);
+                            intent_g3.putExtra("zldm",getContext().getString(R.string.js));
+                            intent_g3.putExtra("title","结束");
+                            intent_g3.putExtra("type","OPR");
+                            startActivity(intent_g3);
+                            break;
+                    }
+                }else {
+                    getStartType();
                 }
                 break;
         }

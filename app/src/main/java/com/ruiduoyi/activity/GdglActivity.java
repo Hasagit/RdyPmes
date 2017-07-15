@@ -118,7 +118,7 @@ public class GdglActivity extends BaseActivity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet '"+jtbh+"'");
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'A','"+jtbh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>13){

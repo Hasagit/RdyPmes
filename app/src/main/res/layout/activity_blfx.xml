@@ -378,11 +378,12 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="480dp"
+            android:layout_marginLeft="10dp"
+            android:layout_width="380dp"
             android:layout_height="match_parent"
             android:orientation="vertical">
             <LinearLayout
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:orientation="horizontal">
                 <TextView
@@ -398,21 +399,20 @@
                 <Button
                     android:background="@drawable/spnner_bg"
                     android:id="@+id/blcp_spinner"
-                    android:layout_width="405dp"
+                    android:layout_width="305dp"
                     android:layout_height="50dp"
                     android:textSize="20dp"
                     android:gravity="center_vertical|left"
                     android:textColor="@android:color/black" />
             </LinearLayout>
             <LinearLayout
-                android:layout_width="480dp"
+                android:layout_width="380dp"
                 android:layout_height="35dp"
-                android:layout_gravity="center_horizontal"
                 android:background="@color/blue_sl_false"
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="100dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
@@ -420,7 +420,7 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="180dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
@@ -428,7 +428,8 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:layout_width="160dp"
+                    android:layout_width="100dp"
+                    android:text="选取"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
@@ -438,7 +439,7 @@
             <ListView
                 android:id="@+id/list_b8"
                 android:divider="@color/touming"
-                android:layout_width="match_parent"
+                android:layout_width="380dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"></ListView>
         </LinearLayout>
@@ -446,7 +447,7 @@
         <LinearLayout
             android:layout_width="wrap_content"
             android:layout_height="match_parent"
-            android:layout_marginLeft="20dp"
+            android:layout_marginLeft="10dp"
             android:layout_weight="1"
             android:background="@drawable/text_bg"
             android:focusable="true"
@@ -675,64 +676,59 @@
                             android:textSize="20dp" />
                     </LinearLayout>
                 </LinearLayout>
-
-                <HorizontalScrollView
+                <LinearLayout
+                    android:layout_marginTop="10dp"
                     android:layout_width="match_parent"
-                    android:layout_height="match_parent">
+                    android:layout_height="match_parent"
+                    android:orientation="vertical">
+
                     <LinearLayout
-                        android:layout_marginTop="10dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_width="500dp"
+                        android:layout_height="35dp"
+                        android:background="@color/blue_sl_false"
+                        android:orientation="horizontal">
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/text_bg"
+                            android:gravity="center"
+                            android:text="不良代码"
+                            android:textColor="@android:color/black" />
+
+                        <TextView
+                            android:layout_width="180dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/text_bg"
+                            android:gravity="center"
+                            android:text="不良描述"
+                            android:textColor="@android:color/black" />
+
+                        <TextView
+                            android:layout_width="80dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/text_bg"
+                            android:gravity="center"
+                            android:text="数量"
+                            android:textColor="@android:color/black" />
+
+                        <TextView
+                            android:layout_width="160dp"
+                            android:layout_height="match_parent"
+                            android:background="@drawable/text_bg"
+                            android:gravity="center"
+                            android:text="提报时间"
+                            android:textColor="@android:color/black" />
+                    </LinearLayout>
+
+                    <ListView
+                        android:id="@+id/list_b8_2"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:orientation="vertical">
-
-                        <LinearLayout
-                            android:layout_marginRight="10dp"
-                            android:layout_width="500dp"
-                            android:layout_height="35dp"
-                            android:background="@color/blue_sl_false"
-                            android:orientation="horizontal">
-
-                            <TextView
-                                android:layout_width="80dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/text_bg"
-                                android:gravity="center"
-                                android:text="不良代码"
-                                android:textColor="@android:color/black" />
-
-                            <TextView
-                                android:layout_width="180dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/text_bg"
-                                android:gravity="center"
-                                android:text="不良描述"
-                                android:textColor="@android:color/black" />
-
-                            <TextView
-                                android:layout_width="80dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/text_bg"
-                                android:gravity="center"
-                                android:text="数量"
-                                android:textColor="@android:color/black" />
-
-                            <TextView
-                                android:layout_width="160dp"
-                                android:layout_height="match_parent"
-                                android:background="@drawable/text_bg"
-                                android:gravity="center"
-                                android:text="提报时间"
-                                android:textColor="@android:color/black" />
-                        </LinearLayout>
-
-                        <ListView
-                            android:id="@+id/list_b8_2"
-                            android:layout_width="match_parent"
-                            android:layout_height="match_parent"
-                            android:layout_marginRight="10dp"
-                            android:divider="@color/touming"></ListView>
-                    </LinearLayout>
-                </HorizontalScrollView>
+                        android:layout_marginRight="10dp"
+                        android:divider="@color/touming"></ListView>
+                </LinearLayout>
             </LinearLayout>
         </LinearLayout>
     </LinearLayout>

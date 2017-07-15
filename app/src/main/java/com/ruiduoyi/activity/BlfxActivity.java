@@ -220,7 +220,7 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
             data.add(item.get(1)+"\t\t"+item.get(2));
             zzdh_list.add(item.get(0));
         }
-        popupWindowSpinner=new PopupWindowSpinner(BlfxActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,405);
+        popupWindowSpinner=new PopupWindowSpinner(BlfxActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,305);
         popupWindowSpinner.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
@@ -232,7 +232,9 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         spinner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                popupWindowSpinner.showDownOn(spinner);
+               if (popupWindowSpinner!=null){
+                   popupWindowSpinner.showDownOn(spinner);
+               }
             }
         });
         /*ArrayAdapter adapter=new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,data);
@@ -434,6 +436,10 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         }
         if (sub_text.getText().toString().equals("0")){
             Toast.makeText(this,"请先输入不良数",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        if (Integer.parseInt(lpsl_str)<Integer.parseInt(blpsl_str)+Integer.parseInt(sub_text.getText().toString().trim())){
+            Toast.makeText(this,"不良品总数量不能大于良品数量",Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

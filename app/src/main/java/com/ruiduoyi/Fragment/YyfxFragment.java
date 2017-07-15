@@ -214,7 +214,9 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
         AppUtils.sendCountdownReceiver(getContext());
         switch (v.getId()){
             case R.id.spinner:
-                spinner_list.showDownOn(spinner);
+                if (spinner_list!=null){
+                    spinner_list.showDownOn(spinner);
+                }
                 break;
         }
     }

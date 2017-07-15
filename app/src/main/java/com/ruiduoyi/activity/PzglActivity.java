@@ -326,6 +326,7 @@ public class PzglActivity extends BaseActivity implements View.OnClickListener{
         //条形图
         //设置表格上的点，被点击的时候，的回调函数
         //mBarChart.setOnChartValueSelectedListener(this);
+        mBarChart.setTouchEnabled(false);
         mBarChart.setDrawBarShadow(false);
         mBarChart.setDrawValueAboveBar(true);
         mBarChart.getDescription().setEnabled(false);
@@ -348,7 +349,7 @@ public class PzglActivity extends BaseActivity implements View.OnClickListener{
         leftAxis.setSpaceTop(15f);
         //这个替换setStartAtZero(true)
         leftAxis.setAxisMinimum(0f);
-        leftAxis.setAxisMaximum(50f);
+        //leftAxis.setAxisMaximum(50f);
 
         YAxis rightAxis = mBarChart.getAxisRight();
         rightAxis.setDrawGridLines(false);
@@ -670,7 +671,7 @@ public class PzglActivity extends BaseActivity implements View.OnClickListener{
                     AppUtils.uploadNetworkError("Exec  PAD_Get_PzmInf 'B01'",jtbh,sharedPreferences.getString("mac",""));
                 }
 
-                //质量检测
+                /*//质量检测
                 List<List<String>>list3= NetHelper.getQuerysqlResult("Exec  PAD_Get_PzmInf 'B01','"+zzdh+"','"+jtbh+"'");
                 if (list3!=null){
                     if (list3.size()>0){
@@ -683,7 +684,7 @@ public class PzglActivity extends BaseActivity implements View.OnClickListener{
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec  PAD_Get_PzmInf 'B01'",jtbh,sharedPreferences.getString("mac",""));
-                }
+                }*/
 
                 //不良统计
                 List<List<String>>list4= NetHelper.getQuerysqlResult("Exec  PAD_Get_PzmInf 'B02','"+zzdh+"','"+jtbh+"'");

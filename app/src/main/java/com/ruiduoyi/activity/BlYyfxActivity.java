@@ -209,4 +209,12 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
     public String getZldm() {
         return zldm;
     }
+
+    public String getLpsl_str() {
+        return lpsl_str;
+    }
+
+    public String getBlpsl_str() {
+        return blpsl_str;
+    }
 }

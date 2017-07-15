@@ -139,7 +139,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                         getListData(list,0,data);
                     }
                     spinner_list=new PopupWindowSpinner(YcfxActivity.this,data,R.layout.spinner_list_yyfx,
-                            R.id.lab_1,340);
+                            R.id.lab_1,440);
                     spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
@@ -158,7 +158,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                         map.put("lab_2",list1.get(i).get(1));
                         data1.add(map);
                     }
-                    adapter=new YyfxAdapter(YcfxActivity.this,R.layout.list_item_yyfx,data1);
+                    adapter=new YyfxAdapter(YcfxActivity.this,R.layout.list_item_ycfx,data1);
                     blmsList.setAdapter(adapter);
                     break;
                 case 0x110:
@@ -238,7 +238,9 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                 finish();
                 break;
             case R.id.spinner_1:
-                spinner_list.showDownOn(spinner_1);
+                if (spinner_list!=null){
+                    spinner_list.showDownOn(spinner_1);
+                }
                 break;
             case R.id.sub_btn:
                 final List<Map<String,String>>select_data=adapter.getSelectData();

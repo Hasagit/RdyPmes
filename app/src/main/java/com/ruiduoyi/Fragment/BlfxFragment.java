@@ -46,6 +46,7 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
     private SigleSelectAdapter2 adapter2;
     private List<Map<String,String>>data1;
     private int select_position;
+    private BlYyfxActivity activity;
 
 
     public BlfxFragment() {
@@ -61,7 +62,7 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         anim= AnimationUtils.loadAnimation(getContext(),R.anim.sub_num_anim);
         sharedPreferences=getContext().getSharedPreferences("info",Context.MODE_PRIVATE);
-        BlYyfxActivity activity= (BlYyfxActivity) getActivity();
+        activity= (BlYyfxActivity) getActivity();
         zzdh=activity.getZzdh();
         zldm=activity.getZldm();
 
@@ -263,7 +264,9 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
         AppUtils.sendCountdownReceiver(getContext());
         switch (v.getId()) {
             case R.id.spinner:
-                spinner_list.showDownOn(spinner);
+                if (spinner_list!=null){
+                    spinner_list.showDownOn(spinner);
+                }
                 break;
             case R.id.btn_0:
                 sub_text.startAnimation(anim);
@@ -358,6 +361,10 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
                     Toast.makeText(getContext(), "请先选择不良信息", Toast.LENGTH_SHORT).show();
                 } else if (spinner.getText().toString().equals("")){
                     Toast.makeText(getContext(),"请先选取产品",Toast.LENGTH_SHORT).show();
+                }else if(Integer.parseInt(activity.getLpsl_str())<Integer.parseInt(blzs_text.getText().toString())+Integer.parseInt(activity.getBlpsl_str())+Integer.parseInt(sub_text.getText().toString())){
+                    int sum=Integer.parseInt(blzs_text.getText().toString())+Integer.parseInt(activity.getBlpsl_str())+Integer.parseInt(sub_text.getText().toString());
+                    //Log.w("lpsl blpsl zhi",activity.getLpsl_str()+" "+activity.getBlpsl_str()+"  "+sub_text.getText().toString()+"  "+sum);
+                    Toast.makeText(getContext(),"不良品数量不能超过良品数量",Toast.LENGTH_SHORT).show();
                 }else {
                     try {
                         data1.get(select_position).put("lab_3",sub_text.getText().toString());
