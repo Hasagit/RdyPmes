@@ -17,7 +17,9 @@ import android.widget.Toast;
 import com.ruiduoyi.R;
 import com.ruiduoyi.adapter.FailureAnalysisAdapter;
 import com.ruiduoyi.adapter.SigleSelectAdapter;
+import com.ruiduoyi.adapter.SigleSelectAdapter2;
 import com.ruiduoyi.model.NetHelper;
+import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
 import java.util.ArrayList;
@@ -30,76 +32,64 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
     private Button spinner;//不良产品下拉框
     private ListView listView,listView_register;
     private String jtbh;
-    private TextView lab_2,lab_3,lab_4,lab_5,lab_6,lab_7,lab_8,bldm_text,blms_text;
+    private TextView sjsx_text,zzdh_text,gddh_text,scph_text,mjbh_text,cpbh_text,pmgg_text,mjmc_text,jhsl_text,lpsl_text,blpsl_text,bldm_text,blms_text;
     private Button btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0,btn_clear,btn_submit,btn_del;
-    private String mod_id,glid;//不良登记表相关、与下拉框相关
     private TextView sub_text;
     private Animation anim;
     private String sub_num;
-    private Animation anim_view;
-    private String cardId,wkno;
+    private String wkno;
+    private String sjsx_str,zzdh_str,gddh_str,scph_str,mjbh_str,cpbh_str,pmgg_str,jhsl_str,lpsl_str,
+            blpsl_str,mjmc_str;
+    private SigleSelectAdapter adapter2;
+    private List<Map<String,String>>data1;
+    private int select_position;
+    private PopupWindowSpinner popupWindowSpinner;
+    private List<String>zzdh_list=new ArrayList<>();
+    private int zzdh_position;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_blfx);
-        initView();
         initData();
+        initView();
     }
 
     Handler handler=new Handler(){
         @Override
         public void handleMessage(Message msg) {
             switch (msg.what){
-                case 0x100:
-                    List<List<String>>list_tab=(List<List<String>>)msg.obj;
-                    initListView(list_tab);
-                    listView.startAnimation(anim);
+                case 0x100://初始化
+                    List<List<String>>list_spinner=(List<List<String>>)msg.obj;
+                    initSpinner(list_spinner);
                     break;
                 case 0x101:
-                    Toast.makeText(BlfxActivity.this,"服务器异常",Toast.LENGTH_SHORT).show();
+                    List<List<String>>list1= (List<List<String>>) msg.obj;
+                    data1=new ArrayList<>();
+                    for (int i=0;i<list1.size();i++){
+                        Map<String,String>map=new HashMap<>();
+                        map.put("lab_1",list1.get(i).get(0));
+                        map.put("lab_2",list1.get(i).get(1));
+                        map.put("lab_3","0");
+                        data1.add(map);
+                    }
+                    adapter2= new SigleSelectAdapter(BlfxActivity.this, data1) {
+                        @Override
+                        public void onRadioSelectListener(int position,Map<String, String> map) {
+                            select_position=position;
+                            bldm_text.setText(map.get("lab_1"));
+                            blms_text.setText(map.get("lab_2"));
+                        }
+
+                    };
+                    listView.setAdapter(adapter2);
                     break;
                 case 0x102:
-                    List<List<String>>list_lab=(List<List<String>>)msg.obj;
-                    if(list_lab.size()<1){
-                        Toast.makeText(BlfxActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
-                    }else {
-                        List<String>item=list_lab.get(0);
-                        lab_2.setText(item.get(0));
-                        lab_3.setText(item.get(4));
-                        lab_4.setText(item.get(5));
-                        lab_5.setText(item.get(6));
-                        lab_6.setText(item.get(7));
-                        lab_7.setText(item.get(2));
-                        lab_8.setText(item.get(3));
-                        mod_id=item.get(8);
-                        new ThreadRight().start();
-                        if(item.size()<10){
-                            Toast.makeText(BlfxActivity.this,"没有产品可以选取",Toast.LENGTH_SHORT).show();
-                        }else {
-                            glid=item.get(9);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    List<List<String>>list_cpxq=NetHelper.getQuerysqlResult("PAD_BlfxCpxqDdl '"+glid+"'");
-                                    Message msg=handler.obtainMessage();
-                                    if (list_cpxq!=null){
-                                        msg.what=0x104;
-                                        msg.obj=list_cpxq;
-                                    }else {
-                                        msg.what=0x101;
-                                    }
-                                    handler.sendMessage(msg);
-                                }
-                            }).start();
-                        }
-                    }
-                    break;
-                case 0x103:
-                    List<List<String>>list_register=(List<List<String>>)msg.obj;
+                    List<List<String>>list2= (List<List<String>>) msg.obj;
                     List<Map<String,String>>data=new ArrayList<>();
-                    for (int i=0;i<list_register.size();i++){
+                    for (int i=0;i<list2.size();i++){
                         Map<String,String>map=new HashMap<>();
-                        List<String>item=list_register.get(i);
+                        List<String>item=list2.get(i);
                         map.put("lab_1",item.get(0));
                         map.put("lab_2",item.get(1));
                         map.put("lab_3",item.get(2));
@@ -108,13 +98,9 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
                     }
                     SimpleAdapter adapter=new SimpleAdapter(BlfxActivity.this,data,R.layout.list_item_b8_2,
                             new String[]{"lab_1","lab_2","lab_3","lab_4"},new int[]{R.id.lab_1,R.id.lab_2,
-                    R.id.lab_3,R.id.lab_4});
+                            R.id.lab_3,R.id.lab_4});
                     listView_register.setAdapter(adapter);
                     listView_register.startAnimation(anim);
-                    break;
-                case 0x104://初始化
-                    List<List<String>>list_spinner=(List<List<String>>)msg.obj;
-                    initSpinner(list_spinner);
                     break;
                 default:
                     break;
@@ -125,14 +111,22 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
 
     private void initData(){
         sharedPreferences=getSharedPreferences("info",MODE_PRIVATE);
+        sjsx_str=sharedPreferences.getString("sjsx","");
+        zzdh_str=sharedPreferences.getString("zzdh","");
+        gddh_str=sharedPreferences.getString("gddh","");
+        scph_str=sharedPreferences.getString("scph","");
+        mjbh_str=sharedPreferences.getString("mjbh","");
+        cpbh_str=sharedPreferences.getString("cpbh","");
+        pmgg_str=sharedPreferences.getString("pmgg","");
+        mjmc_str=sharedPreferences.getString("mjmc","");
+        jhsl_str=sharedPreferences.getString("jhsl","");
+        lpsl_str=sharedPreferences.getString("lpsl","");
+        blpsl_str=sharedPreferences.getString("blsl","");
         jtbh=sharedPreferences.getString("jtbh","");
-        thread_tab.start();
-        thread_lab.start();
         anim= AnimationUtils.loadAnimation(this,R.anim.sub_num_anim);
-        anim_view=AnimationUtils.loadAnimation(this,R.anim.apha_anim);
         Intent intent_from=getIntent();
-        cardId=intent_from.getStringExtra("cardId");
         wkno=intent_from.getStringExtra("wkno");
+        getNetData();
     }
 
     private void initView(){
@@ -140,15 +134,33 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         spinner=(Button) findViewById(R.id.blcp_spinner);
         listView=(ListView)findViewById(R.id.list_b8);
         sub_text=(TextView)findViewById(R.id.sub_text);
-        lab_2=(TextView)findViewById(R.id.lab_2);
-        lab_3=(TextView)findViewById(R.id.lab_3);
-        lab_4=(TextView)findViewById(R.id.lab_4);
-        lab_5=(TextView)findViewById(R.id.lab_5);
-        lab_6=(TextView)findViewById(R.id.lab_6);
-        lab_7=(TextView)findViewById(R.id.lab_7);
-        lab_8=(TextView)findViewById(R.id.lab_8);
+        sjsx_text=(TextView)findViewById(R.id.dq_1);
+        zzdh_text=(TextView)findViewById(R.id.dq_2);
+        gddh_text=(TextView)findViewById(R.id.dq_3);
+        scph_text=(TextView)findViewById(R.id.dq_4);
+        mjbh_text=(TextView)findViewById(R.id.dq_5);
+        mjmc_text=(TextView)findViewById(R.id.dq_6);
+        cpbh_text=(TextView)findViewById(R.id.dq_7);
+        pmgg_text=(TextView)findViewById(R.id.dq_8);
+        jhsl_text=(TextView)findViewById(R.id.dq_9);
+        lpsl_text=(TextView)findViewById(R.id.dq_10);
+        blpsl_text=(TextView)findViewById(R.id.dq_11);
         bldm_text=(TextView)findViewById(R.id.bldm_text);
         blms_text=(TextView)findViewById(R.id.blms_text);
+
+        sjsx_text.setText(sjsx_str);
+        zzdh_text.setText(zzdh_str);
+        gddh_text.setText(gddh_str);
+        scph_text.setText(scph_str);
+        mjbh_text.setText(mjbh_str);
+        cpbh_text.setText(cpbh_str);
+        pmgg_text.setText(pmgg_str);
+        mjmc_text.setText(mjmc_str);
+        jhsl_text.setText(jhsl_str);
+        lpsl_text.setText(lpsl_str);
+        blpsl_text.setText(blpsl_str);
+
+
         btn_0=(Button)findViewById(R.id.btn_0);
         btn_1=(Button)findViewById(R.id.btn_1);
         btn_2=(Button)findViewById(R.id.btn_2);
@@ -177,7 +189,6 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         btn_del.setOnClickListener(this);
         btn_submit.setOnClickListener(this);
         btn_clear.setOnClickListener(this);
-        initSpinner(new ArrayList<List<String>>());
     }
 
     private void initListView(List<List<String>>lists){
@@ -192,7 +203,7 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         }
         SigleSelectAdapter adapter1=new SigleSelectAdapter(BlfxActivity.this,data) {
             @Override
-            public void onRadioSelectListener(Map<String, String> map) {
+            public void onRadioSelectListener(int position,Map<String, String> map) {
                 bldm_text.setText(map.get("lab_1"));
                 blms_text.setText(map.get("lab_2"));
             }
@@ -206,21 +217,22 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         final List<String>data=new ArrayList<>();
         for (int i=0;i<lists.size();i++){
             List<String>item=lists.get(i);
-            data.add(item.get(0));
+            data.add(item.get(1)+"\t\t"+item.get(2));
+            zzdh_list.add(item.get(0));
         }
+        popupWindowSpinner=new PopupWindowSpinner(BlfxActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,405);
+        popupWindowSpinner.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+            @Override
+            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                spinner.setText(data.get(position));
+                zzdh_position=position;
+                popupWindowSpinner.dismiss();
+            }
+        });
         spinner.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                final PopupWindowSpinner popupWindowSpinner=new PopupWindowSpinner(BlfxActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,450);
                 popupWindowSpinner.showDownOn(spinner);
-                popupWindowSpinner.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        spinner.setText(data.get(position));
-                        popupWindowSpinner.dismiss();
-                    }
-                });
-
             }
         });
         /*ArrayAdapter adapter=new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,data);
@@ -237,7 +249,7 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
             case R.id.btn_0:
                 sub_text.startAnimation(anim);
                 sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
+                if((!sub_num.equals("0"))&&(!sub_num.equals("-"))){
                    sub_text.setText(sub_num+"0");
                 }
                 break;
@@ -323,29 +335,9 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
                 }
                 break;
             case R.id.btn_submit:
-               if(bldm_text.getText().toString().equals("")|blms_text.getText().toString().equals("")|sub_text.getText().toString().equals("0")){
-                   Toast.makeText(this,"请输入不良信息",Toast.LENGTH_SHORT).show();
-               }else {
-                   final String bldm=bldm_text.getText().toString();
-                   final String sub_num=sub_text.getText().toString();
-                   new Thread(new Runnable() {
-                       @Override
-                       public void run() {
-                           List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_AddBlmInfo '"+mod_id+"','A','','',\n" +
-                                   "'"+jtbh+"','"+bldm+"','"+sub_num+"','"+wkno+"'");
-                           if(list==null){
-                               Message message=handler.obtainMessage();
-                               message.what=0x101;
-                               handler.sendMessage(message);
-                           }else {
-                               new ThreadRight().start();
-                           }
-                       }
-                   }).start();
-                   sub_text.setText("0");
-                   bldm_text.setText("");
-                   blms_text.setText("");
-               }
+                if (isReady()){
+                    upLoadData(wkno);
+                }
                 break;
             case R.id.btn_del:
                 sub_text.startAnimation(anim);
@@ -357,61 +349,127 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
             case R.id.btn_clear:
                 sub_text.startAnimation(anim);
                 sub_text.setText("0");
-                bldm_text.setText("");
-                blms_text.setText("");
                 break;
             default:
                 break;
         }
     }
 
-    //不良分析表格
-    Thread thread_tab=new Thread(new Runnable() {
-        @Override
-        public void run() {
-            List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_BlfxTab");
-            Message msg=handler.obtainMessage();
-            if(list!=null){
-                msg.what=0x100;
-                msg.obj=list;
-            }else {
-                msg.what=0x101;
+    private void getNetData(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+
+                //产品选取
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'D','"+zzdh_str+"'");
+                if (list!=null){
+                    if (list.size()>0){
+                        if (list.get(0).size()>2){
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x100;
+                            msg.obj=list;
+                            handler.sendMessage(msg);
+                        }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_ZlmYywh 'D'",sharedPreferences.getString("jtnh",""),
+                            sharedPreferences.getString("mac",""));
+                }
+
+
+                //不良表格
+                List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_Blllist");
+                if (list1!=null){
+                    if (list1.size()>0){
+                        if (list1.get(0).size()>1){
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x101;
+                            msg.obj=list1;
+                            handler.sendMessage(msg);
+                        }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_Blllist",sharedPreferences.getString("jtbh",""),
+                            sharedPreferences.getString("mac",""));
+                }
+
+
+                List<List<String>>list2=NetHelper.getQuerysqlResult("Exec PAD_Get_BlmInfo '"+jtbh+"'");
+                if (list2!=null){
+                    if (list2.size()>0){
+                        if (list2.get(0).size()>3){
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x102;
+                            msg.obj=list2;
+                            handler.sendMessage(msg);
+                        }
+                    }
+                }
+
+
             }
-            handler.sendMessage(msg);
+        }).start();
+    }
+
+
+
+    public void upLoadData(final String wkno){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                upLoadOneData(wkno);
+            }
+        }).start();
+    }
+
+
+    private boolean isReady(){
+        if (spinner.getText().toString().equals("")){
+            Toast.makeText(this,"请先选取产品",Toast.LENGTH_SHORT).show();
+            return false;
         }
-    });
-
-
-    //不良分析文本框
-    Thread thread_lab=new Thread(new Runnable() {
-        @Override
-        public void run() {
-            List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_BlfxText '"+jtbh+"'");
-            Message msg=handler.obtainMessage();
-            if(list!=null){
-                msg.what=0x102;
-                msg.obj=list;
-            }else {
-                msg.what=0x101;
-            }
-            handler.sendMessage(msg);
+        if (bldm_text.getText().toString().equals("")){
+            Toast.makeText(this,"请先选取不良描述",Toast.LENGTH_SHORT).show();
+            return false;
         }
-    });
-    //右下角的表格
+        if (sub_text.getText().toString().equals("0")){
+            Toast.makeText(this,"请先输入不良数",Toast.LENGTH_SHORT).show();
+            return false;
+        }
+        return true;
+    }
 
-    class ThreadRight extends Thread{
-        @Override
-        public void run() {
-            List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_BlfxDjTab '"+mod_id+"'");
-            Message msg=handler.obtainMessage();
-            if(list!=null){
-                msg.what=0x103;
-                msg.obj=list;
-            }else {
-                msg.what=0x101;
+
+
+
+    private void upLoadOneData(String wkno){
+        List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Add_BlmInfo " +
+                "'A','"+zzdh_list.get(zzdh_position)+"','','','"+jtbh+"','','"+bldm_text.getText().toString()+"'," +
+                "'"+sub_text.getText().toString()+"','"+wkno+"'");
+        if (list!=null){
+            if (list.size()>0){
+                if (list.get(0).size()>0){
+                    if (list.get(0).get(0).equals("OK")){
+                        List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_BlmInfo '"+jtbh+"'");
+                        if (list1!=null){
+                            if (list1.size()>0){
+                                if (list1.get(0).size()>3){
+                                    Message msg=handler.obtainMessage();
+                                    msg.what=0x102;
+                                    msg.obj=list1;
+                                    handler.sendMessage(msg);
+                                }
+                            }
+                        }
+                        return ;
+                    }
+                }
             }
-            handler.sendMessage(msg);
+        }else {
+            upLoadOneData(wkno);
         }
     }
+
+
 
 }

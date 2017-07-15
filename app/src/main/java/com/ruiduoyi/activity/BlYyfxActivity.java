@@ -53,12 +53,12 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
         mjmc_text=(TextView)findViewById(R.id.dq_6);
         cpbh_text=(TextView)findViewById(R.id.dq_7);
         pmgg_text=(TextView)findViewById(R.id.dq_8);
-        blfx_text=(TextView)findViewById(R.id.blfx_text);
-        yyfx_text=(TextView)findViewById(R.id.yyfx_text);
-        title_text=(TextView)findViewById(R.id.title);
         jhsl_text=(TextView)findViewById(R.id.dq_9);
         lpsl_text=(TextView)findViewById(R.id.dq_10);
         blpsl_text=(TextView)findViewById(R.id.dq_11);
+        blfx_text=(TextView)findViewById(R.id.blfx_text);
+        yyfx_text=(TextView)findViewById(R.id.yyfx_text);
+        title_text=(TextView)findViewById(R.id.title);
         cancle_btn=(Button)findViewById(R.id.cancle_btn);
         save_btn=(Button)findViewById(R.id.save_btn);
         blfx_btn=(FrameLayout) findViewById(R.id.blfx_btn);
@@ -143,8 +143,8 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
         zlmc=intent_from.getStringExtra("title");
         type=intent_from.getStringExtra("type");
         animation= AnimationUtils.loadAnimation(this,R.anim.scale_anim);
-        blfxFragment=new BlfxFragment(zldm,zzdh_str);
-        yyfxFragment=new YyfxFragment(zldm);
+        blfxFragment=new BlfxFragment();
+        yyfxFragment=new YyfxFragment();
     }
 
     @Override
@@ -200,5 +200,13 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
                 viewPager.setCurrentItem(0);
                 break;
         }
+    }
+
+    public String getZzdh() {
+        return zzdh_str;
+    }
+
+    public String getZldm() {
+        return zldm;
     }
 }

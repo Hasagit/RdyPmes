@@ -225,7 +225,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             case R.id.ycfx:
                 cardView_b6.startAnimation(anim);
                 Intent intent_b7=new Intent(getContext(),DialogGActivity.class );
-                intent_b7.putExtra("title","【异常分析】");
+                intent_b7.putExtra("title","异常分析");
                 intent_b7.putExtra("zldm",getContext().getString(R.string.ycfx));
                 intent_b7.putExtra("type","DOC");
                 startActivity(intent_b7);
@@ -233,7 +233,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             case R.id.blfx:
                 cardView_b7.startAnimation(anim);
                 Intent intent_b8=new Intent(getContext(), DialogGActivity.class);
-                intent_b8.putExtra("title","【不良分析】");
+                intent_b8.putExtra("title","不良分析");
                 intent_b8.putExtra("zldm",getContext().getString(R.string.blfx));
                 intent_b8.putExtra("type","DOC");
                 startActivity(intent_b8);

@@ -20,10 +20,12 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.ruiduoyi.R;
+import com.ruiduoyi.activity.BlYyfxActivity;
 import com.ruiduoyi.activity.BlfxActivity;
 import com.ruiduoyi.adapter.SigleSelectAdapter2;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
+import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
 import java.util.ArrayList;
@@ -45,13 +47,12 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
     private List<Map<String,String>>data1;
     private int select_position;
 
-    public BlfxFragment(String zldm,String zzdh) {
-        this.zldm=zldm;
-        this.zzdh=zzdh;
+
+    public BlfxFragment() {
     }
 
-    public static BlfxFragment newInstance(String zldm,String zzdh) {
-        BlfxFragment fragment = new BlfxFragment(zldm,zzdh);
+    public static BlfxFragment newInstance() {
+        BlfxFragment fragment = new BlfxFragment();
         return fragment;
     }
 
@@ -60,6 +61,9 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         anim= AnimationUtils.loadAnimation(getContext(),R.anim.sub_num_anim);
         sharedPreferences=getContext().getSharedPreferences("info",Context.MODE_PRIVATE);
+        BlYyfxActivity activity= (BlYyfxActivity) getActivity();
+        zzdh=activity.getZzdh();
+        zldm=activity.getZldm();
 
     }
 
@@ -169,6 +173,8 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
         btn_submit.setOnClickListener(this);
         btn_clear.setOnClickListener(this);
 
+
+
     }
 
     private void getNetData(){
@@ -237,17 +243,14 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
                     }
                 }
             }
+        }else {
+            upLoadOneData(map,wkno);
         }
-        upLoadOneData(map,wkno);
     }
 
     public boolean isReady(){
-        if (spinner.getText().toString().equals("")){
+        if (Integer.parseInt(blzs_text.getText().toString())>0&&spinner.getText().toString().equals("")){
             Toast.makeText(getContext(),"请先选取产品",Toast.LENGTH_SHORT).show();
-            return false;
-        }
-        if (blzs_text.getText().toString().equals("0")){
-            Toast.makeText(getContext(),"请先提交不良数量",Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

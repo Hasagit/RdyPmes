@@ -317,7 +317,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
             }
         };
         int time=Integer.parseInt(sharedPreferences.getString("countdownNum","5"));
-        Log.e("重置计时",time+"毫秒");
+        Log.e("重置计时",time+"分钟");
         timer_CountdownToInfo.schedule(timerTask,time*60*1000);
     }
 

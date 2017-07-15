@@ -1,6 +1,8 @@
 package com.ruiduoyi.adapter;
 
 import android.content.Context;
+import android.os.Handler;
+import android.os.Message;
 import android.support.annotation.LayoutRes;
 import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
@@ -25,11 +27,13 @@ public class YichangfenxiAdapter extends ArrayAdapter{
     private List<Map<String,String>>data;
     private int resource;
     private List<TextView>list_text;
-    public YichangfenxiAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Map<String,String>>data,List<TextView>list_text) {
+    private Handler handler;
+    public YichangfenxiAdapter(@NonNull Context context, @LayoutRes int resource, @NonNull List<Map<String,String>>data,List<TextView>list_text,Handler handler) {
         super(context, resource, data);
         this.data=data;
         this.resource=resource;
         this.list_text=list_text;
+        this.handler=handler;
     }
 
     @NonNull
@@ -49,8 +53,6 @@ public class YichangfenxiAdapter extends ArrayAdapter{
         TextView lab_9=(TextView)view.findViewById(R.id.lab_9);
         TextView lab_10=(TextView)view.findViewById(R.id.lab_10);
         TextView lab_11=(TextView)view.findViewById(R.id.lab_11);
-        TextView lab_12=(TextView)view.findViewById(R.id.lab_12);
-        TextView lab_13=(TextView)view.findViewById(R.id.lab_13);
         lab_1.setText(map.get("lab_1"));
         lab_2.setText(map.get("lab_2"));
         lab_3.setText(map.get("lab_3"));
@@ -62,26 +64,28 @@ public class YichangfenxiAdapter extends ArrayAdapter{
         lab_9.setText(map.get("lab_9"));
         lab_10.setText(map.get("lab_10"));
         lab_11.setText(map.get("lab_11"));
-        lab_12.setText(map.get("lab_12"));
-        lab_13.setText(map.get("lab_13"));
 
         btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 AppUtils.sendCountdownReceiver(getContext());
                 //选取按钮点击事件
-                list_text.get(0).setText(map.get("lab_2"));
-                list_text.get(1).setText(map.get("lab_6")+"\t"+map.get("lab_7"));
-                list_text.get(2).setText(map.get("lab_3"));
+                list_text.get(0).setText(map.get("lab_1"));
+                list_text.get(1).setText(map.get("lab_12"));
+                list_text.get(2).setText(map.get("lab_2"));
                 list_text.get(3).setText(map.get("lab_4"));
                 list_text.get(4).setText(map.get("lab_5"));
-                list_text.get(5).setText(map.get("lab_8"));
-                list_text.get(6).setText(map.get("lab_9"));
-                list_text.get(7).setText(map.get("lab_10"));
-                list_text.get(8).setText(map.get("lab_11"));
-                list_text.get(9).setText(map.get("lab_12"));
-                list_text.get(10).setText(map.get("lab_13"));
-                list_text.get(11).setText(map.get("lab_1"));
+                list_text.get(5).setText(map.get("lab_6"));
+                list_text.get(6).setText(map.get("lab_7"));
+                list_text.get(7).setText(map.get("lab_8"));
+                list_text.get(8).setText(map.get("lab_9"));
+                list_text.get(9).setText(map.get("lab_10"));
+                list_text.get(10).setText(map.get("lab_11"));
+                list_text.get(11).setText(map.get("lab_3"));
+                Message msg=handler.obtainMessage();
+                msg.what=0x107;
+                msg.obj=map.get("lab_12");
+                handler.sendMessage(msg);
             }
         });
         return view;

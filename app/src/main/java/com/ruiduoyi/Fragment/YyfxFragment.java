@@ -16,6 +16,7 @@ import android.widget.ListView;
 import android.widget.Toast;
 
 import com.ruiduoyi.R;
+import com.ruiduoyi.activity.BlYyfxActivity;
 import com.ruiduoyi.adapter.YyfxAdapter;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
@@ -36,12 +37,12 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
     private String lbdm,jtbh;
 
 
-    public YyfxFragment(String zldm) {
-        this.zldm=zldm;
+    public YyfxFragment() {
+
     }
 
     public static YyfxFragment newInstance(String zldm) {
-        YyfxFragment fragment = new YyfxFragment(zldm);
+        YyfxFragment fragment = new YyfxFragment();
         return fragment;
     }
 
@@ -50,6 +51,8 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
         super.onCreate(savedInstanceState);
         sharedPreferences=getContext().getSharedPreferences("info",Context.MODE_PRIVATE);
         jtbh=sharedPreferences.getString("jtbh","");
+        BlYyfxActivity activity= (BlYyfxActivity) getActivity();
+        zldm=activity.getZldm();
     }
 
     @Override
@@ -72,7 +75,9 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
                     for (int i=0;i<list.size();i++){
                         data.add(list.get(i).get(0)+"\t\t"+list.get(i).get(1));
                     }
-                    getListData(list,0,data);
+                   if (data.size()>0){
+                       getListData(list,0,data);
+                   }
                     spinner_list=new PopupWindowSpinner(getContext(),data,R.layout.spinner_list_yyfx,
                             R.id.lab_1,425);
                     spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
@@ -155,8 +160,9 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
                     }
                 }
             }
+        }else {
+
         }
-        upLoadOneData(selectData,wkno);
     }
 
 

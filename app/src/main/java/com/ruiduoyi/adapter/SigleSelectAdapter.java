@@ -71,7 +71,7 @@ public abstract class SigleSelectAdapter extends BaseAdapter {
             public void onClick(View v) {
                 holder.rdBtn.setChecked(true);
                 //重置，确保最多只有一项被选中
-                onRadioSelectListener(userList.get(position));
+                onRadioSelectListener(position,userList.get(position));
                 for(String key:states.keySet()){
                     states.put(key, false);
 
@@ -85,7 +85,7 @@ public abstract class SigleSelectAdapter extends BaseAdapter {
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 AppUtils.sendCountdownReceiver(context);
                 if (isChecked){
-                    holder.background.setBackgroundColor(Color.RED);
+                    holder.background.setBackgroundColor(context.getResources().getColor(R.color.small));
                 }else {
                     holder.background.setBackgroundColor(Color.WHITE);
                 }
@@ -96,7 +96,7 @@ public abstract class SigleSelectAdapter extends BaseAdapter {
             @Override
             public void onClick(View v) {
                 //重置，确保最多只有一项被选中
-                onRadioSelectListener(userList.get(position));
+                onRadioSelectListener(position,userList.get(position));
                 for(String key:states.keySet()){
                     states.put(key, false);
 
@@ -127,6 +127,6 @@ public abstract class SigleSelectAdapter extends BaseAdapter {
         RadioButton rdBtn;
     }
 
-    public abstract void onRadioSelectListener(Map<String,String>map);
+    public abstract void onRadioSelectListener(int position,Map<String,String>map);
 
 }

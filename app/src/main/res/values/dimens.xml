@@ -17,4 +17,8 @@
     <dimen name="blyyfx_text_width">230dp</dimen>
     <dimen name="num_widht">100dp</dimen>
     <dimen name="num_height">78dp</dimen>
+    <dimen name="blnum_width">110dp</dimen>
+    <dimen name="blnum_height">85dp</dimen>
+    <dimen name="ycfx_width">200dp</dimen>
+    <dimen name="ycfx_height">35dp</dimen>
 </resources>

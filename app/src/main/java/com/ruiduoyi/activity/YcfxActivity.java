@@ -1,6 +1,7 @@
 package com.ruiduoyi.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
@@ -13,8 +14,10 @@ import android.widget.Toast;
 
 import com.ruiduoyi.R;
 import com.ruiduoyi.adapter.YichangfenxiAdapter;
+import com.ruiduoyi.adapter.YyfxAdapter;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
+import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
 import java.util.ArrayList;
@@ -24,15 +27,14 @@ import java.util.Map;
 
 public class YcfxActivity extends BaseActivity implements View.OnClickListener{
     private Button cancle_btn,sub_btn;
-    private ListView listView;
-    private Button spinner_2;
+    private ListView listView,blmsList;
     private Button spinner_1;
     private TextView text_1,text_2,text_3,text_4,text_5,text_6,text_7,text_8,text_9,text_10,text_11,text_key;
-    private String jtbh;
-    String yylb="";
-    String yymsId="";
-    String yymstext="";
+    private String jtbh,lbdm;
+    private YyfxAdapter adapter;
     String wkno="";
+    private PopupWindowSpinner spinner_list;
+    private PopupDialog dialog;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,10 +59,17 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         text_11=(TextView)findViewById(R.id.text_11);
         text_key=(TextView)findViewById(R.id.text_key);
         spinner_1=(Button) findViewById(R.id.spinner_1);
-        spinner_2=(Button) findViewById(R.id.spinner_2);
+        blmsList=(ListView)findViewById(R.id.list_bl);
+        //spinner_2=(Button) findViewById(R.id.spinner_2);
+        spinner_1.setOnClickListener(this);
         listView=(ListView)findViewById(R.id.list_b7);
         cancle_btn.setOnClickListener(this);
         sub_btn.setOnClickListener(this);
+
+        dialog=new PopupDialog(this,400,300);
+        dialog.setTitle("提示");
+        dialog.getCancle_btn().setVisibility(View.GONE);
+        dialog.getOkbtn().setText("确定");
     }
 
     private void initData(){
@@ -69,7 +78,6 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         sharedPreferences=getSharedPreferences("info",MODE_PRIVATE);
         jtbh=sharedPreferences.getString("jtbh","");
         thread_1.start();
-        thread_2.start();
     }
 
     private void initListView(List<List<String>>list){
@@ -77,23 +85,18 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         for (int i=0;i<list.size();i++){
             List<String>item=list.get(i);
             Map<String,String>map=new HashMap<>();
-            map.put("lab_1",item.get(1));
-            map.put("lab_2",item.get(2));
-            map.put("lab_3",item.get(3));
-            map.put("lab_4",item.get(4));
-            map.put("lab_5",item.get(5));
-            map.put("lab_6",item.get(6));
-            map.put("lab_7",item.get(7));
-            map.put("lab_8",item.get(8));
-            map.put("lab_9",item.get(9));
-            map.put("lab_10",item.get(10));
-            map.put("lab_11",item.get(11));
-            map.put("lab_12",item.get(12));
-            if (item.size()>12){
-                map.put("lab_13",item.get(13));
-            }else {
-                map.put("lab_13","");
-            }
+            map.put("lab_1",item.get(2));
+            map.put("lab_2",item.get(3));
+            map.put("lab_3",item.get(4));
+            map.put("lab_4",item.get(5));
+            map.put("lab_5",item.get(6));
+            map.put("lab_6",item.get(8));
+            map.put("lab_7",item.get(9));
+            map.put("lab_8",item.get(10));
+            map.put("lab_9",item.get(11));
+            map.put("lab_10",item.get(12));
+            map.put("lab_11",item.get(13));
+            map.put("lab_12",item.get(7));
             data.add(map);
         }
         List<TextView>list_text=new ArrayList<>();
@@ -109,129 +112,10 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         list_text.add(text_10);
         list_text.add(text_11);
         list_text.add(text_key);
-        YichangfenxiAdapter adapter=new YichangfenxiAdapter(YcfxActivity.this,R.layout.list_item_b7,data,list_text);
+        YichangfenxiAdapter adapter=new YichangfenxiAdapter(YcfxActivity.this,R.layout.list_item_b7,data,list_text,handler);
         listView.setAdapter(adapter);
     }
 
-
-    private void initSpinner_1(List<List<String>>list, final Button spinner){
-        final List<String>data=new ArrayList<>();
-        final List<String>lbId=new ArrayList<>();
-        for (int i=0;i<list.size();i++){
-            List<String>item=list.get(i);
-            if (item.size()>0){
-                data.add(item.get(1));
-                lbId.add(item.get(0));
-            }else {
-                data.add("");
-                lbId.add("");
-            }
-        }
-        spinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                final PopupWindowSpinner popupWindowSpinner=new PopupWindowSpinner(YcfxActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,340);
-                popupWindowSpinner.showUpOn(spinner);
-                popupWindowSpinner.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                        if (position>0){
-                            yylb=lbId.get(position);
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    String key=data.get(position).substring(0,3);
-                                    List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_YcmInfMS '"+key+"'");
-                                    Message msg=handler.obtainMessage();
-                                    if(list!=null){
-                                        msg.what=0x103;
-                                        msg.obj=list;
-                                    }else {
-                                        msg.what=0x101;
-                                    }
-                                    handler.sendMessage(msg);
-                                }
-                            }).start();
-                        }
-                        spinner.setText(data.get(position));
-                        popupWindowSpinner.dismiss();
-                    }
-                });
-            }
-        });
-        /*ArrayAdapter adapter=new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,data);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, final int position, long id) {
-               if (position>0){
-                   yylb=lbId.get(position);
-                   new Thread(new Runnable() {
-                       @Override
-                       public void run() {
-                           String key=data.get(position).substring(0,3);
-                           List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_YcmInfMS '"+key+"'");
-                           Message msg=handler.obtainMessage();
-                           if(list!=null){
-                               msg.what=0x103;
-                               msg.obj=list;
-                           }else {
-                               msg.what=0x101;
-                           }
-                           handler.sendMessage(msg);
-                       }
-                   }).start();
-               }
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
-    }
-
-    private void initSpinner_2(List<List<String>>list, final Button spinner){
-        final List<String>data=new ArrayList<>();
-        final List<String>Id=new ArrayList<>();
-        for (int i=0;i<list.size();i++){
-            List<String>item=list.get(i);
-            data.add(item.get(1));
-            Id.add(item.get(0));
-        }
-        spinner.setText(data.get(0));
-        spinner.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                AppUtils.sendCountdownReceiver(YcfxActivity.this);
-                final PopupWindowSpinner popupWindowSpinner=new PopupWindowSpinner(YcfxActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,340);
-                popupWindowSpinner.showUpOn(spinner);
-                popupWindowSpinner.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                    @Override
-                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                        yymstext=data.get(position);
-                        yymsId=Id.get(position);
-                        spinner.setText(data.get(position));
-                        popupWindowSpinner.dismiss();
-                    }
-                });
-            }
-        });
-        /*ArrayAdapter adapter=new ArrayAdapter(this,android.R.layout.simple_spinner_dropdown_item,data);
-        spinner.setAdapter(adapter);
-        spinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
-            @Override
-            public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-                yymstext=data.get(position);
-                yymsId=Id.get(position);
-            }
-
-            @Override
-            public void onNothingSelected(AdapterView<?> parent) {
-
-            }
-        });*/
-    }
 
     Handler handler=new Handler(){
         @Override
@@ -239,71 +123,102 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
             switch (msg.what){
                 case 0x100:
                     List<List<String>>list_1=(List<List<String>>)msg.obj;
-                    if (list_1.size()>0){
-                        initListView(list_1);
-                    }else {
-                        Toast.makeText(YcfxActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
+                    initListView(list_1);
+                    break;
+                case 0x107:
+                    String zldm= (String) msg.obj;
+                    getYylb(zldm);
+                    break;
+                case 0x108:
+                    final List<List<String>>list= (List<List<String>>) msg.obj;
+                    final List<String>data=new ArrayList<>();
+                    for (int i=0;i<list.size();i++){
+                        data.add(list.get(i).get(0)+"\t\t"+list.get(i).get(1));
                     }
+                    if (data.size()>0){
+                        getListData(list,0,data);
+                    }
+                    spinner_list=new PopupWindowSpinner(YcfxActivity.this,data,R.layout.spinner_list_yyfx,
+                            R.id.lab_1,340);
+                    spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                        @Override
+                        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                            AppUtils.sendCountdownReceiver(YcfxActivity.this);
+                            getListData(list,position,data);
+                            spinner_list.dismiss();
+                        }
+                    });
                     break;
-                case 0x101:
-                    Toast.makeText(YcfxActivity.this,"服务器异常",Toast.LENGTH_SHORT).show();
+                case 0x109:
+                    List<List<String>>list1= (List<List<String>>) msg.obj;
+                    List<Map<String,String>>data1=new ArrayList<>();
+                    for (int i=0;i<list1.size();i++){
+                        Map<String,String>map=new HashMap<>();
+                        map.put("lab_1",list1.get(i).get(0));
+                        map.put("lab_2",list1.get(i).get(1));
+                        data1.add(map);
+                    }
+                    adapter=new YyfxAdapter(YcfxActivity.this,R.layout.list_item_yyfx,data1);
+                    blmsList.setAdapter(adapter);
                     break;
-                case 0x102://原因类别
-                    List<List<String>>list_2=(List<List<String>>)msg.obj;
-                    if (list_2.size()>0){
-                        initSpinner_1(list_2,spinner_1);
+                case 0x110:
+                    dialog.setMessage("提交成功");
+                    dialog.setMessageTextColor(Color.BLACK);
+                    dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AppUtils.sendCountdownReceiver(YcfxActivity.this);
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                    break;
+                case 0x111:
+                    dialog.setMessage("提交失败");
+                    dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AppUtils.sendCountdownReceiver(YcfxActivity.this);
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                    break;
 
-                    }else {
-                        Toast.makeText(YcfxActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case 0x103://原因类别
-                    List<List<String>>list_3=(List<List<String>>)msg.obj;
-                    if (list_3.size()>0){
-                        initSpinner_2(list_3,spinner_2);
-
-                    }else {
-                        Toast.makeText(YcfxActivity.this,"没有数据",Toast.LENGTH_SHORT).show();
-                    }
-                    break;
-                case 0x104:
-                    Toast.makeText(YcfxActivity.this,"操作成功",Toast.LENGTH_SHORT).show();
-                    text_1.setText("");
-                    text_2.setText("");
-                    text_3.setText("");
-                    text_4.setText("");
-                    text_5.setText("");
-                    text_6.setText("");
-                    text_7.setText("");
-                    text_8.setText("");
-                    text_9.setText("");
-                    text_10.setText("");
-                    text_11.setText("");
-                    text_key.setText("");
-                    break;
-                case 0x105:
-                    Toast.makeText(YcfxActivity.this,"请先完善信息",Toast.LENGTH_SHORT).show();
-                    break;
-                case 0x106:
-                    Toast.makeText(YcfxActivity.this,"操作失败",Toast.LENGTH_SHORT).show();
-                    /*List<List<String>>list_4=(List<List<String>>)msg.obj;
-                    if (list_4.get(0).get(0).equals("No data can be found.")){
-                        Toast.makeText(YcfxActivity.this,"操作成功",Toast.LENGTH_SHORT).show();
-                    }else {
-                        Toast.makeText(YcfxActivity.this,list_4.get(0).get(0),Toast.LENGTH_SHORT).show();
-                    }*/
-                    break;
 
             }
         }
     };
 
 
+    private void getYylb(final String zldm){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'B','"+zldm+"'");
+                if (list!=null){
+                    if (list.size()>0){
+                        if (list.get(0).size()>1){
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x108;
+                            msg.obj=list;
+                            handler.sendMessage(msg);
+                        }
+                    }
+                }
+            }
+        }).start();
+    }
+
+
+
+
+
     //请求表格数据
     Thread thread_1=new Thread(new Runnable() {
         @Override
         public void run() {
-            List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_YcmInf '"+jtbh+"'");
+            List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_YcmInf '"+jtbh+"'");
             Message msg=handler.obtainMessage();
             if(list!=null){
                 msg.what=0x100;
@@ -315,23 +230,6 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         }
     });
 
-    //请求原因类别数据
-    Thread thread_2=new Thread(new Runnable() {
-        @Override
-        public void run() {
-            List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_YcmInfYY");
-            Message msg=handler.obtainMessage();
-            if(list!=null){
-                msg.what=0x102;
-                msg.obj=list;
-            }else {
-                msg.what=0x101;
-            }
-            handler.sendMessage(msg);
-        }
-    });
-
-
     @Override
     public void onClick(View v) {
         AppUtils.sendCountdownReceiver(YcfxActivity.this);
@@ -339,31 +237,73 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
             case R.id.cancle_btn:
                 finish();
                 break;
+            case R.id.spinner_1:
+                spinner_list.showDownOn(spinner_1);
+                break;
             case R.id.sub_btn:
-                new Thread(new Runnable() {
-                    @Override
-                    public void run() {
-                        String[] temp=text_2.getText().toString().split("\t");
-                        String zlId=temp[0];
-                        String key=text_key.getText().toString();
-                        if (zlId.equals("")|yylb.equals("")|yymsId.equals("")|yymstext.equals("")|key.equals("")|wkno.equals("")){
-                            handler.sendEmptyMessage(0x105);
-                        }else {
-                            boolean result= NetHelper.getRunsqlResult("Exec PAD_YcmInfButton" +
-                                    " '"+zlId+"','"+yylb+"','"+yymsId+"','"+yymstext+"','"+key+"','"+wkno+"'");
-                            Message msg=handler.obtainMessage();
-                            if(result){
-                                msg.what=0x104;
-                            }else {
-                                msg.what=0x106;
+                final List<Map<String,String>>select_data=adapter.getSelectData();
+                if (!(select_data.size()>0)){
+                    Toast.makeText(YcfxActivity.this,"请先选取原因描述",Toast.LENGTH_SHORT).show();
+                }else {
+                    new Thread(new Runnable() {
+                        @Override
+                        public void run() {
+                            for (int i=0;i<select_data.size();i++){
+                                Map<String,String>uplaod_data=select_data.get(i);
+                                upLoadOneData(uplaod_data,wkno);
                             }
-                            handler.sendMessage(msg);
                         }
-                    }
-                }).start();
+                    }).start();
+                }
                 break;
             default:
                 break;
         }
     }
+
+
+    private void getListData(final List<List<String>>list, final int position, List<String>data){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'C','"+
+                        list.get(position).get(0)+"'");
+                if (list1!=null){
+                    if (list1.size()>0){
+                        if (list1.get(0).size()>1){
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x109;
+                            msg.obj=list1;
+                            handler.sendMessage(msg);
+                        }
+                    }else {
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x109;
+                        msg.obj=list1;
+                        handler.sendMessage(msg);
+                    }
+                }
+            }
+        }).start();
+        lbdm=list.get(position).get(0);
+        spinner_1.setText(data.get(position));
+    }
+
+
+    private void upLoadOneData(Map<String,String>selectData,String wkno){
+        List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Upd_YclInfo " +
+                "'"+jtbh+"','"+text_2.getText().toString()+"','"+lbdm+"'," + "'"+selectData.get("lab_1")+"','0','"+wkno+"'");
+        if (list!=null){
+            if (list.size()>0){
+                if (list.get(0).size()>0){
+                    if (list.get(0).get(0).equals("OK")){
+                        handler.sendEmptyMessage(0x110);
+                    }
+                }
+            }
+        }else {
+            handler.sendEmptyMessage(0x111);
+        }
+    }
+
 }

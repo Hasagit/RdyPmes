@@ -97,17 +97,19 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                         }else {//执行文档操作
                             String wkno=readCardResult.substring(2,readCardResult.length());
                             Intent intent;
-                            if (title.equals("【工单管理】")){
+                            if (title.equals("工单管理")){
                                 intent=new Intent(DialogGActivity.this,GdglActivity.class);
                                 intent.putExtra("wkno",wkno);
-                            }else if(title.equals("【异常分析】")){
+                                startActivity(intent);
+                            }else if(title.equals("异常分析")){
                                 intent=new Intent(DialogGActivity.this,YcfxActivity.class);
                                 intent.putExtra("wkno",wkno);
-                            }else{
+                                startActivity(intent);
+                            }else if(title.equals("不良分析")){
                                 intent=new Intent(DialogGActivity.this,BlfxActivity.class);
                                 intent.putExtra("wkno",wkno);
+                                startActivity(intent);
                             }
-                            startActivity(intent);
                             finish();
 
                         }
