@@ -139,7 +139,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                         getListData(list,0,data);
                     }
                     spinner_list=new PopupWindowSpinner(YcfxActivity.this,data,R.layout.spinner_list_yyfx,
-                            R.id.lab_1,440);
+                            R.id.lab_1,445);
                     spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                         @Override
                         public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {

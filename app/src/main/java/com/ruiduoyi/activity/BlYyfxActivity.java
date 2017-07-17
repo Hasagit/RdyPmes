@@ -35,6 +35,7 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
     private ViewPagerAdapter viewPagerAdapter;
     private BlfxFragment blfxFragment;
     private YyfxFragment yyfxFragment;
+    private String zldming;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -138,6 +139,7 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
         jhsl_str=sharedPreferences.getString("jhsl","");
         lpsl_str=sharedPreferences.getString("lpsl","");
         blpsl_str=sharedPreferences.getString("blsl","");
+        zldming=sharedPreferences.getString("zldm_ss","");
         Intent intent_from=getIntent();
         zldm=intent_from.getStringExtra("zldm");
         zlmc=intent_from.getStringExtra("title");
@@ -178,8 +180,17 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
                 save_btn.startAnimation(animation);
                 if (yyfxFragment.isReady()&&blfxFragment.isReady()){
                     Intent intent=new Intent(BlYyfxActivity.this,DialogGActivity.class);
-                    intent.putExtra("zldm",zldm);
-                    intent.putExtra("title",zlmc);
+                    if (zldming.equals("50")|zldming.equals("51")|zldming.equals("52")|zldming.equals("53")|zldming.equals("54")|
+                            zldming.equals("55")|zldming.equals("56")|zldming.equals("57")|zldming.equals("58")|
+                            zldming.equals("59")|zldming.equals("60")|zldming.equals("61")|zldming.equals("62")|
+                            zldming.equals("63")|zldming.equals("64")|zldming.equals("65")|zldming.equals("66")|
+                            zldming.equals("67")|zldming.equals("68")|zldming.equals("69")|zldming.equals("70")){
+                        intent.putExtra("zldm",getResources().getString(R.string.js));
+                        intent.putExtra("title","结束");
+                    }else {
+                        intent.putExtra("zldm",zldm);
+                        intent.putExtra("title",zlmc);
+                    }
                     intent.putExtra("type","OPR");
                     intent.putExtra("isFromBlyyfx",true);
                     startActivityForResult(intent,0);
