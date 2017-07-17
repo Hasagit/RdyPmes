@@ -42,6 +42,16 @@ public class AppUtils {
         }
     }
 
+    public static Activity getActivity(String activityClassName){
+        for (int i=0;i<activityList.size();i++){
+            String name=activityList.get(i).getLocalClassName();
+            if (activityList.get(i).getLocalClassName().equals(activityClassName)){
+                return activityList.get(i);
+            }
+        }
+        return null;
+    }
+
     public static void removeActivityWithoutThis(Activity activity){
        for (int i=0;i<activityList.size();i++){
             if (!activityList.get(i).getLocalClassName().equals(activity.getLocalClassName())){

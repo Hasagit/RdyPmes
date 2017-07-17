@@ -1,5 +1,6 @@
 package com.ruiduoyi.activity;
 
+import android.app.Dialog;
 import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
@@ -14,10 +15,12 @@ import android.support.annotation.RequiresApi;
 import android.support.design.widget.TabLayout;
 import android.support.v4.view.ViewPager;
 import android.os.Bundle;
+import android.support.v7.app.AlertDialog;
 import android.util.Log;
 import android.view.View;
 import android.widget.FrameLayout;
 import android.widget.ImageView;
+import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.glongtech.gpio.GpioEvent;
@@ -33,6 +36,7 @@ import com.ruiduoyi.service.GpioService;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.utils.OnDoubleClickListener;
 import com.ruiduoyi.service.SerialPortService;
+import com.ruiduoyi.view.AppDialog;
 import com.ruiduoyi.view.PopupDialog;
 
 import java.io.File;

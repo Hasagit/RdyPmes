@@ -1,6 +1,7 @@
 package com.ruiduoyi.activity;
 
 import android.app.Dialog;
+import android.content.Context;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -8,9 +9,12 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
 import android.view.View;
+import android.view.WindowManager;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.ListView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -32,7 +36,8 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
     private ListView listView_1,listView_2;
     private String jtbh,sub_num,zzdh;
     private Handler handler;
-    private TextView mjbh_text,mjmc_text,mjqs_text,cpbh_text,pmgg_text,sjqs_text,sub_text,jtbh_text,new_jtbh;
+    private TextView mjbh_text,mjmc_text,mjqs_text,cpbh_text,pmgg_text,sjqs_text,jtbh_text,new_jtbh;
+    private EditText sub_text;
     private Button btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0,btn_clear,btn_submit,cancle_btn;
     private Animation anim;
     private PopupDialog dialog;
@@ -55,7 +60,7 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
         cpbh_text=(TextView)findViewById(R.id.cpbh);
         pmgg_text=(TextView)findViewById(R.id.pmgg);
         sjqs_text=(TextView)findViewById(R.id.sjqs);
-        sub_text=(TextView)findViewById(R.id.new_mjqs);
+        sub_text=(EditText) findViewById(R.id.new_mjqs);
         jtbh_text=(TextView)findViewById(R.id.jtbh);
         new_jtbh=(TextView)findViewById(R.id.new_jtbh);
         btn_0=(Button)findViewById(R.id.btn_0);
@@ -119,6 +124,13 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                 dialog.dismiss();
             }
         });
+
+
+
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(sub_text.getWindowToken(),0);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
+                WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
     }
 
     private void initData(){

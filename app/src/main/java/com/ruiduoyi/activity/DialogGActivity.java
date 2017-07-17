@@ -154,6 +154,13 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         title_text.setText(title);
         ok_btn.setOnClickListener(this);
         cancle_btn.setOnClickListener(this);
+
+        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
+        imm.hideSoftInputFromWindow(num_edit.getWindowToken(),0);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
+                WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
+
+
     }
 
     private void initDate(){

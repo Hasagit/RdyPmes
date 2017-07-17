@@ -2,6 +2,7 @@ package com.ruiduoyi.Fragment;
 
 import android.app.Dialog;
 import android.content.Context;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
@@ -32,6 +33,7 @@ import com.ruiduoyi.activity.DialogGActivity;
 import com.ruiduoyi.activity.DialogG2Activity;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
+import com.ruiduoyi.view.AppDialog;
 import com.ruiduoyi.view.PopupDialog;
 
 import java.util.List;
@@ -197,7 +199,6 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b7.setOnClickListener(this);
         cardView_b8.setOnClickListener(this);
         cardView_b9.setOnClickListener(this);
-
         dialog=new PopupDialog(getActivity(),400,350);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
@@ -208,8 +209,16 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 dialog.dismiss();
             }
         });
-        dialog.setMessageTextColor(Color.BLACK);
         dialog.setMessage("正在指令状态下，请先结束指令");
+        /*dialog=new AppDialog(getActivity());
+        dialog.setTitle("提示");
+        dialog.setOkbtn("确定", new DialogInterface.OnClickListener() {
+            @Override
+            public void onClick(DialogInterface dialog, int which) {
+                dialog.dismiss();
+            }
+        });
+        dialog.setMessage("正在指令状态下，请先结束指令");*/
     }
 
     private void startActivityByNetResult(final String zldm, final String title, final String type){
