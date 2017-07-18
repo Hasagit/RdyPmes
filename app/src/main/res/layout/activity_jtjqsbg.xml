@@ -179,7 +179,7 @@
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:layout_marginRight="10dp"
-        android:layout_marginLeft="10dp"
+        android:layout_marginLeft="5dp"
         android:background="@color/blue_sl_false"></LinearLayout>
 
     <LinearLayout
@@ -189,61 +189,7 @@
         android:orientation="horizontal">
 
         <LinearLayout
-            android:layout_width="480dp"
-            android:layout_height="match_parent"
-            android:layout_margin="10dp"
-            android:orientation="vertical">
-
-            <LinearLayout
-                android:layout_width="480dp"
-                android:layout_height="35dp"
-                android:layout_gravity="center_horizontal"
-                android:background="@color/blue_sl_false"
-                android:orientation="horizontal">
-
-                <TextView
-                    android:id="@+id/textView5"
-                    android:layout_width="110dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/text_bg"
-                    android:gravity="center"
-                    android:text="机台编号"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="95dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/text_bg"
-                    android:gravity="center"
-                    android:text="产出数量"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="95dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/text_bg"
-                    android:gravity="center"
-                    android:text="良品率%"
-                    android:textColor="@android:color/black" />
-
-                <TextView
-                    android:layout_width="180dp"
-                    android:layout_height="match_parent"
-                    android:background="@drawable/text_bg"
-                    android:gravity="center"
-                    android:text="最近生产时间"
-                    android:textColor="@android:color/black" />
-            </LinearLayout>
-
-            <ListView
-                android:id="@+id/list_jtjqsbg_2"
-                android:layout_width="match_parent"
-                android:layout_height="match_parent"
-                android:divider="@color/touming"></ListView>
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
+            android:layout_width="wrap_content"
             android:layout_height="match_parent"
             android:layout_marginBottom="10dp"
             android:layout_marginRight="10dp"
@@ -252,17 +198,18 @@
             android:orientation="horizontal">
 
             <LinearLayout
-                android:layout_marginRight="20dp"
+                android:layout_width="350dp"
 
-                android:layout_width="340dp"
                 android:layout_height="match_parent"
-                android:layout_marginLeft="30dp"
+                android:layout_marginLeft="10dp"
+                android:layout_marginRight="10dp"
                 android:orientation="vertical">
 
+
                 <LinearLayout
-                    android:layout_marginTop="5dp"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_marginTop="5dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -277,19 +224,12 @@
 
                     <TextView
                         android:id="@+id/mjbh"
-                        android:layout_width="264dp"
+                        android:layout_width="100dp"
                         android:layout_height="36dp"
                         android:layout_margin="3dp"
                         android:background="@drawable/text_bg"
                         android:gravity="center_vertical"
                         android:textSize="@dimen/text_size" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="60dp"
@@ -302,7 +242,7 @@
 
                     <TextView
                         android:id="@+id/mjmc"
-                        android:layout_width="264dp"
+                        android:layout_width="100dp"
                         android:layout_height="36dp"
                         android:layout_margin="3dp"
                         android:background="@drawable/text_bg"
@@ -327,19 +267,12 @@
 
                     <TextView
                         android:id="@+id/mjqs"
-                        android:layout_width="264dp"
+                        android:layout_width="100dp"
                         android:layout_height="36dp"
                         android:layout_margin="3dp"
                         android:background="@drawable/text_bg"
                         android:gravity="center_vertical"
                         android:textSize="@dimen/text_size" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
 
                     <TextView
                         android:layout_width="60dp"
@@ -352,13 +285,14 @@
 
                     <TextView
                         android:id="@+id/cpbh"
-                        android:layout_width="264dp"
+                        android:layout_width="100dp"
                         android:layout_height="36dp"
                         android:layout_margin="3dp"
                         android:background="@drawable/text_bg"
                         android:gravity="center_vertical"
                         android:textSize="@dimen/text_size" />
                 </LinearLayout>
+
 
                 <LinearLayout
                     android:layout_width="wrap_content"
@@ -377,7 +311,7 @@
 
                     <TextView
                         android:id="@+id/pmgg"
-                        android:layout_width="264dp"
+                        android:layout_width="274dp"
                         android:layout_height="36dp"
                         android:layout_margin="3dp"
                         android:background="@drawable/text_bg"
@@ -396,13 +330,13 @@
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="7dp"
-                        android:text="实际腔数"
+                        android:text="产品腔数"
                         android:textColor="#000000"
                         android:textSize="15dp" />
 
                     <TextView
                         android:id="@+id/sjqs"
-                        android:layout_width="95dp"
+                        android:layout_width="100dp"
                         android:layout_height="36dp"
                         android:layout_margin="3dp"
                         android:background="@drawable/text_bg"
@@ -420,22 +354,24 @@
                         android:textSize="15dp" />
 
                     <LinearLayout
-                        android:layout_margin="3dp"
+                        android:id="@+id/qs_bg"
+
                         android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:background="@color/small">
+                        android:layout_height="wrap_content">
+
                         <LinearLayout
+                            android:layout_margin="3dp"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
-                            android:background="@drawable/text_bg"
-                            >
-                            <EditText
-                                android:text="0"
-                                android:background="@null"
+                            android:background="@drawable/text_bg">
+
+                            <TextView
                                 android:id="@+id/new_mjqs"
-                                android:layout_width="91dp"
+                                android:layout_width="97dp"
                                 android:layout_height="36dp"
+                                android:background="@null"
                                 android:gravity="center_vertical"
+                                android:text="0"
                                 android:textSize="@dimen/text_size" />
                         </LinearLayout>
                     </LinearLayout>
@@ -459,7 +395,7 @@
 
                     <TextView
                         android:id="@+id/jtbh"
-                        android:layout_width="95dp"
+                        android:layout_width="100dp"
                         android:layout_height="36dp"
                         android:layout_margin="3dp"
                         android:background="@drawable/text_bg"
@@ -476,10 +412,11 @@
                         android:textSize="15dp" />
 
                     <LinearLayout
-                        android:layout_margin="3dp"
+                        android:id="@+id/jtbh_bg"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:background="@color/small">
+                        android:layout_margin="3dp">
+
                         <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
@@ -487,144 +424,103 @@
 
                             <TextView
                                 android:id="@+id/new_jtbh"
-                                android:layout_width="91dp"
+                                android:layout_width="96dp"
                                 android:layout_height="36dp"
                                 android:gravity="center_vertical"
                                 android:textSize="@dimen/text_size" />
                         </LinearLayout>
                     </LinearLayout>
                 </LinearLayout>
+                <android.support.v7.widget.CardView
+                    android:id="@+id/begin_btn"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_margin="10dp"
+                    android:layout_weight="1"
+                    app:cardElevation="3dp"
+                    app:cardCornerRadius="10dp"
+                    app:cardBackgroundColor="@color/blue_sl_false">
+                    <TextView
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center"
+                        android:text="机台及腔数变更"
+                        android:textSize="25dp"
+                        android:textColor="@android:color/white"/>
+                </android.support.v7.widget.CardView>
             </LinearLayout>
+        </LinearLayout>
+
+        <LinearLayout
+            android:layout_width="840dp"
+            android:layout_height="match_parent"
+            android:layout_margin="5dp"
+            android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="wrap_content"
-                android:layout_height="match_parent"
-                android:orientation="vertical">
+                android:layout_width="840dp"
+                android:layout_height="35dp"
+                android:layout_gravity="center_horizontal"
+                android:background="@color/blue_sl_false"
+                android:orientation="horizontal">
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:orientation="horizontal">
+                <TextView
+                    android:id="@+id/textView5"
+                    android:layout_width="110dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/text_bg"
+                    android:gravity="center"
+                    android:text="堵头位置"
+                    android:textColor="@android:color/black" />
 
-                    <Button
-                        android:id="@+id/btn_1"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="1"
-                        android:textSize="20dp" />
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/text_bg"
+                    android:gravity="center"
+                    android:text="堵头原因"
+                    android:textColor="@android:color/black" />
 
-                    <Button
-                        android:id="@+id/btn_2"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="2"
-                        android:textSize="20dp" />
+                <TextView
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/text_bg"
+                    android:gravity="center"
+                    android:text="建立人员"
+                    android:textColor="@android:color/black" />
 
-                    <Button
-                        android:id="@+id/btn_3"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="3"
-                        android:textSize="20dp" />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/text_bg"
+                    android:gravity="center"
+                    android:text="建立日期"
+                    android:textColor="@android:color/black" />
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:orientation="horizontal">
+                <TextView
+                    android:layout_width="95dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/text_bg"
+                    android:gravity="center"
+                    android:text="完成人员"
+                    android:textColor="@android:color/black" />
 
-                    <Button
-                        android:id="@+id/btn_4"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="4"
-                        android:textSize="20dp" />
-
-                    <Button
-                        android:id="@+id/btn_5"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="5"
-                        android:textSize="20dp" />
-
-                    <Button
-                        android:id="@+id/btn_6"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="6"
-                        android:textSize="20dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btn_7"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="7"
-                        android:textSize="20dp" />
-
-                    <Button
-                        android:id="@+id/btn_8"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="8"
-                        android:textSize="20dp" />
-
-                    <Button
-                        android:id="@+id/btn_9"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="9"
-                        android:textSize="20dp" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginLeft="2dp"
-                    android:orientation="horizontal">
-
-                    <Button
-                        android:id="@+id/btn_0"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="0"
-                        android:textSize="20dp" />
-
-                    <Button
-                        android:id="@+id/btn_clear"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="2dp"
-                        android:text="清除"
-                        android:textSize="20dp" />
-
-                    <Button
-                        android:id="@+id/btn_submit"
-                        android:layout_width="@dimen/jtjqsbg_num_width"
-                        android:layout_height="@dimen/jtjqsbg_num_heigth"
-                        android:layout_margin="5dp"
-                        android:text="提交"
-                        android:textSize="20dp" />
-                </LinearLayout>
+                <TextView
+                    android:layout_width="180dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/text_bg"
+                    android:gravity="center"
+                    android:text="确认日期"
+                    android:textColor="@android:color/black" />
             </LinearLayout>
+
+            <ListView
+                android:layout_marginBottom="5dp"
+                android:id="@+id/list_jtjqsbg_2"
+                android:layout_width="match_parent"
+                android:layout_height="match_parent"
+                android:background="@drawable/text_bg"
+                android:divider="@color/touming"></ListView>
         </LinearLayout>
     </LinearLayout>
 

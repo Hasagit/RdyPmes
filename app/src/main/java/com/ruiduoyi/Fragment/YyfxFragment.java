@@ -20,6 +20,7 @@ import com.ruiduoyi.activity.BlYyfxActivity;
 import com.ruiduoyi.adapter.YyfxAdapter;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
+import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
 import java.util.ArrayList;
@@ -35,6 +36,7 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
     private PopupWindowSpinner spinner_list;
     private YyfxAdapter adapter;
     private String lbdm,jtbh;
+    private PopupDialog isReadyDialog;
 
 
     public YyfxFragment() {
@@ -109,6 +111,16 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
         spinner=(Button)view.findViewById(R.id.spinner);
         listView=(ListView)view.findViewById(R.id.list_bl);
         spinner.setOnClickListener(this);
+        isReadyDialog=new PopupDialog(getActivity(),400,300);
+        isReadyDialog.setTitle("提示");
+        isReadyDialog.getOkbtn().setText("确定");
+        isReadyDialog.getCancle_btn().setVisibility(View.GONE);
+        isReadyDialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                isReadyDialog.dismiss();
+            }
+        });
     }
 
     private void getNetData(){
@@ -195,15 +207,21 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
 
     public boolean isReady(){
         if (spinner.getText().toString().equals("")){
-            Toast.makeText(getContext(),"请先选取原因类别",Toast.LENGTH_SHORT).show();
+            isReadyDialog.setMessage("请先选取原因类别");
+            isReadyDialog.show();
+            //Toast.makeText(getContext(),"请先选取原因类别",Toast.LENGTH_SHORT).show();
             return false;
         }
         if (adapter==null){
-            Toast.makeText(getContext(),"原因描述为空",Toast.LENGTH_SHORT).show();
+            isReadyDialog.setMessage("原因描述为空");
+            isReadyDialog.show();
+            //Toast.makeText(getContext(),"原因描述为空",Toast.LENGTH_SHORT).show();
             return false;
         }
         if (!(adapter.getSelectData().size()>0)){
-            Toast.makeText(getContext(),"请先选取原因描述",Toast.LENGTH_SHORT).show();
+            isReadyDialog.setMessage("请先选取原因描述");
+            isReadyDialog.show();
+            //Toast.makeText(getContext(),"请先选取原因描述",Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;

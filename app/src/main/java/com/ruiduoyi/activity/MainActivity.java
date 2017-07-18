@@ -58,8 +58,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ImageView wifi_ig,gpio_1,gpio_2,gpio_3,gpio_4,rdy_logo_img;
     private FrameLayout bottom1,bottom2,bottom3;
     private TextView bottom_text1,bottom_text2,bottom_text3;
-    private GpioEvent event_gpio;
-    private AppDataBase dataBase;
     private String mac;
     private PopupDialog dialog;
     private BroadcastReceiver gpioSignalReceiver;
@@ -229,12 +227,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         time_tx=(TextView)findViewById(R.id.time_tx);
         ymd_tx=(TextView)findViewById(R.id.ymd_tx);
         wifi_ig=(ImageView)findViewById(R.id.wifi_ig);
-        SharedPreferences.Editor editor=sharedPreferences.edit();
-        editor.putString("isUploadFinish","OK");
-        editor.commit();
-        dataBase=new AppDataBase(this);
         updateTime();
-        updateGpio();
     }
 
     public void initLogoClieckEvent(){
@@ -376,54 +369,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         timer_time.schedule(timerTask,0,5000);
     }
 
-    //定时上传gpio信号
-    private void updateGpio(){
-        timer_gpio=new Timer();
-        TimerTask timerTask=new TimerTask() {
-            @Override
-            public void run() {
-                String sql="";
-                List<Map<String,String>>list=dataBase.selectGpio();
-                String isUploadFinish=sharedPreferences.getString("isUploadFinish","OK");
-                if (isUploadFinish.equals("OK")){
-                    SharedPreferences.Editor editor1=sharedPreferences.edit();
-                    editor1.putString("isUploadFinish","NO");
-                    editor1.commit();
-                    for (int i=0;i<list.size();i++){
-                        Map<String,String>map=list.get(i);
-                        String mac=map.get("mac");
-                        String jtbh=map.get("jtbh");
-                        String zldm=map.get("zldm");
-                        String gpio=map.get("gpio");
-                        String time=map.get("time");
-                        String num=map.get("num");
-                        String desc=map.get("desc");
-                        sql="exec PAD_SrvDataUp '"+mac+"','"+jtbh+"','"+zldm+"','"+gpio+"','"+time+"',"+num+",'"+desc+"'\n";
-                        List<List<String>>list_result=NetHelper.getQuerysqlResult(sql);
-                        if (list_result!=null){
-                            if (list_result.size()>0){
-                                if (list_result.get(0).get(0).equals("OK")){
-                                    //handler.sendEmptyMessage(0x106);
-                                    dataBase.deleteGpio(time);
-                                }else {
-                                    break;
-                                }
-                            }else {
-                                break;
-                            }
-                        }else {
-                            AppUtils.uploadNetworkError("exec PAD_SrvDataUp NetWorkError",jtbh,mac);
-                            break;
-                        }
-                    }
-                    SharedPreferences.Editor editor2=sharedPreferences.edit();
-                    editor2.putString("isUploadFinish","OK");
-                    editor2.commit();
-                }
-            }
-        };
-        timer_gpio.schedule(timerTask,0,Integer.parseInt(getString(R.string.gpio_update_time)));
-    }
 
 
 

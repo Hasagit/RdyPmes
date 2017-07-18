@@ -47,6 +47,7 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
     private List<Map<String,String>>data1;
     private int select_position;
     private BlYyfxActivity activity;
+    private PopupDialog readyDialog;
 
 
     public BlfxFragment() {
@@ -174,6 +175,17 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
         btn_submit.setOnClickListener(this);
         btn_clear.setOnClickListener(this);
 
+        readyDialog=new PopupDialog(getActivity(),400,300);
+        readyDialog=new PopupDialog(getActivity(),400,300);
+        readyDialog.setTitle("提示");
+        readyDialog.getOkbtn().setText("确定");
+        readyDialog.getCancle_btn().setVisibility(View.GONE);
+        readyDialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                readyDialog.dismiss();
+            }
+        });
 
 
     }
@@ -251,7 +263,9 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
 
     public boolean isReady(){
         if (Integer.parseInt(blzs_text.getText().toString())>0&&spinner.getText().toString().equals("")){
-            Toast.makeText(getContext(),"请先选取产品",Toast.LENGTH_SHORT).show();
+            readyDialog.setMessage("请先选取产品");
+            readyDialog.show();
+            //Toast.makeText(getContext(),"请先选取产品",Toast.LENGTH_SHORT).show();
             return false;
         }
         return true;
@@ -358,13 +372,18 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.btn_submit:
                 if (bldm_text.getText().toString().equals("") | blms_text.getText().toString().equals("")) {
-                    Toast.makeText(getContext(), "请先选择不良信息", Toast.LENGTH_SHORT).show();
+                    readyDialog.setMessage("请先选择不良信息");
+                    readyDialog.show();
+                    //Toast.makeText(getContext(), "请先选择不良信息", Toast.LENGTH_SHORT).show();
                 } else if (spinner.getText().toString().equals("")){
-                    Toast.makeText(getContext(),"请先选取产品",Toast.LENGTH_SHORT).show();
+                    readyDialog.setMessage("请先选取产品");
+                    readyDialog.show();
+                    //Toast.makeText(getContext(),"请先选取产品",Toast.LENGTH_SHORT).show();
                 }else if(Integer.parseInt(activity.getLpsl_str())<Integer.parseInt(blzs_text.getText().toString())+Integer.parseInt(activity.getBlpsl_str())+Integer.parseInt(sub_text.getText().toString())){
-                    int sum=Integer.parseInt(blzs_text.getText().toString())+Integer.parseInt(activity.getBlpsl_str())+Integer.parseInt(sub_text.getText().toString());
-                    //Log.w("lpsl blpsl zhi",activity.getLpsl_str()+" "+activity.getBlpsl_str()+"  "+sub_text.getText().toString()+"  "+sum);
-                    Toast.makeText(getContext(),"不良品数量不能超过良品数量",Toast.LENGTH_SHORT).show();
+                    //int sum=Integer.parseInt(blzs_text.getText().toString())+Integer.parseInt(activity.getBlpsl_str())+Integer.parseInt(sub_text.getText().toString());
+                    readyDialog.setMessage("不良品数量不能超过良品数量");
+                    readyDialog.show();
+                    //Toast.makeText(getContext(),"不良品数量不能超过良品数量",Toast.LENGTH_SHORT).show();
                 }else {
                     try {
                         data1.get(select_position).put("lab_3",sub_text.getText().toString());
@@ -376,7 +395,9 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
                         sub_text.setText("0");
                         blzs_text.setText(zongshu+"");
                     }catch (NumberFormatException e){
-                        Toast.makeText(getContext(),"数值大小已经超过允许范围",Toast.LENGTH_SHORT).show();
+                        readyDialog.setMessage("数值大小已经超过允许范围");
+                        readyDialog.show();
+                        //Toast.makeText(getContext(),"数值大小已经超过允许范围",Toast.LENGTH_SHORT).show();
                     }
                 }
                 break;

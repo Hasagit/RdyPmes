@@ -138,7 +138,7 @@ public class GpioService extends Service {
             public void run() {
                 String sql="";
                 List<Map<String,String>> list=dataBase.selectGpio();
-                String isUploadFinish=sharedPreferences.getString("isUploadFinish","OK");
+                String isUploadFinish=sharedPreferences.getString("isUploadFinish","No");
                 if (isUploadFinish.equals("OK")){
                     SharedPreferences.Editor editor1=sharedPreferences.edit();
                     editor1.putString("isUploadFinish","NO");

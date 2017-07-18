@@ -339,7 +339,10 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.jtjqsbg:
                 cardView_b9.startAnimation(anim);
-                Intent intent_10=new Intent(getContext(), JtjqsbgActivity.class);
+                Intent intent_10=new Intent(getContext(), DialogGActivity.class);
+                intent_10.putExtra("title","腔数变更");
+                intent_10.putExtra("zldm",getResources().getString(R.string.jtjqsbg));
+                intent_10.putExtra("type","DOC");
                 startActivity(intent_10);
                 break;
             case  R.id.zmsw:
@@ -461,39 +464,123 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.js:
                 cardView_g21.startAnimation(anim);
-                if (startType!=null){
-                    switch (startType){
-                        case "A":
-                            Intent intent_g21=new Intent(getContext(), DialogGActivity.class);
-                            intent_g21.putExtra("zldm",getContext().getString(R.string.js));
-                            intent_g21.putExtra("title","结束");
-                            intent_g21.putExtra("type","OPR");
-                            startActivity(intent_g21);
-                            break;
-                        case "B":
-                            Intent intent1=new Intent(getContext(), BlYyfxActivity.class);
-                            intent1.putExtra("title",startZlmc);
-                            intent1.putExtra("zldm",startZldm);
-                            startActivity(intent1);
-                            break;
-                        case "C":
-                            Intent intent2=new Intent(getContext(), BlYyfxActivity.class);
-                            intent2.putExtra("title",startZlmc);
-                            intent2.putExtra("zldm",startZldm);
-                            startActivity(intent2);
-                            break;
-                        default:
-                            Intent intent_g3=new Intent(getContext(), DialogGActivity.class);
-                            intent_g3.putExtra("zldm",getContext().getString(R.string.js));
-                            intent_g3.putExtra("title","结束");
-                            intent_g3.putExtra("type","OPR");
-                            startActivity(intent_g3);
-                            break;
-                    }
-                }else {
-                    getStartType();
-                }
+                jsBtnEven();
                 break;
         }
     }
+
+    private void jsBtnEven(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<List<String>>list2= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+sharedPreferences.getString("jtbh","")+"'");
+                if(list2!=null){
+                    if (list2.size()>0){
+                        if (list2.get(0).size()>11){
+                            String zldm_ss=list2.get(0).get(1);
+                            String zlmc=getZlmcByZldm(zldm_ss);
+                            String waring=list2.get(0).get(5);
+                            if (waring.equals("1")){//如果超时了则必须要弹出蓝框
+                                Intent intent_blyyfx=new Intent(getContext(),BlYyfxActivity.class);
+                                intent_blyyfx.putExtra("title",zlmc);
+                                intent_blyyfx.putExtra("zldm",zldm_ss);
+                                startActivity(intent_blyyfx);
+                            }else {//如果没有超时则根据启动类型来判断
+                                if (startType!=null){
+                                    switch (startType){
+                                        case "A":
+                                            Intent intent_g21=new Intent(getContext(), DialogGActivity.class);
+                                            intent_g21.putExtra("zldm",getContext().getString(R.string.js));
+                                            intent_g21.putExtra("title","结束");
+                                            intent_g21.putExtra("type","OPR");
+                                            startActivity(intent_g21);
+                                            break;
+                                        case "B":
+                                            Intent intent1=new Intent(getContext(), BlYyfxActivity.class);
+                                            intent1.putExtra("title",startZlmc);
+                                            intent1.putExtra("zldm",startZldm);
+                                            startActivity(intent1);
+                                            break;
+                                        case "C":
+                                            Intent intent2=new Intent(getContext(), BlYyfxActivity.class);
+                                            intent2.putExtra("title",startZlmc);
+                                            intent2.putExtra("zldm",startZldm);
+                                            startActivity(intent2);
+                                            break;
+                                        default:
+                                            Intent intent_g3=new Intent(getContext(), DialogGActivity.class);
+                                            intent_g3.putExtra("zldm",getContext().getString(R.string.js));
+                                            intent_g3.putExtra("title","结束");
+                                            intent_g3.putExtra("type","OPR");
+                                            startActivity(intent_g3);
+                                            break;
+                                    }
+                                }else {
+                                    getStartType();
+                                }
+                            }
+                        }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_JtmZtInfo NetWordError",sharedPreferences.getString("jtbh","")
+                            ,sharedPreferences.getString("mac",""));
+                    //handler.sendEmptyMessage(0x101);
+                    handler.sendEmptyMessage(0x110);
+                }
+            }
+        }).start();
+    }
+
+
+    private String getZlmcByZldm(String zldm){
+        if (zldm.equals(getResources().getString(R.string.zmsw))){
+            return "装模升温";
+        }else if (zldm.equals(getResources().getString(R.string.cxpt))){
+            return "冲洗炮筒";
+        }else if (zldm.equals(getResources().getString(R.string.kjsl))){
+            return "开机试料";
+        }else if (zldm.equals(getResources().getString(R.string.ds))){
+            return "定色";
+        }else if (zldm.equals(getResources().getString(R.string.sjqc))){
+            return "三级清场";
+        }else if (zldm.equals(getResources().getString(R.string.sjjc))){
+            return "首件检查";
+        }else if (zldm.equals(getResources().getString(R.string.pzyc))){
+            return "品质异常";
+        }else if (zldm.equals(getResources().getString(R.string.tiaoji))){
+            return "调机";
+        }else if (zldm.equals(getResources().getString(R.string.ts))){
+            return "调色";
+        }else if (zldm.equals(getResources().getString(R.string.tingji))){
+            return "停机";
+        }else if (zldm.equals(getResources().getString(R.string.dl))){
+            return "待料";
+        }else if (zldm.equals(getResources().getString(R.string.by))){
+            return "保养";
+        }else if (zldm.equals(getResources().getString(R.string.sm))){
+            return "试模";
+        }else if (zldm.equals(getResources().getString(R.string.sl))){
+            return "试料";
+        }else if (zldm.equals(getResources().getString(R.string.mjwx))){
+            return "模具维修";
+        }else if (zldm.equals(getResources().getString(R.string.jtwx))){
+            return "机台维修";
+        }else if (zldm.equals(getResources().getString(R.string.zyg))){
+            return "粘样盖";
+        }else if (zldm.equals(getResources().getString(R.string.cm))){
+            return "拆模";
+        }else if (zldm.equals(getResources().getString(R.string.rysg))){
+            return "人员上岗";
+        }else if (zldm.equals(getResources().getString(R.string.pgxj))){
+            return "品管巡机";
+        }else if (zldm.equals(getResources().getString(R.string.js))){
+            return "结束";
+        }
+        return "";
+    }
+
+
 }
+
+
+

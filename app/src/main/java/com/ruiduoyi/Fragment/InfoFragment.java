@@ -226,15 +226,23 @@ public class InfoFragment extends Fragment {
                         tong_5.setText(item.get(25));
                         tong_6.setText(item.get(26));
 
-                        if (!(item.get(4).trim().equals("")||item.get(12).trim().equals(""))){
+                        if (!(item.get(4).trim().equals("")|item.get(12).trim().equals(""))){
                             if(!item.get(4).trim().equals(item.get(12).trim())){
                                 xy_5.setBackgroundColor(getResources().getColor(R.color.text_bg));
+                            }else {
+                                xy_5.setBackgroundColor(Color.WHITE);
                             }
+                        }else {
+                            xy_5.setBackgroundColor(Color.WHITE);
                         }
-                        if (!(item.get(5).trim().equals("")||item.get(13).trim().equals(""))){
+                        if (!(item.get(5).trim().equals("")|item.get(13).trim().equals(""))){
                             if(!item.get(5).trim().equals(item.get(13).trim() )){
                                 xy_6.setBackgroundColor(getResources().getColor(R.color.text_bg));
+                            }else {
+                                xy_6.setBackgroundColor(Color.WHITE);
                             }
+                        }else {
+                            xy_6.setBackgroundColor(Color.WHITE);
                         }
 
 
@@ -321,6 +329,7 @@ public class InfoFragment extends Fragment {
                     List<List<String>>list_jcxx=(List<List<String>>)msg.obj;
                     SharedPreferences.Editor editor=sharedPreferences.edit();
                     editor.putString("zldm_ss",list_jcxx.get(0).get(1));
+                    //editor.putString("waring",list_jcxx.get(0).get(5));
                     editor.commit();
                     initBasicInfo(list_jcxx);
                     break;
@@ -789,10 +798,14 @@ public class InfoFragment extends Fragment {
                     List<List<String>>list2= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+jtbh+"'");
                     if(list2!=null){
                         handler.sendEmptyMessage(0x111);
-                        Message msg=handler.obtainMessage();
-                        msg.what=0x104;
-                        msg.obj=list2;
-                        handler.sendMessage(msg);
+                        if (list2.size()>0){
+                            if (list2.get(0).size()>11){
+                                Message msg=handler.obtainMessage();
+                                msg.what=0x104;
+                                msg.obj=list2;
+                                handler.sendMessage(msg);
+                            }
+                        }
                     }else {
                         AppUtils.uploadNetworkError("Exec PAD_Get_JtmZtInfo NetWordError",jtbh,mac);
                         //handler.sendEmptyMessage(0x101);
@@ -804,10 +817,12 @@ public class InfoFragment extends Fragment {
                     if(list3!=null){
                         handler.sendEmptyMessage(0x111);
                         if (list3.size()>0){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x103;
-                            msg.obj=list3;
-                            handler.sendMessage(msg);
+                            if (list3.get(0).size()>2){
+                                Message msg=handler.obtainMessage();
+                                msg.what=0x103;
+                                msg.obj=list3;
+                                handler.sendMessage(msg);
+                            }
                         }
                     }else {
                         AppUtils.uploadNetworkError("Exec PAD_Get_FhChartInfo NetWordError",jtbh,mac);
@@ -818,10 +833,12 @@ public class InfoFragment extends Fragment {
                     List<List<String>>list4= NetHelper.getQuerysqlResult("Exec PAD_Get_PhotoInfo '"+jtbh+"'");
                     if(list4!=null){
                         handler.sendEmptyMessage(0x111);
-                        Message msg=handler.obtainMessage();
-                        msg.what=0x105;
-                        msg.obj=list4;
-                        handler.sendMessage(msg);
+                        if (list4.get(0).size()>6){
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x105;
+                            msg.obj=list4;
+                            handler.sendMessage(msg);
+                        }
                     }else {
                         AppUtils.uploadNetworkError("Exec PAD_Get_PhotoInfo NetWordError",jtbh,mac);
                         handler.sendEmptyMessage(0x110);
