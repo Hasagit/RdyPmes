@@ -40,16 +40,16 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
     private ListView listView_1,listView_2;
     private String jtbh,sub_num,zzdh;
     private Handler handler;
-    private TextView mjbh_text,mjmc_text,mjqs_text,cpbh_text,pmgg_text,sjqs_text,jtbh_text,new_jtbh;
-    private TextView sub_text;
+    private TextView mjbh_text,mjmc_text,mjqs_text,cpbh_text,pmgg_text,sjqs_text,jtbh_text;
     private Button cancle_btn;
     private Animation anim;
-    private PopupDialog dialog;
     private PopupDialog tipDialog;
     private LinearLayout qs_bg,jtbh_bg;
     private Animation anim2;
-    private CardView begin_btn;
+    private Button begin_btn;
     private String wkno;
+    private List<Map<String,String>>data_dt;
+    private SimpleAdapter adapter_dt;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,43 +68,15 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
         cpbh_text=(TextView)findViewById(R.id.cpbh);
         pmgg_text=(TextView)findViewById(R.id.pmgg);
         sjqs_text=(TextView)findViewById(R.id.sjqs);
-        sub_text=(TextView) findViewById(R.id.new_mjqs);
         jtbh_text=(TextView)findViewById(R.id.jtbh);
-        new_jtbh=(TextView)findViewById(R.id.new_jtbh);
-        begin_btn=(CardView)findViewById(R.id.begin_btn);
-        /*btn_0=(Button)findViewById(R.id.btn_0);
-        btn_1=(Button)findViewById(R.id.btn_1);
-        btn_2=(Button)findViewById(R.id.btn_2);
-        btn_3=(Button)findViewById(R.id.btn_3);
-        btn_4=(Button)findViewById(R.id.btn_4);
-        btn_5=(Button)findViewById(R.id.btn_5);
-        btn_6=(Button)findViewById(R.id.btn_6);
-        btn_7=(Button)findViewById(R.id.btn_7);
-        btn_8=(Button)findViewById(R.id.btn_8);
-        btn_9=(Button)findViewById(R.id.btn_9);
-        btn_submit=(Button)findViewById(R.id.btn_submit);
-        btn_clear=(Button)findViewById(R.id.btn_clear);*/
+        begin_btn=(Button)findViewById(R.id.begin_btn);
         cancle_btn=(Button)findViewById(R.id.cancle_btn);
 
         jtbh_bg=(LinearLayout)findViewById(R.id.jtbh_bg);
         qs_bg=(LinearLayout)findViewById(R.id.qs_bg);
-
-       /* btn_0.setOnClickListener(this);
-        btn_1.setOnClickListener(this);
-        btn_2.setOnClickListener(this);
-        btn_3.setOnClickListener(this);
-        btn_4.setOnClickListener(this);
-        btn_5.setOnClickListener(this);
-        btn_6.setOnClickListener(this);
-        btn_7.setOnClickListener(this);
-        btn_8.setOnClickListener(this);
-        btn_9.setOnClickListener(this);
-        btn_submit.setOnClickListener(this);
-        btn_clear.setOnClickListener(this);*/
         cancle_btn.setOnClickListener(this);
         begin_btn.setOnClickListener(this);
         jtbh_text.setText(jtbh);
-        new_jtbh.setText(jtbh);
 
 
 
@@ -120,34 +92,10 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
         //tipDialog.setMessageTextColor(Color.BLACK);
         tipDialog.getOkbtn().setText("确定");
 
-
-
-        dialog=new PopupDialog(this,400,300);
-        dialog.setTitle("提示");
-        dialog.getCancle_btn().setText("取消");
-        dialog.getOkbtn().setText("确定");
-        dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                upLoadData();
-            }
-        });
-        dialog.getCancle_btn().setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View v) {
-                dialog.dismiss();
-            }
-        });
-
-
-
-        InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
-        imm.hideSoftInputFromWindow(sub_text.getWindowToken(),0);
-        getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
-                WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
     }
 
     private void initData(){
+        sharedPreferences=getSharedPreferences("info",MODE_PRIVATE);
         jtbh=sharedPreferences.getString("jtbh","");
         anim= AnimationUtils.loadAnimation(this,R.anim.sub_num_anim);
         anim2=AnimationUtils.loadAnimation(this,R.anim.scale_anim);
@@ -164,7 +112,7 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                         break;
                     case 0x101:
                         List<List<String>>list1= (List<List<String>>) msg.obj;
-                        List<Map<String,String>>data=new ArrayList<>();
+                        data_dt=new ArrayList<>();
                         for (int i=0;i<list1.size();i++){
                             Map<String,String>map=new HashMap<>();
                             map.put("lab_1",list1.get(i).get(0));
@@ -173,32 +121,12 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                             map.put("lab_4",list1.get(i).get(3));
                             map.put("lab_5",list1.get(i).get(4));
                             map.put("lab_6",list1.get(i).get(5));
-                            data.add(map);
+                            data_dt.add(map);
                         }
-                        SimpleAdapter adapter=new SimpleAdapter(JtjqsbgActivity.this,data,R.layout.list_item_jtjqsbg_3,
+                        adapter_dt=new SimpleAdapter(JtjqsbgActivity.this,data_dt,R.layout.list_item_jtjqsbg_3,
                                 new String[]{"lab_1","lab_2","lab_3","lab_4","lab_5","lab_6"},
                                 new int[]{R.id.lab_1,R.id.lab_2,R.id.lab_3,R.id.lab_4,R.id.lab_5,R.id.lab_6});
-                        listView_2.setAdapter(adapter);
-                        break;
-                    case 0x102:
-                        dialog.dismiss();
-                        tipDialog.setMessage("更改失败，请重试");
-                        tipDialog.show();
-                        break;
-                    case 0x103:
-                        dialog.dismiss();
-                        tipDialog.setMessage("更改成功！");
-                        tipDialog.show();
-                        mjbh_text.setText("");
-                        mjmc_text.setText("");
-                        mjqs_text.setText("");
-                        cpbh_text.setText("");
-                        pmgg_text.setText("");
-                        sjqs_text.setText("");
-                        jtbh_text.setText("");
-                        new_jtbh.setText("");
-                        sub_text.setText("");
-                        getNetData();
+                        listView_2.setAdapter(adapter_dt);
                         break;
                     case 0x104:
                         Map<String,String>map= (Map<String, String>) msg.obj;
@@ -208,14 +136,13 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                         cpbh_text.setText(map.get("wldm"));
                         pmgg_text.setText(map.get("pmgg"));
                         sjqs_text.setText(map.get("cpqs"));
-                        sub_text.setText(map.get("mjqs"));
                         zzdh=map.get("zzdh");
-                        //getList2Data(zzdh);
+                        getDutouListData(zzdh);
                         jtbh_text.setText(jtbh);
-                        if (sjqs_text.getText().toString().equals(sub_text.getText().toString())){
-                            qs_bg.setBackgroundColor(Color.WHITE);
+                        if (mjqs_text.getText().toString().equals(sjqs_text.getText().toString())){
+                            sjqs_text.setBackgroundColor(Color.WHITE);
                         }else {
-                            qs_bg.setBackgroundColor(getResources().getColor(R.color.small));
+                            sjqs_text.setBackgroundColor(Color.RED);
                         }
                         break;
                     default:
@@ -259,11 +186,11 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-
     private void getNetData(){
         new Thread(new Runnable() {
             @Override
             public void run() {
+                //工单信息表
                 List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'A','"+jtbh+"'");
                 if (list!=null){
                     if (list.size()>0){
@@ -277,6 +204,30 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoeDet",jtbh,sharedPreferences.getString("mac",""));
                 }
+
+            }
+        }).start();
+    }
+
+
+    private void getDutouListData(final String zzdh){
+        //堵头信息表
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<List<String>>list_dt=NetHelper.getQuerysqlResult("Exec PAD_Get_MoeJtxsInf 'A','"+zzdh+"'");
+                if (list_dt!=null){
+                    if (list_dt.size()>0){
+                        if (list_dt.get(0).size()>5){
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x101;
+                            msg.obj=list_dt;
+                            handler.sendMessage(msg);
+                        }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_MoeJtxsInf 'A'",jtbh,sharedPreferences.getString("mac",""));
+                }
             }
         }).start();
     }
@@ -287,7 +238,7 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
 
     private boolean isReady(){
         if (mjbh_text.getText().toString().equals("")){
-            tipDialog.setMessage("清先选择工单信息");
+            tipDialog.setMessage("请先选择工单信息");
             tipDialog.show();
             return false;
         }
@@ -295,32 +246,25 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
     }
 
 
-    public void upLoadData(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec  PAD_Upd_MoeJtXs '"+zzdh+"','"+new_jtbh.getText().toString()+"','"+sub_text.getText().toString()+"'");
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>0){
-                            if (list.get(0).get(0).equals("OK")){
-                                handler.sendEmptyMessage(0x103);
-                            }else {
-                                handler.sendEmptyMessage(0x102);
-                            }
-                        }else {
-                            handler.sendEmptyMessage(0x102);
-                        }
-                    }else {
-                        handler.sendEmptyMessage(0x102);
-                    }
-                }else {
-                    handler.sendEmptyMessage(0x102);
-                }
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+        if (requestCode==1){
+            getNetData();
+            if (data!=null&&adapter_dt!=null){
+                data_dt.clear();
+                adapter_dt.notifyDataSetChanged();
             }
-        }).start();
+            mjbh_text.setText("");
+            mjmc_text.setText("");
+            mjqs_text.setText("");
+            cpbh_text.setText("");
+            pmgg_text.setText("");
+            sjqs_text.setText("");
+            jtbh_text.setText("");
+            sjqs_text.setBackgroundColor(Color.WHITE);
+        }
     }
-
 
     @Override
     public void onClick(View v) {
@@ -336,108 +280,12 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                     intent.putExtra("wkno",wkno);
                     intent.putExtra("zzdh",zzdh);
                     intent.putExtra("mjbh",mjbh_text.getText().toString());
+                    intent.putExtra("mjmc",mjmc_text.getText().toString());
+                    intent.putExtra("mjqs",mjqs_text.getText().toString());
+                    intent.putExtra("cpqs",sjqs_text.getText().toString());
                     startActivityForResult(intent,1);
                 }
                 break;
-            /*case R.id.btn_0:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if((!sub_num.equals("0"))&&(!sub_num.equals("-"))){
-                    sub_text.setText(sub_num+"0");
-                }
-                break;
-            case R.id.btn_1:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
-                    sub_text.setText(sub_num+"1");
-                }else {
-                    sub_text.setText("1");
-                }
-                break;
-            case R.id.btn_2:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
-                    sub_text.setText(sub_num+"2");
-                }else {
-                    sub_text.setText("2");
-                }
-                break;
-            case R.id.btn_3:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
-                    sub_text.setText(sub_num+"3");
-                }else {
-                    sub_text.setText("3");
-                }
-                break;
-            case R.id.btn_4:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
-                    sub_text.setText(sub_num+"4");
-                }else {
-                    sub_text.setText("4");
-                }
-                break;
-            case R.id.btn_5:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
-                    sub_text.setText(sub_num+"5");
-                }else {
-                    sub_text.setText("5");
-                }
-                break;
-            case R.id.btn_6:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
-                    sub_text.setText(sub_num+"6");
-                }else {
-                    sub_text.setText("6");
-                }
-                break;
-            case R.id.btn_7:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
-                    sub_text.setText(sub_num+"7");
-                }else {
-                    sub_text.setText("7");
-                }
-                break;
-            case R.id.btn_8:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
-                    sub_text.setText(sub_num+"8");
-                }else {
-                    sub_text.setText("8");
-                }
-                break;
-            case R.id.btn_9:
-                sub_text.startAnimation(anim);
-                sub_num=sub_text.getText().toString();
-                if(!sub_num.equals("0")){
-                    sub_text.setText(sub_num+"9");
-                }else {
-                    sub_text.setText("9");
-                }
-                break;
-            case R.id.btn_submit:
-                if (isReady()){
-                    dialog.setMessage("实际腔数:"+sjqs_text.getText().toString()+"\t将变更成:"+sub_text.getText().toString()+"\n\n"+
-                            "原机台编号:"+jtbh_text.getText().toString()+"\t将变更成:"+new_jtbh.getText().toString());
-                    dialog.show();
-                }
-                break;
-            case R.id.btn_clear:
-                sub_text.startAnimation(anim);
-                sub_text.setText("0");
-                break;*/
             default:
                 break;
         }

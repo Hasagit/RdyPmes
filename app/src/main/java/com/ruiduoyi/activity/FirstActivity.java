@@ -316,7 +316,9 @@ public class FirstActivity extends BaseActivity{
                     handler.sendEmptyMessage(0x100);
                 }else {
                     handler.sendEmptyMessage(0x101);
+
                 }*/
+                    List<List<String>>list=NetHelper.getQuerysqlResult("select * from PAD_LogInfo where log_code='6'");
                     int i=0;
                     while (!NetHelper.isServerConnected(NetHelper.URL)){
                         Message msg=handler.obtainMessage();

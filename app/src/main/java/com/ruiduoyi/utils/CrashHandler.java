@@ -86,6 +86,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                 Log.e(TAG, "error : ", e);
             }
             //退出程序
+            AppUtils.removAllActivity();
             android.os.Process.killProcess(android.os.Process.myPid());
             System.exit(1);
         }
@@ -110,7 +111,6 @@ public class CrashHandler implements UncaughtExceptionHandler {
             public void run() {
                 Looper.prepare();
                 Toast.makeText(mContext, "很抱歉,程序出现异常,即将退出.", Toast.LENGTH_SHORT).show();
-                AppUtils.removAllActivity();
                 Looper.loop();
             }
         }.start();

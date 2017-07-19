@@ -279,7 +279,7 @@
                         android:layout_width="70dp"
                         android:layout_height="match_parent"
                         android:textColor="@android:color/black"
-                        android:text="良品率"/>
+                        android:text="良品率%"/>
                     <TextView
                         android:background="@drawable/text_bg"
                         android:gravity="center"

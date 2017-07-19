@@ -39,7 +39,7 @@
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="1706dp"
+                android:layout_width="1480dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/blue_sl_false"
@@ -77,6 +77,7 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="108dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
@@ -85,6 +86,7 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="118dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
@@ -99,6 +101,13 @@
                     android:gravity="center"
                     android:text="产品编号"
                     android:textColor="@android:color/black" />
+                <TextView
+                    android:layout_width="196dp"
+                    android:layout_height="match_parent"
+                    android:background="@drawable/text_bg"
+                    android:gravity="center"
+                    android:text="品名规格"
+                    android:textColor="@android:color/black" />
 
                 <TextView
                     android:layout_width="98dp"
@@ -107,13 +116,12 @@
                     android:gravity="center"
                     android:text="产品腔数"
                     android:textColor="@android:color/black" />
-
                 <TextView
-                    android:layout_width="196dp"
+                    android:layout_width="98dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
-                    android:text="品名规格"
+                    android:text="实际腔数"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -167,7 +175,7 @@
 
             <ListView
                 android:id="@+id/list_jtjqsbg_1"
-                android:layout_width="1706dp"
+                android:layout_width="1480dp"
                 android:layout_height="match_parent"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginBottom="15dp"
@@ -205,11 +213,78 @@
                 android:layout_marginRight="10dp"
                 android:orientation="vertical">
 
-
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_marginTop="5dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="7dp"
+                        android:text="机台编号"
+                        android:textColor="#000000"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/jtbh"
+                        android:layout_width="100dp"
+                        android:layout_height="36dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/text_bg"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/text_size" />
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="7dp"
+                        android:text="产品编号"
+                        android:textColor="#000000"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/cpbh"
+                        android:layout_width="100dp"
+                        android:layout_height="36dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/text_bg"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
+                    android:orientation="horizontal">
+
+                    <TextView
+                        android:layout_width="60dp"
+                        android:layout_height="wrap_content"
+                        android:layout_gravity="center_vertical"
+                        android:layout_marginRight="7dp"
+                        android:text="品名规格"
+                        android:textColor="#000000"
+                        android:textSize="15dp" />
+
+                    <TextView
+                        android:id="@+id/pmgg"
+                        android:layout_width="274dp"
+                        android:layout_height="36dp"
+                        android:layout_margin="3dp"
+                        android:background="@drawable/text_bg"
+                        android:gravity="center_vertical"
+                        android:textSize="@dimen/text_size" />
+                </LinearLayout>
+
+                <LinearLayout
+                    android:layout_width="wrap_content"
+                    android:layout_height="wrap_content"
+                    android:layout_marginTop="15dp"
                     android:orientation="horizontal">
 
                     <TextView
@@ -250,18 +325,20 @@
                         android:textSize="@dimen/text_size" />
                 </LinearLayout>
 
+
                 <LinearLayout
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
+                    android:layout_marginTop="15dp"
                     android:orientation="horizontal">
 
                     <TextView
+                        android:id="@+id/textView12"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="7dp"
-                        android:text="模具腔数"
+                        android:text="产品腔数"
                         android:textColor="#000000"
                         android:textSize="15dp" />
 
@@ -273,77 +350,31 @@
                         android:background="@drawable/text_bg"
                         android:gravity="center_vertical"
                         android:textSize="@dimen/text_size" />
-
                     <TextView
+                        android:id="@+id/textView8"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
                         android:layout_gravity="center_vertical"
                         android:layout_marginRight="7dp"
-                        android:text="产品编号"
+                        android:text="实际腔数"
                         android:textColor="#000000"
                         android:textSize="15dp" />
 
-                    <TextView
-                        android:id="@+id/cpbh"
-                        android:layout_width="100dp"
-                        android:layout_height="36dp"
-                        android:layout_margin="3dp"
-                        android:background="@drawable/text_bg"
-                        android:gravity="center_vertical"
-                        android:textSize="@dimen/text_size" />
-                </LinearLayout>
-
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:layout_width="60dp"
+                    <LinearLayout
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="7dp"
-                        android:text="品名规格"
-                        android:textColor="#000000"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/pmgg"
-                        android:layout_width="274dp"
-                        android:layout_height="36dp"
                         android:layout_margin="3dp"
-                        android:background="@drawable/text_bg"
-                        android:gravity="center_vertical"
-                        android:textSize="@dimen/text_size" />
-                </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
+                        android:background="@drawable/text_bg">
+                        <TextView
+                            android:id="@+id/sjqs"
+                            android:layout_width="100dp"
+                            android:layout_height="36dp"
+                            android:gravity="center_vertical"
+                            android:textSize="@dimen/text_size" />
+                    </LinearLayout>
 
                     <TextView
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="7dp"
-                        android:text="产品腔数"
-                        android:textColor="#000000"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/sjqs"
-                        android:layout_width="100dp"
-                        android:layout_height="36dp"
-                        android:layout_margin="3dp"
-                        android:background="@drawable/text_bg"
-                        android:gravity="center_vertical"
-                        android:textSize="@dimen/text_size" />
-
-                    <TextView
+                        android:visibility="gone"
                         android:id="@+id/textView6"
                         android:layout_width="60dp"
                         android:layout_height="wrap_content"
@@ -353,112 +384,26 @@
                         android:textColor="#000000"
                         android:textSize="15dp" />
 
-                    <LinearLayout
-                        android:id="@+id/qs_bg"
-
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content">
-
-                        <LinearLayout
-                            android:layout_margin="3dp"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/text_bg">
-
-                            <TextView
-                                android:id="@+id/new_mjqs"
-                                android:layout_width="97dp"
-                                android:layout_height="36dp"
-                                android:background="@null"
-                                android:gravity="center_vertical"
-                                android:text="0"
-                                android:textSize="@dimen/text_size" />
-                        </LinearLayout>
-                    </LinearLayout>
                 </LinearLayout>
-
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:layout_marginTop="5dp"
-                    android:orientation="horizontal">
-
-                    <TextView
-                        android:id="@+id/textView8"
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="7dp"
-                        android:text="机台编号"
-                        android:textColor="#000000"
-                        android:textSize="15dp" />
-
-                    <TextView
-                        android:id="@+id/jtbh"
-                        android:layout_width="100dp"
-                        android:layout_height="36dp"
-                        android:layout_margin="3dp"
-                        android:background="@drawable/text_bg"
-                        android:gravity="center_vertical"
-                        android:textSize="@dimen/text_size" />
-
-                    <TextView
-                        android:layout_width="60dp"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center_vertical"
-                        android:layout_marginRight="7dp"
-                        android:text="->变更为"
-                        android:textColor="#000000"
-                        android:textSize="15dp" />
-
-                    <LinearLayout
-                        android:id="@+id/jtbh_bg"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_margin="3dp">
-
-                        <LinearLayout
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:background="@drawable/text_bg">
-
-                            <TextView
-                                android:id="@+id/new_jtbh"
-                                android:layout_width="96dp"
-                                android:layout_height="36dp"
-                                android:gravity="center_vertical"
-                                android:textSize="@dimen/text_size" />
-                        </LinearLayout>
-                    </LinearLayout>
-                </LinearLayout>
-                <android.support.v7.widget.CardView
-                    android:id="@+id/begin_btn"
+                <Button
                     android:layout_width="match_parent"
-                    android:layout_height="wrap_content"
-                    android:layout_margin="10dp"
-                    android:layout_weight="1"
-                    app:cardElevation="3dp"
-                    app:cardCornerRadius="10dp"
-                    app:cardBackgroundColor="@color/blue_sl_false">
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_gravity="center"
-                        android:text="机台及腔数变更"
-                        android:textSize="25dp"
-                        android:textColor="@android:color/white"/>
-                </android.support.v7.widget.CardView>
+                    android:layout_height="match_parent"
+                    android:text="机台及腔数变更"
+                    android:textSize="25dp"
+                    android:layout_margin="3dp"
+                    android:id="@+id/begin_btn"
+                    />
             </LinearLayout>
         </LinearLayout>
 
         <LinearLayout
-            android:layout_width="840dp"
+            android:layout_width="870dp"
             android:layout_height="match_parent"
             android:layout_margin="5dp"
             android:orientation="vertical">
 
             <LinearLayout
-                android:layout_width="840dp"
+                android:layout_width="870dp"
                 android:layout_height="35dp"
                 android:layout_gravity="center_horizontal"
                 android:background="@color/blue_sl_false"
@@ -474,7 +419,7 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:layout_width="180dp"
+                    android:layout_width="200dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
@@ -502,11 +447,11 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
-                    android:text="完成人员"
+                    android:text="确认人员"
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:layout_width="180dp"
+                    android:layout_width="190dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
@@ -519,7 +464,6 @@
                 android:id="@+id/list_jtjqsbg_2"
                 android:layout_width="match_parent"
                 android:layout_height="match_parent"
-                android:background="@drawable/text_bg"
                 android:divider="@color/touming"></ListView>
         </LinearLayout>
     </LinearLayout>

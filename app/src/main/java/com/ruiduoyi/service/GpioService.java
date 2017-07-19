@@ -41,6 +41,7 @@ public class GpioService extends Service {
     @Override
     public void onCreate() {
         super.onCreate();
+        Log.w("gpio_oncreat","!");
         initData();
     }
 
