@@ -195,7 +195,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'B','"+zldm+"'");
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'B','"+jtbh+"''"+zldm+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>1){
@@ -268,7 +268,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'C','"+
+                List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'C','"+jtbh+"','"+
                         list.get(position).get(0)+"'");
                 if (list1!=null){
                     if (list1.size()>0){

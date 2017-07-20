@@ -91,12 +91,12 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     };
 
 
-    private void getStartType(){
+    private void getStartType(final String zldm_ss){
         new Thread(new Runnable() {
             @Override
             public void run() {
                 Log.w("zldm_ss",sharedPreferences.getString("zldm_ss",""));
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A','"+sharedPreferences.getString("zldm_ss","")+"'");
+                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A','"+sharedPreferences.getString("jtbh","")+"','"+zldm_ss+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>2){
@@ -210,22 +210,13 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             }
         });
         dialog.setMessage("正在指令状态下，请先结束指令");
-        /*dialog=new AppDialog(getActivity());
-        dialog.setTitle("提示");
-        dialog.setOkbtn("确定", new DialogInterface.OnClickListener() {
-            @Override
-            public void onClick(DialogInterface dialog, int which) {
-                dialog.dismiss();
-            }
-        });
-        dialog.setMessage("正在指令状态下，请先结束指令");*/
     }
 
     private void startActivityByNetResult(final String zldm, final String title, final String type){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A','"+zldm+"'");
+                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A',"+sharedPreferences.getString("jtbh","")+",'"+zldm+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>2){
@@ -460,7 +451,12 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.pgxj:
                 cardView_g20.startAnimation(anim);
-                startActivityByNetResult(getContext().getString(R.string.pgxj),"品管巡机","OPR");
+                Intent intent_g20=new Intent(getContext(),DialogGActivity.class);
+                intent_g20.putExtra("zldm",getResources().getString(R.string.pgxj));
+                intent_g20.putExtra("title","品管巡机");
+                intent_g20.putExtra("type","DOC");
+                startActivity(intent_g20);
+                //startActivityByNetResult(getContext().getString(R.string.pgxj),"品管巡机","OPR");
                 break;
             case R.id.js:
                 cardView_g21.startAnimation(anim);
@@ -486,38 +482,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                                 intent_blyyfx.putExtra("zldm",zldm_ss);
                                 startActivity(intent_blyyfx);
                             }else {//如果没有超时则根据启动类型来判断
-                                if (startType!=null){
-                                    switch (startType){
-                                        case "A":
-                                            Intent intent_g21=new Intent(getContext(), DialogGActivity.class);
-                                            intent_g21.putExtra("zldm",getContext().getString(R.string.js));
-                                            intent_g21.putExtra("title","结束");
-                                            intent_g21.putExtra("type","OPR");
-                                            startActivity(intent_g21);
-                                            break;
-                                        case "B":
-                                            Intent intent1=new Intent(getContext(), BlYyfxActivity.class);
-                                            intent1.putExtra("title",startZlmc);
-                                            intent1.putExtra("zldm",startZldm);
-                                            startActivity(intent1);
-                                            break;
-                                        case "C":
-                                            Intent intent2=new Intent(getContext(), BlYyfxActivity.class);
-                                            intent2.putExtra("title",startZlmc);
-                                            intent2.putExtra("zldm",startZldm);
-                                            startActivity(intent2);
-                                            break;
-                                        default:
-                                            Intent intent_g3=new Intent(getContext(), DialogGActivity.class);
-                                            intent_g3.putExtra("zldm",getContext().getString(R.string.js));
-                                            intent_g3.putExtra("title","结束");
-                                            intent_g3.putExtra("type","OPR");
-                                            startActivity(intent_g3);
-                                            break;
-                                    }
-                                }else {
-                                    getStartType();
-                                }
+                                getStartType(zldm_ss);
                             }
                         }
                     }

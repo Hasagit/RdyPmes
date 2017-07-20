@@ -3,15 +3,6 @@
 
     <item
         is-multidex="false"
-        jar="D:\Android_Project\Ruiduoyi\SerialPortLibrary\build\intermediates\bundles\default\classes.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="5e0e83b24255bf0ed1d40088c008636aaeb91059">
-        <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\classes_0d262f84584aaa023893da5d26bfef8a6065edcf.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="D:\Android_Project\Ruiduoyi\app\libs\sqljdbc4.jar"
         jumboMode="false"
         optimize="true"
@@ -21,21 +12,30 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\Android_Project\Ruiduoyi\Gpiolibrary\build\intermediates\bundles\default\libs\javalib.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="37abbc042b56315783594bfe96eadb7522202d90">
-        <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\javalib_bcf649b9e79bc2f18d85da2347df5b5862409f54.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="D:\Android_Project\Ruiduoyi\app\libs\ksoap2-android-assembly-3.3.0-jar-with-dependencies.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.3"
         sha1="62681b8212ca52278feafec31775fd0cb096d99a">
         <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\ksoap2-android-assembly-3.3.0-jar-with-dependencies_3ea2dd1900beccb511a93d5eea95645421a4af79.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android_Project\Ruiduoyi\SerialPortLibrary\build\intermediates\bundles\default\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="5e0e83b24255bf0ed1d40088c008636aaeb91059">
+        <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\classes_0d262f84584aaa023893da5d26bfef8a6065edcf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android_Project\Ruiduoyi\Gpiolibrary\build\intermediates\bundles\default\libs\javalib.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="37abbc042b56315783594bfe96eadb7522202d90">
+        <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\javalib_bcf649b9e79bc2f18d85da2347df5b5862409f54.jar" />
     </item>
     <item
         is-multidex="false"

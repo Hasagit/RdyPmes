@@ -113,6 +113,10 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                                 intent=new Intent(DialogGActivity.this,JtjqsbgActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
+                            }else if (title.equals("品管巡机")){
+                                intent=new Intent(DialogGActivity.this,PgxjActivity.class);
+                                intent.putExtra("wkno",wkno);
+                                startActivity(intent);
                             }
                             finish();
 

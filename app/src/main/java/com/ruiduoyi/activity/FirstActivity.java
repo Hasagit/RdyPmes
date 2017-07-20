@@ -451,5 +451,8 @@ public class FirstActivity extends BaseActivity{
         if (dialog.isShowing()){
             dialog.dismiss();
         }
+        if (dialogAutoUpdate!=null){
+            dialogAutoUpdate.dismiss();
+        }
     }
 }

@@ -61,10 +61,10 @@ public class InfoFragment extends Fragment {
     private String jtbh;
     private TextView dq_1,dq_2,dq_3,dq_4,dq_5,dq_6,dq_7,dq_8,
                 xy_1,xy_2,xy_3,xy_4,xy_5,xy_6,xy_7,xy_8,
-                mo_1,mo_2,mo_3,mo_4,mo_5,mo_6,tong_1,tong_2,tong_3,tong_4,tong_5,tong_6,jtbh_text,status,msg_text,
+                mo_1,mo_2,mo_3,mo_4,mo_5,mo_6,mo_7,mo_8,tong_1,tong_2,tong_3,tong_4,tong_5,tong_6,jtbh_text,status,msg_text,
                 caozuo_text,jisu_text,cao_name_text,ji_name_text,labRym;
     private SharedPreferences sharedPreferences;
-    private ImageView img_1,img_2,img_3,img_4,img_5,img_6,img_7,img_pho1,img_pho2;
+    private ImageView img_1,img_2,img_3,img_4,img_5,img_6,img_7,img_8,img_pho1,img_pho2;
     private CardView cardView;
     private ScrollView tip_layout;
     private String filePhath;
@@ -139,7 +139,8 @@ public class InfoFragment extends Fragment {
         mo_4=(TextView)view.findViewById(R.id.mo_4);
         mo_5=(TextView)view.findViewById(R.id.mo_5);
         mo_6=(TextView)view.findViewById(R.id.mo_6);
-
+        mo_7=(TextView)view.findViewById(R.id.mo_7);
+        mo_8=(TextView)view.findViewById(R.id.mo_8);
         tong_1=(TextView)view.findViewById(R.id.tong_1);
         tong_2=(TextView)view.findViewById(R.id.tong_2);
         tong_3=(TextView)view.findViewById(R.id.tong_3);
@@ -161,6 +162,7 @@ public class InfoFragment extends Fragment {
         img_5=(ImageView)view.findViewById(R.id.img_5);
         img_6=(ImageView)view.findViewById(R.id.img_6);
         img_7=(ImageView)view.findViewById(R.id.img_7);
+        img_8=(ImageView)view.findViewById(R.id.img_8);
         img_pho1=(ImageView)view.findViewById(R.id.photo_1);
         img_pho2=(ImageView)view.findViewById(R.id.photo_2);
         cardView=(CardView)view.findViewById(R.id.cardView);
@@ -215,10 +217,18 @@ public class InfoFragment extends Fragment {
                         xy_8.setText(item.get(15));
                         mo_1.setText(item.get(4));
                         mo_2.setText(item.get(16));
-                        mo_3.setText(item.get(17));
+                        mo_3.setText(item.get(28));//产品腔数
                         mo_4.setText(item.get(18));
                         mo_5.setText(item.get(19));
                         mo_6.setText(item.get(20));
+                        mo_7.setText(item.get(27));//模具腔数
+                        mo_8.setText(item.get(17));//实际腔数
+                        if (item.get(17).equals(item.get(28))){
+                            mo_8.setBackgroundColor(Color.WHITE);
+                        }else {
+                            mo_8.setBackgroundColor(Color.RED);
+                        }
+
                         tong_1.setText(item.get(21));
                         tong_2.setText(item.get(22));
                         tong_3.setText(item.get(23));
@@ -228,7 +238,7 @@ public class InfoFragment extends Fragment {
 
                         if (!(item.get(4).trim().equals("")|item.get(12).trim().equals(""))){
                             if(!item.get(4).trim().equals(item.get(12).trim())){
-                                xy_5.setBackgroundColor(getResources().getColor(R.color.text_bg));
+                                xy_5.setBackgroundColor(Color.RED);
                             }else {
                                 xy_5.setBackgroundColor(Color.WHITE);
                             }
@@ -237,7 +247,7 @@ public class InfoFragment extends Fragment {
                         }
                         if (!(item.get(5).trim().equals("")|item.get(13).trim().equals(""))){
                             if(!item.get(5).trim().equals(item.get(13).trim() )){
-                                xy_6.setBackgroundColor(getResources().getColor(R.color.text_bg));
+                                xy_6.setBackgroundColor(Color.RED);
                             }else {
                                 xy_6.setBackgroundColor(Color.WHITE);
                             }
@@ -251,32 +261,6 @@ public class InfoFragment extends Fragment {
                         }else {
                             tong_6.setBackgroundColor(getResources().getColor(R.color.small));
                         }
-                    }
-                    break;
-                case 0x101:
-                    //Toast.makeText(getContext(),"服务器异常",Toast.LENGTH_SHORT).show();
-                    break;
-                case 0x102:
-                    List<List<String>>list_tong=(List<List<String>>)msg.obj;
-                    if (list_tong.size()<0){
-                       // Toast.makeText(getContext(),"数据异常",Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                    List<String>items_tong=list_tong.get(0);
-                    if (items_tong.size()<10){
-                        //Toast.makeText(getContext(),"数据异常",Toast.LENGTH_SHORT).show();
-                        break;
-                    }
-                    tong_1.setText(items_tong.get(8));
-                    tong_2.setText(items_tong.get(2));
-                    tong_3.setText(items_tong.get(3));
-                    tong_4.setText(items_tong.get(5));
-                    tong_5.setText(items_tong.get(7));
-                    tong_6.setText(items_tong.get(9));
-                    if(Integer.parseInt(items_tong.get(9))>0){
-                        tong_6.setBackgroundColor(getResources().getColor(R.color.large));
-                    }else {
-                        tong_6.setBackgroundColor(getResources().getColor(R.color.small));
                     }
                     break;
                 case 0x103:
@@ -392,54 +376,57 @@ public class InfoFragment extends Fragment {
     }
 
     private void initBasicInfo(List<List<String>>list_jcxx){
-        if (list_jcxx.size()<1){
-            //Toast.makeText(getContext(),"没有数据",Toast.LENGTH_SHORT).show();
+        List<String>item=list_jcxx.get(0);
+        jtbh_text.setText(item.get(0));
+        status.setText(item.get(10));
+        umSetColor(item.get(2));
+        String[] temp=item.get(11).split("\\\\n");
+        String tip="";
+        for (int i=0;i<temp.length;i++){
+            tip=tip+temp[i]+"\n";
+        }
+        msg_text.setText(tip);
+        if (item.get(3).equals("1")){
+            img_1.setVisibility(View.VISIBLE);
         }else {
-            List<String>item=list_jcxx.get(0);
-            jtbh_text.setText(item.get(0));
-            status.setText(item.get(10));
-            umSetColor(item.get(2));
-            String[] temp=item.get(11).split("\\\\n");
-            String tip="";
-            for (int i=0;i<temp.length;i++){
-                tip=tip+temp[i]+"\n";
-            }
-            msg_text.setText(tip);
-            if (item.get(3).equals("1")){
-                img_1.setVisibility(View.VISIBLE);
-            }else {
-                img_1.setVisibility(View.GONE);
-            }
-            if (item.get(4).equals("1")){
-                img_2.setVisibility(View.VISIBLE);
-            }else {
-                img_2.setVisibility(View.GONE);
-            }
-            if (item.get(5).equals("1")){
-                img_3.setVisibility(View.VISIBLE);
-            }else {
-                img_3.setVisibility(View.GONE);
-            }
-            if (item.get(6).equals("1")){
-                img_4.setVisibility(View.VISIBLE);
-            }else {
-                img_4.setVisibility(View.GONE);
-            }
-            if (item.get(7).equals("1")){
-                img_5.setVisibility(View.VISIBLE);
-            }else {
-                img_5.setVisibility(View.GONE);
-            }
-            if (item.get(8).equals("1")){
-                img_6.setVisibility(View.VISIBLE);
-            }else {
-                img_6.setVisibility(View.GONE);
-            }
-            if (item.get(9).equals("1")){
-                img_7.setVisibility(View.VISIBLE);
-            }else {
-                img_7.setVisibility(View.GONE);
-            }
+            img_1.setVisibility(View.GONE);
+        }
+        if (item.get(4).equals("1")){
+            img_2.setVisibility(View.VISIBLE);
+        }else {
+            img_2.setVisibility(View.GONE);
+        }
+        if (item.get(5).equals("1")){
+            img_3.setVisibility(View.VISIBLE);
+        }else {
+            img_3.setVisibility(View.GONE);
+        }
+        if (item.get(6).equals("1")){
+            img_4.setVisibility(View.VISIBLE);
+        }else {
+            img_4.setVisibility(View.GONE);
+        }
+        if (item.get(7).equals("1")){
+            img_5.setVisibility(View.VISIBLE);
+        }else {
+            img_5.setVisibility(View.GONE);
+        }
+        if (item.get(8).equals("1")){
+            img_6.setVisibility(View.VISIBLE);
+        }else {
+            img_6.setVisibility(View.GONE);
+        }
+        if (item.get(9).equals("1")){
+            img_7.setVisibility(View.VISIBLE);
+        }else {
+            img_7.setVisibility(View.GONE);
+        }
+        if (item.get(12).equals("0")){
+            img_8.setImageResource(R.drawable.touming);
+        }else if (item.get(12).equals("1")){
+            img_8.setImageResource(R.drawable.show_8_false);
+        }else if (item.get(12).equals("2")){
+            img_8.setImageResource(R.drawable.show_8_true);
         }
     }
 
@@ -780,7 +767,7 @@ public class InfoFragment extends Fragment {
                     if(list!=null){
                         handler.sendEmptyMessage(0x111);
                         if(list.size()>0){
-                            if (list.get(0).size()>26){
+                            if (list.get(0).size()>28){
                                 Message msg=handler.obtainMessage();
                                 msg.what=0x100;
                                 msg.obj=list;
@@ -795,11 +782,12 @@ public class InfoFragment extends Fragment {
 
 
 
+
                     List<List<String>>list2= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+jtbh+"'");
                     if(list2!=null){
                         handler.sendEmptyMessage(0x111);
                         if (list2.size()>0){
-                            if (list2.get(0).size()>11){
+                            if (list2.get(0).size()>12){
                                 Message msg=handler.obtainMessage();
                                 msg.what=0x104;
                                 msg.obj=list2;

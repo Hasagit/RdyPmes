@@ -112,7 +112,13 @@
                             android:layout_marginRight="30dp"
                             app:cardBackgroundColor="#32cd32"
                             app:cardCornerRadius="5dp">
-
+                            <ImageView
+                                android:id="@+id/img_8"
+                                android:layout_marginLeft="10dp"
+                                android:layout_width="@dimen/info_ig_height"
+                                android:layout_height="@dimen/info_ig_height"
+                                android:layout_gravity="center_vertical"
+                                />
                             <TextView
                                 android:id="@+id/status_text"
                                 android:layout_width="wrap_content"
@@ -824,6 +830,7 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginRight="11dp"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
@@ -844,9 +851,10 @@
 
                                     <TextView
                                         android:id="@+id/mo_1"
-                                        android:layout_width="250dp"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="30dp"
                                         android:layout_margin="3dp"
+                                        android:layout_weight="1"
                                         android:background="@drawable/ed_bg"
                                         android:gravity="center_vertical"
                                         android:textSize="@dimen/text_size" />
@@ -855,6 +863,7 @@
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
@@ -870,25 +879,19 @@
 
                                     <TextView
                                         android:id="@+id/mo_2"
-                                        android:layout_width="250dp"
+                                        android:layout_width="wrap_content"
                                         android:layout_height="30dp"
                                         android:layout_margin="3dp"
+                                        android:layout_weight="1"
                                         android:background="@drawable/ed_bg"
                                         android:gravity="center_vertical"
                                         android:textSize="@dimen/text_size" />
                                 </LinearLayout>
 
-                            </LinearLayout>
-
-                            <LinearLayout
-                                android:layout_width="match_parent"
-                                android:layout_height="wrap_content"
-                                android:layout_marginRight="11dp"
-                                android:orientation="horizontal">
-
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
+                                    android:layout_marginLeft="5dp"
                                     android:layout_marginTop="5dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
@@ -903,6 +906,40 @@
                                         android:textSize="15dp" />
 
                                     <TextView
+                                        android:id="@+id/mo_7"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="30dp"
+                                        android:layout_margin="3dp"
+                                        android:background="@drawable/ed_bg"
+                                        android:gravity="center_vertical|right"
+                                        android:textSize="@dimen/text_size" />
+                                </LinearLayout>
+
+                            </LinearLayout>
+
+                            <LinearLayout
+                                android:layout_width="match_parent"
+                                android:layout_height="wrap_content"
+                                android:layout_marginRight="11dp"
+                                android:orientation="horizontal">
+
+                                <LinearLayout
+                                    android:layout_width="@dimen/tong_width"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginRight="7dp"
+                                        android:text="产品腔数"
+                                        android:textColor="#000000"
+                                        android:textSize="15dp" />
+
+                                    <TextView
                                         android:id="@+id/mo_3"
                                         android:layout_width="match_parent"
                                         android:layout_height="30dp"
@@ -913,7 +950,33 @@
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="@dimen/tong_width"
+                                    android:layout_height="wrap_content"
+                                    android:layout_marginTop="5dp"
+                                    android:layout_weight="1"
+                                    android:orientation="horizontal">
+
+                                    <TextView
+                                        android:layout_width="wrap_content"
+                                        android:layout_height="wrap_content"
+                                        android:layout_gravity="center_vertical"
+                                        android:layout_marginRight="7dp"
+                                        android:text="实际腔数"
+                                        android:textColor="#000000"
+                                        android:textSize="15dp" />
+
+                                    <TextView
+                                        android:id="@+id/mo_8"
+                                        android:layout_width="match_parent"
+                                        android:layout_height="30dp"
+                                        android:layout_margin="3dp"
+                                        android:background="@drawable/ed_bg"
+                                        android:gravity="center_vertical|right"
+                                        android:textSize="@dimen/text_size" />
+                                </LinearLayout>
+
+                                <LinearLayout
+                                    android:layout_width="@dimen/tong_width"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginTop="5dp"
@@ -940,7 +1003,7 @@
                                 </LinearLayout>
 
                                 <LinearLayout
-                                    android:layout_width="wrap_content"
+                                    android:layout_width="@dimen/tong_width"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
                                     android:layout_marginTop="5dp"
@@ -974,7 +1037,8 @@
                             android:layout_marginRight="14dp"
                             android:layout_marginTop="4dp"
                             android:layout_weight="1"
-                            android:orientation="horizontal">
+                            android:orientation="horizontal"
+                            >
 
                             <TextView
                                 android:layout_width="wrap_content"

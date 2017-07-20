@@ -218,17 +218,14 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                         getGongdanData();
                         getDutouListData(zzdh);
                         Button button= (Button) msg.obj;
-                        button.setText("已修复");
+                        //button.setText("已修复");
                         /*dialog.setMessageTextColor(Color.BLACK);
                         dialog.setMessage("提交成功");
                         dialog.show();*/
                         break;
                     case 0x106:
-                        Button button2= (Button) msg.obj;
-                        button2.setText("已修复");
-                        button2.setEnabled(true);
                         dialog.setMessageTextColor(Color.RED);
-                        dialog.setMessage("提交失败，请重试");
+                        dialog.setMessage((String) msg.obj);
                         dialog.show();
                         break;
                     case 0x107:
@@ -396,6 +393,8 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                 lab_6.setText(map.get("lab_6"));
                 if (map.get("lab_5").equals("")|map.get("lab_6").equals("")){
                     upload.setText("修复");
+                }else {
+                    upload.setEnabled(false);
                 }
                 upload.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -408,18 +407,25 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                             public void run() {
                                 List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Upd_MoeJtXs  'C','"+zzdh+"',''," +
                                         "'"+map.get("lab_1")+"',0,0,'','"+wkno+"'");
-                                if (list!=null&&list.size()>0&&list.get(0).size()>0&&list.get(0).get(0).equals("OK")){
-                                    Message msg=handler.obtainMessage();
-                                    msg.what=0x105;
-                                    msg.arg1=position;
-                                    msg.obj=upload;
-                                    handler.sendMessage(msg);
+                                if (list!=null){
+                                   if (list.size()>0){
+                                       if (list.get(0).size()>0){
+                                           if (list.get(0).get(0).equals("OK")){
+                                               Message msg=handler.obtainMessage();
+                                               msg.what=0x105;
+                                               msg.arg1=position;
+                                               msg.obj=upload;
+                                               handler.sendMessage(msg);
+                                           }else {
+                                               Message msg=handler.obtainMessage();
+                                               msg.what=0x106;
+                                               msg.arg1=position;
+                                               msg.obj=list.get(0).get(0);
+                                               handler.sendMessage(msg);
+                                           }
+                                       }
+                                   }
                                 }else {
-                                    Message msg=handler.obtainMessage();
-                                    msg.what=0x106;
-                                    msg.arg1=position;
-                                    msg.obj=upload;
-                                    handler.sendMessage(msg);
                                     AppUtils.uploadNetworkError("Exec PAD_Upd_MoeJtXs  'C'",jtbh,sharedPreferences.getString("mac",""));
                                 }
                             }

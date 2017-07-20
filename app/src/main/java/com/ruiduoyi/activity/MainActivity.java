@@ -52,7 +52,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private ViewPager mviewPager;
     private ViewPagerAdapter viewPagerAdapter;
     private TabLayout mtabLayout;
-    private Timer timer_time,timer_gpio,timer_CountdownToInfo;
+    private Timer timer_time,timer_CountdownToInfo;
     private TextView time_tx;
     private TextView ymd_tx;
     private ImageView wifi_ig,gpio_1,gpio_2,gpio_3,gpio_4,rdy_logo_img;
@@ -470,7 +470,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         unregisterReceiver(returnToInfoReceiver);
         unregisterReceiver(gpioSignalReceiver);
         unregisterReceiver(countdownReceiver);
-        timer_gpio.cancel();
         timer_time.cancel();
         if (dialog!=null){
             if (dialog.isShow()){

@@ -194,7 +194,7 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'D','"+zzdh+"'");
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'D','"+jtbh+"','"+zzdh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>2){

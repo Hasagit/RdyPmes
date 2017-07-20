@@ -363,7 +363,7 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
             public void run() {
 
                 //产品选取
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'D','"+zzdh_str+"'");
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'D','"+jtbh+"','"+zzdh_str+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>2){

@@ -415,7 +415,7 @@
             android:id="@+id/btn_4"
             android:layout_width="150dp"
             android:layout_height="60dp"
-            android:text="从工单信息"
+            android:text="主从工单信息"
             android:layout_marginLeft="5dp"/>
     </LinearLayout>
 

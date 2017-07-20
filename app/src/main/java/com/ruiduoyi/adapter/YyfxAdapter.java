@@ -65,14 +65,26 @@ public class YyfxAdapter extends ArrayAdapter{
                 Log.w("YyfxAdapter",selectData.toString());
             }
         });
+        checkBox.setChecked(isExist(data.get(position)));
         return view;
     }
+
+
     private void removeSelectData(Map<String,String>map){
         for (int i=0;i<selectData.size();i++){
             if (map.equals(selectData.get(i))){
                 selectData.remove(i);
             }
         }
+    }
+
+    private boolean isExist(Map<String,String>map){
+        for (int i=0;i<selectData.size();i++){
+            if (map.equals(selectData.get(i))){
+                return true;
+            }
+        }
+        return false;
     }
 
     private void addSelectData(Map<String,String>map){

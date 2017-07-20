@@ -23,4 +23,5 @@
     <dimen name="ycfx_height">35dp</dimen>
     <dimen name="jtjqsbg_num_heigth">80dp</dimen>
     <dimen name="jtjqsbg_num_width">125dp</dimen>
+    <dimen name="tong_width">160dp</dimen>
 </resources>
