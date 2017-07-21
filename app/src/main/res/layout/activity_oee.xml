@@ -4,16 +4,17 @@
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:background="@color/color_9"
+    android:background="@color/lable"
     tools:context="com.ruiduoyi.activity.OeeActivity">
 
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:background="@color/color_9"
+        android:background="@color/lable"
         android:orientation="vertical">
 
         <FrameLayout
+            android:visibility="gone"
             android:layout_width="match_parent"
             android:layout_height="80dp"
             android:background="@color/blue_sl_false">
@@ -38,7 +39,7 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:background="@color/color_9">
+            android:background="@color/lable">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -62,7 +63,7 @@
                 android:layout_width="400dp"
                 android:layout_height="15dp"
                 android:layout_gravity="bottom|left"
-                android:background="@color/color_9"></LinearLayout>
+                android:background="@color/lable"></LinearLayout>
         </FrameLayout>
 
 
@@ -75,7 +76,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
                 android:layout_weight="1"
-                android:background="@color/color_9"
+                android:background="@color/lable"
                 android:orientation="vertical">
 
                 <TextView
@@ -89,7 +90,7 @@
                 <FrameLayout
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@color/color_9">
+                    android:background="@color/lable">
 
                     <com.github.mikephil.charting.charts.PieChart
                         android:id="@+id/p_chart"
@@ -102,7 +103,7 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="match_parent"
-                android:background="@color/color_9"
+                android:background="@color/lable"
                 android:orientation="vertical">
 
                 <LinearLayout

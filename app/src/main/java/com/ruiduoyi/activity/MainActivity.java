@@ -25,6 +25,7 @@ import android.widget.TextView;
 
 import com.glongtech.gpio.GpioEvent;
 import com.ruiduoyi.Fragment.InfoFragment;
+import com.ruiduoyi.Fragment.ManageFragment;
 import com.ruiduoyi.Fragment.StatusFragment;
 import com.ruiduoyi.Fragment.TestFragment;
 import com.ruiduoyi.R;
@@ -161,8 +162,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(InfoFragment.newInstance(),getResources().getString(R.string.production_information));
         viewPagerAdapter.addFragment(StatusFragment.newInstance(),getResources().getString(R.string.engineering_status));
-        //viewPagerAdapter.addFragment(ManageFragment.newInstance(),getResources().getString(R.string.production_management));
-        viewPagerAdapter.addFragment(TestFragment.newInstance(),"作业指导");
+        viewPagerAdapter.addFragment(ManageFragment.newInstance(),getResources().getString(R.string.production_management));
+        //viewPagerAdapter.addFragment(TestFragment.newInstance(),"作业指导");
         mviewPager.setAdapter(viewPagerAdapter);
         mviewPager.setOffscreenPageLimit(3);
         mtabLayout.setupWithViewPager(mviewPager);

@@ -191,7 +191,7 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void run() {
                 //工单信息表
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'A','"+jtbh+"'");
+                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'B','"+jtbh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>15){

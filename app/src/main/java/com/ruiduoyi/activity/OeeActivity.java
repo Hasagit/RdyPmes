@@ -75,7 +75,7 @@ public class OeeActivity extends BaseActivity implements View.OnClickListener{
                 case 0x100:
                     List<List<String>>list=(List<List<String>>)msg.obj;
                     if(list.size()<1){
-                        Toast.makeText(OeeActivity.this,"数据异常",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(OeeActivity.this,"数据异常",Toast.LENGTH_SHORT).show();
                     }else {
                         initHorizontalBarChat(h_char,list);
                         h_char.startAnimation(animation);
@@ -86,7 +86,7 @@ public class OeeActivity extends BaseActivity implements View.OnClickListener{
                 case 0x102:
                     List<List<String>>list2=(List<List<String>>)msg.obj;
                     if(list2.size()<1){
-                        Toast.makeText(OeeActivity.this,"数据异常",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(OeeActivity.this,"数据异常",Toast.LENGTH_SHORT).show();
                     }else {
                         initPieChat(p_chart,list2);
                         p_chart.startAnimation(animation);
@@ -95,7 +95,7 @@ public class OeeActivity extends BaseActivity implements View.OnClickListener{
                 case 0x103:
                     List<List<String>>list3=(List<List<String>>)msg.obj;
                     if(list3.size()<1){
-                        Toast.makeText(OeeActivity.this,"数据异常",Toast.LENGTH_SHORT).show();
+                        //Toast.makeText(OeeActivity.this,"数据异常",Toast.LENGTH_SHORT).show();
                     }else {
                         initListView(list3);
                         listView.startAnimation(animation);

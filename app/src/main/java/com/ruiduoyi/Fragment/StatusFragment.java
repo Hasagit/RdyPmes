@@ -43,7 +43,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             cardView_g7,cardView_g8,cardView_g9,cardView_g10,cardView_g11,cardView_g12,cardView_g13,
             cardView_g14,cardView_g15,cardView_g16,cardView_g17,cardView_g18,cardView_g19,cardView_g20,cardView_g21,
             cardView_b1,cardView_b2,cardView_b3,cardView_b4,cardView_b5,cardView_b6,cardView_b7,
-            cardView_b8,cardView_b9;
+            cardView_b9;
     private String startType,startZldm,startZlmc;
     private Animation anim;
     private SharedPreferences sharedPreferences;
@@ -91,18 +91,38 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     };
 
 
-    private void getStartType(final String zldm_ss){
+    private void exitEven(){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                Log.w("zldm_ss",sharedPreferences.getString("zldm_ss",""));
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A','"+sharedPreferences.getString("jtbh","")+"','"+zldm_ss+"'");
+                String zldming;
+                String zlmcing;
+                String waring;
+
+                //请求当前指令及是否超时信息
+                List<List<String>>list2= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+sharedPreferences.getString("jtbh","")+"'");
+                if(list2!=null) {
+                    if (list2.size() > 0) {
+                        if (list2.get(0).size() > 11) {
+                            zldming= list2.get(0).get(1);
+                            waring = list2.get(0).get(5);
+                        }else {
+                            return;
+                        }
+                    }else {
+                        return;
+                    }
+                }else {
+                    return;
+                }
+
+                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A','"+sharedPreferences.getString("jtbh","")+"','"+zldming+"'");
+
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>2){
                             String startType=list.get(0).get(2);
-                            String startZlmc=list.get(0).get(1);
-                            String startZldm=list.get(0).get(0);
+                            zlmcing=list.get(0).get(1);
                             switch (startType) {
                                 case "A":
                                     Intent intent_g21 = new Intent(getContext(), DialogGActivity.class);
@@ -113,15 +133,29 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                                     break;
                                 case "B":
                                     Intent intent1 = new Intent(getContext(), BlYyfxActivity.class);
-                                    intent1.putExtra("title", startZlmc);
-                                    intent1.putExtra("zldm", startZldm);
+                                    intent1.putExtra("title", zlmcing);
+                                    intent1.putExtra("zldm",zldming);
                                     startActivity(intent1);
                                     break;
                                 case "C":
                                     Intent intent2 = new Intent(getContext(), BlYyfxActivity.class);
-                                    intent2.putExtra("title", startZlmc);
-                                    intent2.putExtra("zldm", startZldm);
+                                    intent2.putExtra("title", zlmcing);
+                                    intent2.putExtra("zldm", zldming);
                                     startActivity(intent2);
+                                    break;
+                                case "S":
+                                    if (waring.equals("1")){//如果超时了则必须要弹出蓝框
+                                        Intent intent_blyyfx=new Intent(getContext(),BlYyfxActivity.class);
+                                        intent_blyyfx.putExtra("title",zlmcing);
+                                        intent_blyyfx.putExtra("zldm",zldming);
+                                        startActivity(intent_blyyfx);
+                                    }else {//如果没有超时则直接启动结束
+                                        Intent intent_js = new Intent(getContext(), DialogGActivity.class);
+                                        intent_js.putExtra("zldm", getContext().getString(R.string.js));
+                                        intent_js.putExtra("title", "结束");
+                                        intent_js.putExtra("type", "OPR");
+                                        startActivity(intent_js);
+                                    }
                                     break;
                                 default:
                                     Intent intent_g3 = new Intent(getContext(), DialogGActivity.class);
@@ -146,7 +180,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b5=(CardView)view.findViewById(R.id.scrz);
         cardView_b6=(CardView)view.findViewById(R.id.ycfx);
         cardView_b7=(CardView)view.findViewById(R.id.blfx);
-        cardView_b8=(CardView)view.findViewById(R.id.oee);
+        //cardView_b8=(CardView)view.findViewById(R.id.oee);
         cardView_b9=(CardView)view.findViewById(R.id.jtjqsbg);
         cardView_g1=(CardView)view.findViewById(R.id.zmsw);
         cardView_g2=(CardView)view.findViewById(R.id.cxpt);
@@ -197,7 +231,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b5.setOnClickListener(this);
         cardView_b6.setOnClickListener(this);
         cardView_b7.setOnClickListener(this);
-        cardView_b8.setOnClickListener(this);
+        //cardView_b8.setOnClickListener(this);
         cardView_b9.setOnClickListener(this);
         dialog=new PopupDialog(getActivity(),400,350);
         dialog.setTitle("提示");
@@ -244,6 +278,29 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                                     intent.putExtra("title",title);
                                     intent.putExtra("zldm",zldm);
                                     startActivity(intent);
+                                    break;
+                                case "S":
+                                    //请求当前指令及是否超时信息
+                                    List<List<String>>list2= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+sharedPreferences.getString("jtbh","")+"'");
+                                    if(list2!=null) {
+                                        if (list2.size() > 0) {
+                                            if (list2.get(0).size() > 11) {
+                                                String waring = list2.get(0).get(5);
+                                                if (waring.equals("1")){//如果超时了则必须要弹出蓝框
+                                                    Intent intent_blyyfx=new Intent(getContext(),BlYyfxActivity.class);
+                                                    intent_blyyfx.putExtra("title",zldm);
+                                                    intent_blyyfx.putExtra("zldm",title);
+                                                    startActivity(intent_blyyfx);
+                                                }else {//如果没有超时则直接启动结束
+                                                    Intent intent_js = new Intent(getContext(), DialogGActivity.class);
+                                                    intent_js.putExtra("zldm", zldm);
+                                                    intent_js.putExtra("title", title);
+                                                    intent_js.putExtra("type", "OPR");
+                                                    startActivity(intent_js);
+                                                }
+                                            }
+                                        }
+                                    }
                                     break;
                                 default:
                                     intent=new Intent(getContext(), DialogGActivity.class);
@@ -324,7 +381,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent_b8);
                 break;
             case R.id.oee:
-                cardView_b8.startAnimation(anim);
+                //cardView_b8.startAnimation(anim);
                 Intent intent_b9=new Intent(getContext(), OeeActivity.class);
                 startActivity(intent_b9);
                 break;
@@ -460,12 +517,12 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.js:
                 cardView_g21.startAnimation(anim);
-                jsBtnEven();
+                exitEven();
                 break;
         }
     }
 
-    private void jsBtnEven(){
+   /* private void jsBtnEven(){
         new Thread(new Runnable() {
             @Override
             public void run() {
@@ -490,11 +547,11 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                     AppUtils.uploadNetworkError("Exec PAD_Get_JtmZtInfo NetWordError",sharedPreferences.getString("jtbh","")
                             ,sharedPreferences.getString("mac",""));
                     //handler.sendEmptyMessage(0x101);
-                    handler.sendEmptyMessage(0x110);
+                    //handler.sendEmptyMessage(0x110);
                 }
             }
         }).start();
-    }
+    }*/
 
 
     private String getZlmcByZldm(String zldm){
@@ -544,7 +601,13 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         return "";
     }
 
-
+    @Override
+    public void onDestroy() {
+        super.onDestroy();
+        if (dialog!=null){
+            dialog.dismiss();
+        }
+    }
 }
 
 

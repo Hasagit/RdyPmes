@@ -461,6 +461,7 @@
                     android:text="工单单号"
                     android:textColor="@android:color/black" />
                 <TextView
+                    android:visibility="gone"
                     android:layout_width="115dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
@@ -508,7 +509,7 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:layout_width="@dimen/b4_lable"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
@@ -516,15 +517,15 @@
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:layout_width="@dimen/b4_lable"
+                    android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
-                    android:text="巡查结果"
+                    android:text="巡检结果"
                     android:textColor="@android:color/black" />
 
                 <TextView
-                    android:layout_width="95dp"
+                    android:layout_width="260dp"
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"

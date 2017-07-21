@@ -192,7 +192,7 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:layout_gravity="center"
-                    android:text="作业指导"
+                    android:text="机台效率"
                     android:textColor="@android:color/white"
                     android:textSize="23dp"
                     android:textStyle="bold" />

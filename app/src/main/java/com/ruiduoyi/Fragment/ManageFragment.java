@@ -71,19 +71,19 @@ public class ManageFragment extends Fragment implements View.OnClickListener {
 
     private void initViewPager(){
         list= new ArrayList<View>();
-        Intent intent_gycs=new Intent(getContext(), DialogB5Activty.class);
+        /*Intent intent_gycs=new Intent(getContext(), DialogB5Activty.class);
         intent_gycs.putExtra("type","gycs");
         Intent intent_zybz=new Intent(getContext(), DialogB5Activty.class);
-        intent_zybz.putExtra("type","zybz");
+        intent_zybz.putExtra("type","zybz");*/
         Intent intent_oee=new Intent(getContext(), OeeActivity.class);
-        list.add(getView("gycs",intent_gycs));
-        list.add(getView("zybz",intent_zybz));
+        //list.add(getView("gycs",intent_gycs));
+        //list.add(getView("zybz",intent_zybz));
         list.add(getView("oee",intent_oee));
-        layout_1.addView(list.get(0), FrameLayout.LayoutParams.MATCH_PARENT,
+        /*layout_1.addView(list.get(0), FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
         layout_2.addView(list.get(1), FrameLayout.LayoutParams.MATCH_PARENT,
-                FrameLayout.LayoutParams.MATCH_PARENT);
-        layout_3.addView(list.get(2), FrameLayout.LayoutParams.MATCH_PARENT,
+                FrameLayout.LayoutParams.MATCH_PARENT);*/
+        layout_3.addView(list.get(0), FrameLayout.LayoutParams.MATCH_PARENT,
                 FrameLayout.LayoutParams.MATCH_PARENT);
        /* viewPager.setOffscreenPageLimit(3);
         viewPager.setAdapter(new ActivityViewPagerAdater(list));

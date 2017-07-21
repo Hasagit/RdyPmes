@@ -54,7 +54,7 @@ public class AppUtils {
 
     public static void removeActivityWithoutThis(Activity activity){
        for (int i=0;i<activityList.size();i++){
-            if (!activityList.get(i).getLocalClassName().equals(activity.getLocalClassName())){
+            if (!(activityList.get(i).getLocalClassName().equals(activity.getLocalClassName())|activityList.get(i).getLocalClassName().equals("activity.OeeActivity"))){
                 activityList.get(i).finish();
                 activityList.remove(i);
             }
@@ -166,6 +166,20 @@ public class AppUtils {
         Intent intent=new Intent();
         intent.setAction("com.Ruiduoyi.CountdownToInfo");
         context.sendBroadcast(intent);
+    }
+
+
+
+    public static void sendUpdateInfoFragmentReceiver(Context context){
+        Intent intent=new Intent();
+        intent.setAction("UpdateInfoFragment");
+        context.sendBroadcast(intent);
+    }
+
+    public static void sendReturnToInfoReceiver(Context context){
+        Intent intent2=new Intent();
+        intent2.setAction("com.Ruiduoyi.returnToInfoReceiver");
+        context.sendBroadcast(intent2);
     }
 
 

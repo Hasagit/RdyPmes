@@ -3,6 +3,7 @@ package com.ruiduoyi.activity;
 import android.content.Intent;
 import android.os.Handler;
 import android.os.Message;
+import android.support.annotation.IdRes;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -23,6 +24,7 @@ import com.ruiduoyi.adapter.Jtqsbg1Adapter;
 import com.ruiduoyi.adapter.YyfxAdapter;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
+import com.ruiduoyi.view.PopupDialog;
 
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -32,6 +34,7 @@ import java.util.Map;
 public class PgxjActivity extends BaseActivity implements View.OnClickListener{
     private Button save_btn,cancle_btn;
     private RadioButton radio_ok,radio_ng;
+    private RadioGroup radioGroup;
     private TextView zzdh_text,gddh_text,scph_text,wgrq_text,cpbh_text,pmgg_text,jhsl_text,lpsl_text,mjbh_text,mjmc_text,cpxs_text,sjxs_text;
     private ListView congDanListView,yuanYinLisView;
     private Handler handler;
@@ -39,6 +42,8 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
     private List<Integer>num_list=new ArrayList<>();
     private List<Map<String,String>>data_cong;
     private YyfxAdapter adapter_yy;
+    private PopupDialog dialog;
+    private List<Map<String,String>>upload_data;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -68,6 +73,10 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                         break;
                     case 0x101://从工单信息
                         initCongDanList((List<List<String>>) msg.obj);
+                        break;
+                    case 0x102:
+                        dialog.setMessage((String) msg.obj);
+                        dialog.show();
                         break;
                     case 0x103://原因列表
                         List<List<String>>list1= (List<List<String>>) msg.obj;
@@ -99,6 +108,8 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
     private void initView(){
         cancle_btn=(Button)findViewById(R.id.cancle_btn);
         save_btn=(Button)findViewById(R.id.save_btn);
+        radio_ok=(RadioButton)findViewById(R.id.ok_btn);
+        radio_ng=(RadioButton)findViewById(R.id.ng_btn);
         congDanListView=(ListView)findViewById(R.id.list_2);
         yuanYinLisView=(ListView)findViewById(R.id.list_3);
         zzdh_text=(TextView)findViewById(R.id.dq_1);
@@ -115,6 +126,29 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
         sjxs_text=(TextView)findViewById(R.id.dq_12);
         save_btn.setOnClickListener(this);
         cancle_btn.setOnClickListener(this);
+        dialog=new PopupDialog(this,400,300);
+        dialog.getCancle_btn().setVisibility(View.GONE);
+        dialog.getOkbtn().setText("确定");
+        dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+        radioGroup=(RadioGroup)findViewById(R.id.radioGroup);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                switch (checkedId){
+                    case R.id.ok_btn:
+                        yuanYinLisView.setVisibility(View.GONE);
+                        break;
+                    case R.id.ng_btn:
+                        yuanYinLisView.setVisibility(View.VISIBLE);
+                        break;
+                }
+            }
+        });
     }
 
     private void getNetData(){
@@ -122,7 +156,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void run() {
                 //工单信息表
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'A','"+jtbh+"'");
+                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'C','"+jtbh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>15){
@@ -246,11 +280,8 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                     @Override
                     public void onClick(View v) {
                         int temp=Integer.parseInt(lab_8.getText().toString())+1;
-                        if (!(temp>Integer.parseInt(lab_7.getText().toString()))){
-                            lab_8.setText(temp+"");
-                            data_cong.get(position).put("lab_8",temp+"");
-                        }
-                        Log.w("num_list",data_cong.toString());
+                        lab_8.setText(temp+"");
+                        data_cong.get(position).put("lab_8",temp+"");
                     }
                 });
                 del_btn.setOnClickListener(new View.OnClickListener() {
@@ -271,19 +302,130 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-    private void isReady(){
-        List<Map<String,String>>upload_data=new ArrayList<>();
-        for (int i=0;i<data_cong.size();i++){
-            if (!data_cong.get(i).get("lab_7").equals(data_cong.get(i).get("lab_8"))){
-                upload_data.add(data_cong.get(i));
+    private boolean isReady(){
+        if (!(radio_ng.isChecked()|radio_ok.isChecked())){
+            dialog.setMessage("请先选择判定结果");
+            dialog.show();
+            return false;
+        }
+        if (radio_ok.isChecked()){
+            upload_data=new ArrayList<>();
+            for (int i=0;i<data_cong.size();i++){
+                if (!data_cong.get(i).get("lab_7").equals(data_cong.get(i).get("lab_8"))){
+                    upload_data.add(data_cong.get(i));
+                }
+            }
+            if (upload_data.size()>0){
+                dialog.setMessage("实际腔数与巡查腔数不一致，判定结果不能选择OK");
+                dialog.show();
+                return false;
             }
         }
-        if (upload_data.size()>0){
-            for (int i=0;i<upload_data.size();i++){
-                List<List<String>>list=NetHelper.getQuerysqlResult("");
+        if (radio_ng.isChecked()){
+            if (!(adapter_yy.getSelectData().size()>0)){
+                dialog.setMessage("请先选择原因");
+                dialog.show();
+                return false;
+            }
+
+
+            upload_data=new ArrayList<>();
+            for (int i=0;i<data_cong.size();i++){
+                if (!data_cong.get(i).get("lab_7").equals(data_cong.get(i).get("lab_8"))){
+                    upload_data.add(data_cong.get(i));
+                }
+            }
+            if (!(upload_data.size()>0)){
+                dialog.setMessage("腔数未发生改变");
+                dialog.show();
+                return false;
             }
         }
+        return true;
     }
+
+
+    private void uploadData(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                if (radio_ok.isChecked()){//Ok情况下
+                    for (int i=0;i<data_cong.size();i++){
+                        Map<String,String>map=data_cong.get(i);
+
+                        List<List<String>>list=NetHelper.getQuerysqlResult(
+                                "Exec PAD_Up_Xjllist   'A','"+jtbh+"','"+zzdh_text.getText().toString()+"','"+map.get("lab_7")+"'," +
+                                        "'"+map.get("lab_8")+"','OK','','"+wkno+"'");
+                        if (list!=null){
+                            if (list.size()>0){
+                                if (list.get(0).size()>0){
+                                    if (list.get(0).get(0).equals("OK")){
+                                        finish();
+                                    }else {
+                                        Message msg=handler.obtainMessage();
+                                        msg.what=0x102;
+                                        msg.obj="品质异常发出错误："+list.get(0).get(0);
+                                        handler.sendMessage(msg);
+                                    }
+                                }
+                            }
+                        }else {
+                            AppUtils.uploadNetworkError("Exec PAD_Up_Xjllist",jtbh,sharedPreferences.getString("mac",""));
+                        }
+                    }
+                }else if (radio_ng.isChecked()){//NG情况下
+                    String yydms="";
+                    for (int i=0;i<adapter_yy.getSelectData().size();i++){
+                        yydms=yydms+adapter_yy.getSelectData().get(i).get("lab_1")+";";
+                    }
+                    for (int i=0;i<data_cong.size();i++){
+                        Map<String,String>map=data_cong.get(i);
+
+                        List<List<String>>list=NetHelper.getQuerysqlResult(
+                                "Exec PAD_Up_Xjllist  'A','"+jtbh+"','"+zzdh_text.getText().toString()+"','"+map.get("lab_7")+"'," +
+                                        "'"+map.get("lab_8")+"','NG','"+yydms+"','"+wkno+"'");
+                        if (list!=null){
+                            if (list.size()>0){
+                                if (list.get(0).size()>0){
+                                    if (list.get(0).get(0).equals("OK")){
+                                        List<List<String>>list2=NetHelper.getQuerysqlResult(
+                                                "Exec PAD_Up_Xjllist  'B','"+jtbh+"','',''," +
+                                                        "'','','','"+wkno+"'");
+                                        if (list2!=null){
+                                            if (list2.size()>0){
+                                                if (list2.get(0).size()>0){
+                                                    if (list2.get(0).get(0).equals("OK")){
+                                                        AppUtils.sendUpdateInfoFragmentReceiver(PgxjActivity.this);
+                                                        AppUtils.sendReturnToInfoReceiver(PgxjActivity.this);
+                                                        finish();
+                                                    }else {
+                                                        Message msg=handler.obtainMessage();
+                                                        msg.what=0x102;
+                                                        msg.obj="品质异常发出错误："+list2.get(0).get(0);
+                                                        handler.sendMessage(msg);
+                                                    }
+                                                }
+                                            }
+                                        }
+                                    }else {
+                                        Message msg=handler.obtainMessage();
+                                        msg.what=0x102;
+                                        msg.obj="品质异常发出错误："+list.get(0).get(0);
+                                        handler.sendMessage(msg);
+                                    }
+                                }
+                            }
+                        }else {
+                            AppUtils.uploadNetworkError("Exec PAD_Up_Xjllist",jtbh,sharedPreferences.getString("mac",""));
+                        }
+                    }
+                }
+            }
+        }).start();
+    }
+
+
+
 
     @Override
     public void onClick(View v) {
@@ -293,7 +435,17 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                 finish();
                 break;
             case R.id.save_btn:
+                if (isReady()){
+                    uploadData();
+                }
                 break;
         }
+    }
+
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        dialog.dismiss();
     }
 }

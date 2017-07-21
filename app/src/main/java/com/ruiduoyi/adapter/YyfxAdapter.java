@@ -48,11 +48,11 @@ public class YyfxAdapter extends ArrayAdapter{
         }
         TextView lab_1=(TextView) view.findViewById(R.id.lab_1);
         TextView lab_2=(TextView)view.findViewById(R.id.lab_2);
-        CheckBox checkBox=(CheckBox)view.findViewById(R.id.select_btn);
+        final CheckBox checkBox=(CheckBox)view.findViewById(R.id.select_btn);
         final LinearLayout bg=(LinearLayout)view.findViewById(R.id.backgrounp);
         lab_1.setText(data.get(position).get("lab_1"));
         lab_2.setText(data.get(position).get("lab_2"));
-        checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
+       /* checkBox.setOnCheckedChangeListener(new CompoundButton.OnCheckedChangeListener() {
             @Override
             public void onCheckedChanged(CompoundButton buttonView, boolean isChecked) {
                 if (isChecked){
@@ -64,8 +64,29 @@ public class YyfxAdapter extends ArrayAdapter{
                 }
                 Log.w("YyfxAdapter",selectData.toString());
             }
+        });*/
+        boolean ischeck=isExist(data.get(position));
+        checkBox.setChecked(ischeck);
+        if (ischeck){
+            bg.setBackgroundColor(getContext().getResources().getColor(R.color.small));
+        }else {
+            bg.setBackgroundColor(Color.WHITE);
+        }
+        checkBox.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                if (isExist(data.get(position))){
+                    checkBox.setChecked(false);
+                    bg.setBackgroundColor(Color.WHITE);
+                    removeSelectData(data.get(position));
+                }else {
+                    checkBox.setChecked(true);
+                    bg.setBackgroundColor(getContext().getResources().getColor(R.color.small));
+                    addSelectData(data.get(position));
+                }
+                Log.w("selectData",selectData.toString());
+            }
         });
-        checkBox.setChecked(isExist(data.get(position)));
         return view;
     }
 
