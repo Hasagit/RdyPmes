@@ -3,6 +3,7 @@ package com.ruiduoyi.service;
 import android.app.Service;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.os.Environment;
 import android.os.IBinder;
 import android.os.Message;
 import android.support.annotation.IntDef;
@@ -15,6 +16,14 @@ import com.ruiduoyi.model.AppDataBase;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
+import java.io.InputStream;
+import java.io.OutputStream;
+import java.io.OutputStreamWriter;
+import java.io.PrintStream;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.List;
@@ -29,6 +38,9 @@ public class GpioService extends Service {
     private SharedPreferences sharedPreferences;
     private String mac,jtbh;
     private Timer timer_gpio;
+    /*private File file;
+    private PrintStream out;
+    private FileOutputStream fileOutputStream;*/
     public GpioService() {
     }
 
@@ -62,6 +74,23 @@ public class GpioService extends Service {
     }
 
     private void initData(){
+        /*file=new File(Environment.getExternalStorageDirectory().getPath()+"/gpio.txt");
+        if (!file.exists()){
+            try {
+                file.createNewFile();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        try {
+            fileOutputStream=new FileOutputStream(file);
+            out=new PrintStream(fileOutputStream);
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        }*/
+
+
+
         dataBase=new AppDataBase(this);
         sharedPreferences=getSharedPreferences("info",MODE_PRIVATE);
         SharedPreferences.Editor editor=sharedPreferences.edit();
@@ -82,7 +111,7 @@ public class GpioService extends Service {
                 SimpleDateFormat format2=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss.SSS");
 
                 //发广播给MainActivity接收
-                String ymd_hms=format2.format(date);
+                final String ymd_hms=format2.format(date);
                 Intent intent=new Intent();
                 intent.putExtra("index",index);
                 intent.putExtra("level",level);
@@ -95,6 +124,7 @@ public class GpioService extends Service {
                         if(level){
                         }else {
                             dataBase.insertGpio(mac,jtbh,"A","1",ymd_hms,1,"");
+                            //out.println(mac+"\t"+jtbh+"\t"+"A\t1\t"+ymd_hms+"\t"+"1\t");
                             //dataBase.insertGpio2(mac,jtbh,"A","1",ymd_hms,1,"");
                             dataBase.selectGpio();
                         }
@@ -104,7 +134,9 @@ public class GpioService extends Service {
 
                         }else {
                             dataBase.insertGpio(mac,jtbh,"A","2",ymd_hms,1,"");
-                            //dataBase.insertGpio2(mac,jtbh,"A","2",ymd_hms,1,"");
+                            //out.println(mac+"\t"+jtbh+"\t"+"A\t2\t"+ymd_hms+"\t"+"1\t");
+                            //dataBase.insertGpio2(mac,jtbh,"A","1",ymd_hms,1,"");
+                            dataBase.selectGpio();
                         }
 
                         break;
@@ -113,7 +145,9 @@ public class GpioService extends Service {
 
                         }else {
                             dataBase.insertGpio(mac,jtbh,"A","3",ymd_hms,1,"");
-                            //dataBase.insertGpio2(mac,jtbh,"A","3",ymd_hms,1,"");
+                            //out.println(mac+"\t"+jtbh+"\t"+"A\t2\t"+ymd_hms+"\t"+"1\t");
+                            //dataBase.insertGpio2(mac,jtbh,"A","1",ymd_hms,1,"");
+                            dataBase.selectGpio();
                         }
                         break;
                     case 4:
@@ -121,7 +155,9 @@ public class GpioService extends Service {
 
                         }else {
                             dataBase.insertGpio(mac,jtbh,"A","4",ymd_hms,1,"");
-                            //dataBase.insertGpio2(mac,jtbh,"A","4",ymd_hms,1,"");
+                            //out.println(mac+"\t"+jtbh+"\t"+"A\t4\t"+ymd_hms+"\t"+"1\t");
+                            //dataBase.insertGpio2(mac,jtbh,"A","1",ymd_hms,1,"");
+                            dataBase.selectGpio();
                         }
                         break;
                     default:
@@ -139,7 +175,7 @@ public class GpioService extends Service {
             public void run() {
                 String sql="";
                 List<Map<String,String>> list=dataBase.selectGpio();
-                String isUploadFinish=sharedPreferences.getString("isUploadFinish","No");
+                String isUploadFinish=sharedPreferences.getString("isUploadFinish","NO");
                 if (isUploadFinish.equals("OK")){
                     SharedPreferences.Editor editor1=sharedPreferences.edit();
                     editor1.putString("isUploadFinish","NO");
@@ -185,5 +221,12 @@ public class GpioService extends Service {
     public void onDestroy() {
         super.onDestroy();
         timer_gpio.cancel();
+        /*try {
+            fileOutputStream.close();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+        out.close();*/
+        Log.e("gpio_service_des","!");
     }
 }

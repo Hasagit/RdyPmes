@@ -13,7 +13,6 @@ import android.view.animation.AnimationUtils;
 import android.widget.FrameLayout;
 
 import com.ruiduoyi.R;
-import com.ruiduoyi.activity.DialogB5Activty;
 import com.ruiduoyi.activity.OeeActivity;
 import com.ruiduoyi.activity.MainActivity;
 

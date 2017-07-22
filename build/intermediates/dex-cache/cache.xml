@@ -39,12 +39,30 @@
     </item>
     <item
         is-multidex="false"
+        jar="C:\Users\DengJf\.android\build-cache\4051a6f9d7da246a43a2a266d9139ec425658c6c\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="100c2548728b6c99e002328d3590b750a6afa9e5">
+        <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\classes_a9f21ae63f7250fc79e93d15fc2a5cc0360c190b.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\Android_Project\Ruiduoyi\Gpiolibrary\build\intermediates\bundles\default\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.3"
         sha1="8351fa88884802d7df02b9bf9e893737a651a7e0">
         <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\classes_8a85cdb75291ee30a783fdea5978a66000680fc7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="C:\Users\DengJf\.android\build-cache\5cecf747e0dd618673116996e77d4c423bf00e33\output\jars\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="a68d897b0dc32323b31ca1eb2cd620a2662940ea">
+        <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\classes_77a3d400e8e0eaa4fb8072c1c86c06ce9af48048.jar" />
     </item>
 
 </items>

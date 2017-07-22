@@ -328,18 +328,6 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                 return false;
             }
 
-
-            upload_data=new ArrayList<>();
-            for (int i=0;i<data_cong.size();i++){
-                if (!data_cong.get(i).get("lab_7").equals(data_cong.get(i).get("lab_8"))){
-                    upload_data.add(data_cong.get(i));
-                }
-            }
-            if (!(upload_data.size()>0)){
-                dialog.setMessage("腔数未发生改变");
-                dialog.show();
-                return false;
-            }
         }
         return true;
     }

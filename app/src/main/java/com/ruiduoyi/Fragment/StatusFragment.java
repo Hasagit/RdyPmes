@@ -1,39 +1,30 @@
 package com.ruiduoyi.Fragment;
 
-import android.app.Dialog;
 import android.content.Context;
-import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
-import android.graphics.Color;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
 import android.support.v4.app.Fragment;
 import android.support.v7.widget.CardView;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
-import android.widget.Button;
-import android.widget.Toast;
 
 import com.ruiduoyi.R;
 import com.ruiduoyi.activity.BlYyfxActivity;
-import com.ruiduoyi.activity.JtjqsbgActivity;
 import com.ruiduoyi.activity.SbxxActivity;
 import com.ruiduoyi.activity.MjxxActivity;
 import com.ruiduoyi.activity.PzglActivity;
-import com.ruiduoyi.activity.DialogB5Activty;
 import com.ruiduoyi.activity.ScrzActivity;
-import com.ruiduoyi.activity.OeeActivity;
 import com.ruiduoyi.activity.DialogGActivity;
-import com.ruiduoyi.activity.DialogG2Activity;
+import com.ruiduoyi.activity.DialogB5Activty;
+import com.ruiduoyi.activity.ZyzdActivity;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
-import com.ruiduoyi.view.AppDialog;
 import com.ruiduoyi.view.PopupDialog;
 
 import java.util.List;
@@ -43,7 +34,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             cardView_g7,cardView_g8,cardView_g9,cardView_g10,cardView_g11,cardView_g12,cardView_g13,
             cardView_g14,cardView_g15,cardView_g16,cardView_g17,cardView_g18,cardView_g19,cardView_g20,cardView_g21,
             cardView_b1,cardView_b2,cardView_b3,cardView_b4,cardView_b5,cardView_b6,cardView_b7,
-            cardView_b9;
+            cardView_b8,cardView_b9,cardView_b10,cardView_b11;
     private String startType,startZldm,startZlmc;
     private Animation anim;
     private SharedPreferences sharedPreferences;
@@ -173,15 +164,17 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     }
 
     public void initView(View view){
-        cardView_b1=(CardView)view.findViewById(R.id.sbxx);
-        cardView_b2=(CardView)view.findViewById(R.id.mjxx);
-        cardView_b3=(CardView)view.findViewById(R.id.gdgl);
-        cardView_b4=(CardView)view.findViewById(R.id.pzgl);
-        cardView_b5=(CardView)view.findViewById(R.id.scrz);
-        cardView_b6=(CardView)view.findViewById(R.id.ycfx);
-        cardView_b7=(CardView)view.findViewById(R.id.blfx);
-        //cardView_b8=(CardView)view.findViewById(R.id.oee);
-        cardView_b9=(CardView)view.findViewById(R.id.jtjqsbg);
+        cardView_b1=(CardView)view.findViewById(R.id.gdgl);
+        cardView_b2=(CardView)view.findViewById(R.id.blfx);
+        cardView_b3=(CardView)view.findViewById(R.id.ycfx);
+        cardView_b4=(CardView)view.findViewById(R.id.jtjqsbg);
+        cardView_b5=(CardView)view.findViewById(R.id.hddj);
+        cardView_b6=(CardView)view.findViewById(R.id.gycs);
+        cardView_b7=(CardView)view.findViewById(R.id.zyzd);
+        cardView_b8=(CardView)view.findViewById(R.id.sbxx);
+        cardView_b9=(CardView)view.findViewById(R.id.mjxx);
+        cardView_b10=(CardView)view.findViewById(R.id.pzgl);
+        cardView_b11=(CardView)view.findViewById(R.id.scrz);
         cardView_g1=(CardView)view.findViewById(R.id.zmsw);
         cardView_g2=(CardView)view.findViewById(R.id.cxpt);
         cardView_g3=(CardView)view.findViewById(R.id.kjsl);
@@ -231,8 +224,10 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b5.setOnClickListener(this);
         cardView_b6.setOnClickListener(this);
         cardView_b7.setOnClickListener(this);
-        //cardView_b8.setOnClickListener(this);
+        cardView_b8.setOnClickListener(this);
         cardView_b9.setOnClickListener(this);
+        cardView_b10.setOnClickListener(this);
+        cardView_b11.setOnClickListener(this);
         dialog=new PopupDialog(getActivity(),400,350);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
@@ -337,17 +332,17 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         AppUtils.sendCountdownReceiver(getContext());
         switch (v.getId()){
             case R.id.sbxx://设备信息
-                cardView_b1.startAnimation(anim);
+                cardView_b8.startAnimation(anim);
                 Intent intent=new Intent(getContext(), SbxxActivity.class);
                 startActivity(intent);
                 break;
             case R.id.mjxx:
-                cardView_b2.startAnimation(anim);
+                cardView_b9.startAnimation(anim);
                 Intent intent_b2=new Intent(getContext(), MjxxActivity.class);
                 startActivity(intent_b2);
                 break;
             case R.id.gdgl:
-                cardView_b3.startAnimation(anim);
+                cardView_b1.startAnimation(anim);
                 Intent intent_b3=new Intent(getContext(),DialogGActivity.class );
                 intent_b3.putExtra("title","工单管理");
                 intent_b3.putExtra("zldm",getContext().getString(R.string.gdgl));
@@ -355,17 +350,17 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent_b3);
                 break;
             case R.id.pzgl:
-                cardView_b4.startAnimation(anim);
+                cardView_b10.startAnimation(anim);
                 Intent intent_b4=new Intent(getContext(), PzglActivity.class);
                 startActivity(intent_b4);
                 break;
             case R.id.scrz:
-                cardView_b5.startAnimation(anim);
+                cardView_b11.startAnimation(anim);
                 Intent intent_b6=new Intent(getContext(), ScrzActivity.class);
                 startActivity(intent_b6);
                 break;
             case R.id.ycfx:
-                cardView_b6.startAnimation(anim);
+                cardView_b3.startAnimation(anim);
                 Intent intent_b7=new Intent(getContext(),DialogGActivity.class );
                 intent_b7.putExtra("title","异常分析");
                 intent_b7.putExtra("zldm",getContext().getString(R.string.ycfx));
@@ -373,26 +368,36 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent_b7);
                 break;
             case R.id.blfx:
-                cardView_b7.startAnimation(anim);
+                cardView_b2.startAnimation(anim);
                 Intent intent_b8=new Intent(getContext(), DialogGActivity.class);
                 intent_b8.putExtra("title","不良分析");
                 intent_b8.putExtra("zldm",getContext().getString(R.string.blfx));
                 intent_b8.putExtra("type","DOC");
                 startActivity(intent_b8);
                 break;
-            case R.id.oee:
-                //cardView_b8.startAnimation(anim);
-                Intent intent_b9=new Intent(getContext(), OeeActivity.class);
-                startActivity(intent_b9);
-                break;
             case R.id.jtjqsbg:
-                cardView_b9.startAnimation(anim);
+                cardView_b4.startAnimation(anim);
                 Intent intent_10=new Intent(getContext(), DialogGActivity.class);
                 intent_10.putExtra("title","腔数变更");
                 intent_10.putExtra("zldm",getResources().getString(R.string.jtjqsbg));
                 intent_10.putExtra("type","DOC");
                 startActivity(intent_10);
                 break;
+            case R.id.hddj:
+                cardView_b5.startAnimation(anim);
+                break;
+            case R.id.gycs:
+                cardView_b6.startAnimation(anim);
+                break;
+            case R.id.zyzd:
+                cardView_b7.startAnimation(anim);
+                Intent intent_zyzd=new Intent(getContext(), ZyzdActivity.class);
+                startActivity(intent_zyzd);
+                break;
+
+
+
+
             case  R.id.zmsw:
                 if (isReady()){
                     cardView_g1.startAnimation(anim);
@@ -521,37 +526,6 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 break;
         }
     }
-
-   /* private void jsBtnEven(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<List<String>>list2= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+sharedPreferences.getString("jtbh","")+"'");
-                if(list2!=null){
-                    if (list2.size()>0){
-                        if (list2.get(0).size()>11){
-                            String zldm_ss=list2.get(0).get(1);
-                            String zlmc=getZlmcByZldm(zldm_ss);
-                            String waring=list2.get(0).get(5);
-                            if (waring.equals("1")){//如果超时了则必须要弹出蓝框
-                                Intent intent_blyyfx=new Intent(getContext(),BlYyfxActivity.class);
-                                intent_blyyfx.putExtra("title",zlmc);
-                                intent_blyyfx.putExtra("zldm",zldm_ss);
-                                startActivity(intent_blyyfx);
-                            }else {//如果没有超时则根据启动类型来判断
-                                getStartType(zldm_ss);
-                            }
-                        }
-                    }
-                }else {
-                    AppUtils.uploadNetworkError("Exec PAD_Get_JtmZtInfo NetWordError",sharedPreferences.getString("jtbh","")
-                            ,sharedPreferences.getString("mac",""));
-                    //handler.sendEmptyMessage(0x101);
-                    //handler.sendEmptyMessage(0x110);
-                }
-            }
-        }).start();
-    }*/
 
 
     private String getZlmcByZldm(String zldm){
