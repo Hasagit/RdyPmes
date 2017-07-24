@@ -317,8 +317,11 @@ public class FirstActivity extends BaseActivity{
                 }else {
                     handler.sendEmptyMessage(0x101);
 
+
+
+
                 }*/
-                    List<List<String>>list=NetHelper.getQuerysqlResult("select * from PAD_LogInfo where log_code='6'");
+                    //List<List<String>>list=NetHelper.getQuerysqlResult("select * from PAD_LogInfo where log_code='6'");
                     int i=0;
                     while (!NetHelper.isServerConnected(NetHelper.URL)){
                         Message msg=handler.obtainMessage();

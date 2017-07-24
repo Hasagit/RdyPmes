@@ -68,7 +68,6 @@ public class WorkOrderAdapter extends ArrayAdapter{
             public void onClick(View v) {
                 //事件开
                 AppUtils.sendCountdownReceiver(getContext());
-                on_btn.setEnabled(false);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
@@ -93,7 +92,6 @@ public class WorkOrderAdapter extends ArrayAdapter{
             public void onClick(View v) {
                 //事件关
                 AppUtils.sendCountdownReceiver(getContext());
-                off_btn.setEnabled(false);
                 new Thread(new Runnable() {
                     @Override
                     public void run() {

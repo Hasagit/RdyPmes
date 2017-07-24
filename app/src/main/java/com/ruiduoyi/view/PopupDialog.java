@@ -27,7 +27,6 @@ public class PopupDialog {
 
     public PopupDialog(Activity context,int width,int height) {
         this.context = context;
-
         View contenView= LayoutInflater.from(context).inflate(R.layout.popup_dialog1,null);
         dialog=new PopupWindow(contenView, width, height);
         title=(TextView)contenView.findViewById(R.id.title);
@@ -47,9 +46,7 @@ public class PopupDialog {
     }
 
     public void setCancelable(boolean cancelable){
-        dialog.setOutsideTouchable(!cancelable);
-        dialog.setTouchable(cancelable);
-        dialog.setClippingEnabled(cancelable);
+        dialog.setOutsideTouchable(cancelable);
     }
 
     public void show(){

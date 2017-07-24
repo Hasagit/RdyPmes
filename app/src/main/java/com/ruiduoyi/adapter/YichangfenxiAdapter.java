@@ -84,7 +84,8 @@ public class YichangfenxiAdapter extends ArrayAdapter{
                 list_text.get(11).setText(map.get("lab_3"));
                 Message msg=handler.obtainMessage();
                 msg.what=0x107;
-                msg.obj=map.get("lab_12");
+                //msg.obj=map.get("lab_12");
+                msg.obj=map;
                 handler.sendMessage(msg);
             }
         });

@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 
 import com.ruiduoyi.R;
 import com.ruiduoyi.activity.BlYyfxActivity;
+import com.ruiduoyi.activity.HddjActivity;
 import com.ruiduoyi.activity.SbxxActivity;
 import com.ruiduoyi.activity.MjxxActivity;
 import com.ruiduoyi.activity.PzglActivity;
@@ -385,6 +386,11 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.hddj:
                 cardView_b5.startAnimation(anim);
+                Intent intent_hddj=new Intent(getContext(), DialogGActivity.class);
+                intent_hddj.putExtra("title","耗电登记");
+                intent_hddj.putExtra("zldm","D05");
+                intent_hddj.putExtra("type","DOC");
+                startActivity(intent_hddj);
                 break;
             case R.id.gycs:
                 cardView_b6.startAnimation(anim);

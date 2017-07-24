@@ -29,7 +29,8 @@
     </FrameLayout>
     <HorizontalScrollView
         android:layout_width="match_parent"
-        android:layout_height="match_parent">
+        android:layout_height="wrap_content"
+        android:layout_weight="1">
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -143,9 +144,14 @@
                 android:layout_gravity="center_horizontal"
                 android:layout_width="1638dp"
                 android:layout_height="match_parent"
-                android:layout_marginBottom="15dp"
+                android:layout_marginBottom="10dp"
                 android:id="@+id/list_b3"
                 android:divider="@color/touming"></ListView>
         </LinearLayout>
     </HorizontalScrollView>
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="20dp"
+        android:background="@color/blue_sl_false"></LinearLayout>
 </LinearLayout>

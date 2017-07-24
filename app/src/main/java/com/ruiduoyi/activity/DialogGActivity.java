@@ -117,6 +117,10 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                                 intent=new Intent(DialogGActivity.this,PgxjActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
+                            }else if(title.equals("耗电登记")){
+                                intent=new Intent(DialogGActivity.this,HddjActivity.class);
+                                intent.putExtra("wkno",wkno);
+                                startActivity(intent);
                             }
                             finish();
 

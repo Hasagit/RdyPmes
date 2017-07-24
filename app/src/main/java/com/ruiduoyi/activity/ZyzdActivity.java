@@ -258,4 +258,12 @@ public class ZyzdActivity extends BaseActivity {
             }).start();
         }
     }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog.isShow()){
+            dialog.dismiss();
+        }
+    }
 }

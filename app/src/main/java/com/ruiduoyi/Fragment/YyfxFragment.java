@@ -153,8 +153,24 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
                 @Override
                 public void run() {
                     List<Map<String,String>>selectData=adapter.getSelectData();
+                    String select_str="";
                     for (int i=0;i<selectData.size();i++){
-                        upLoadOneData(selectData.get(i),wkno);
+                        Map<String,String>map=selectData.get(i);
+                        select_str=select_str+map.get("lab_1")+";";
+                        //upLoadOneData(selectData.get(i),wkno);
+                    }
+                    List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Upd_YclInfo " +
+                            "'"+jtbh+"','"+zldm+"','"+lbdm+"'," + "'"+select_str+"',0,'"+wkno+"'");
+                    if (list!=null){
+                        if (list.size()>0){
+                            if (list.get(0).size()>0){
+                                if (list.get(0).get(0).equals("OK")){
+                                    return;
+                                }
+                            }
+                        }
+                    }else {
+
                     }
                 }
             }).start();
