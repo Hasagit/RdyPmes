@@ -116,7 +116,8 @@
         <activity android:name=".activity.Jtjqsbg2Activity" />
         <activity android:name=".activity.PgxjActivity" />
         <activity android:name=".activity.ZyzdActivity" />
-        <activity android:name=".activity.HddjActivity"></activity>
+        <activity android:name=".activity.HddjActivity" />
+        <activity android:name=".activity.DjbyActivity"></activity>
     </application>
 
 </manifest>

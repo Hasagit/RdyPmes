@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 
 import com.ruiduoyi.R;
 import com.ruiduoyi.activity.BlYyfxActivity;
+import com.ruiduoyi.activity.DjbyActivity;
 import com.ruiduoyi.activity.HddjActivity;
 import com.ruiduoyi.activity.SbxxActivity;
 import com.ruiduoyi.activity.MjxxActivity;
@@ -35,7 +36,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             cardView_g7,cardView_g8,cardView_g9,cardView_g10,cardView_g11,cardView_g12,cardView_g13,
             cardView_g14,cardView_g15,cardView_g16,cardView_g17,cardView_g18,cardView_g19,cardView_g20,cardView_g21,
             cardView_b1,cardView_b2,cardView_b3,cardView_b4,cardView_b5,cardView_b6,cardView_b7,
-            cardView_b8,cardView_b9,cardView_b10,cardView_b11;
+            cardView_b8,cardView_b9,cardView_b10,cardView_b11,cardView_b12;
     private String startType,startZldm,startZlmc;
     private Animation anim;
     private SharedPreferences sharedPreferences;
@@ -171,11 +172,12 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b4=(CardView)view.findViewById(R.id.jtjqsbg);
         cardView_b5=(CardView)view.findViewById(R.id.hddj);
         cardView_b6=(CardView)view.findViewById(R.id.gycs);
-        cardView_b7=(CardView)view.findViewById(R.id.zyzd);
+        cardView_b7=(CardView)view.findViewById(R.id.djby);
         cardView_b8=(CardView)view.findViewById(R.id.sbxx);
         cardView_b9=(CardView)view.findViewById(R.id.mjxx);
         cardView_b10=(CardView)view.findViewById(R.id.pzgl);
         cardView_b11=(CardView)view.findViewById(R.id.scrz);
+        cardView_b12=(CardView)view.findViewById(R.id.zyzd);
         cardView_g1=(CardView)view.findViewById(R.id.zmsw);
         cardView_g2=(CardView)view.findViewById(R.id.cxpt);
         cardView_g3=(CardView)view.findViewById(R.id.kjsl);
@@ -229,6 +231,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b9.setOnClickListener(this);
         cardView_b10.setOnClickListener(this);
         cardView_b11.setOnClickListener(this);
+        cardView_b12.setOnClickListener(this);
         dialog=new PopupDialog(getActivity(),400,350);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
@@ -388,7 +391,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 cardView_b5.startAnimation(anim);
                 Intent intent_hddj=new Intent(getContext(), DialogGActivity.class);
                 intent_hddj.putExtra("title","耗电登记");
-                intent_hddj.putExtra("zldm","D05");
+                intent_hddj.putExtra("zldm",getResources().getString(R.string.hddj));
                 intent_hddj.putExtra("type","DOC");
                 startActivity(intent_hddj);
                 break;
@@ -396,9 +399,17 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 cardView_b6.startAnimation(anim);
                 break;
             case R.id.zyzd:
-                cardView_b7.startAnimation(anim);
+                cardView_b12.startAnimation(anim);
                 Intent intent_zyzd=new Intent(getContext(), ZyzdActivity.class);
                 startActivity(intent_zyzd);
+                break;
+            case R.id.djby:
+                cardView_b7.startAnimation(anim);
+                Intent intent_djby=new Intent(getContext(), DialogGActivity.class);
+                intent_djby.putExtra("title","设备点检");
+                intent_djby.putExtra("type","DOC");
+                intent_djby.putExtra("zldm",getResources().getString(R.string.sbdj));
+                startActivity(intent_djby);
                 break;
 
 

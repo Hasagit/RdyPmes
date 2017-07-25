@@ -360,7 +360,8 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
             dialog.show();
             return false;
         }
-        if (Integer.parseInt(jsds_text.getText().toString())<=Integer.parseInt(ksdu_text.getText().toString())){
+        if ((Integer.parseInt(jsds_text.getText().toString())<=Integer.parseInt(ksdu_text.getText().toString()))
+                &&!jsds_text.getText().toString().equals("0")){
             dialog.setMessageTextColor(Color.RED);
             dialog.setMessage("结束度数一定要大于开始度数");
             dialog.show();
@@ -423,6 +424,8 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
             }
         }).start();
     }
+
+
     @Override
     public void onClick(View v) {
         AppUtils.sendCountdownReceiver(HddjActivity.this);

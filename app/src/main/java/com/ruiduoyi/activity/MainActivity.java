@@ -240,7 +240,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     dialog=new PopupDialog(MainActivity.this,400,300);
                     dialog.setMessage("现在更新会导致程序退出，是否立即更新？");
                     dialog.setBackgrounpColor(getResources().getColor(R.color.color_9));
-                    dialog.setCancelable(true);
+                    dialog.setCancelable(false);
                     dialog.getCancle_btn().setText("取消");
                     dialog.getCancle_btn().setOnClickListener(new View.OnClickListener() {
                         @Override

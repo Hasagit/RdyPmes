@@ -379,7 +379,8 @@ public class InfoFragment extends Fragment {
         List<String>item=list_jcxx.get(0);
         jtbh_text.setText(item.get(0));
         status.setText(item.get(10));
-        umSetColor(item.get(2));
+        cardView.setCardBackgroundColor(getColorByKey(item.get(2)));
+        status.setTextColor(getColorByKey(item.get(13)));
         String[] temp=item.get(11).split("\\\\n");
         String tip="";
         for (int i=0;i<temp.length;i++){
@@ -787,7 +788,7 @@ public class InfoFragment extends Fragment {
                     if(list2!=null){
                         handler.sendEmptyMessage(0x111);
                         if (list2.size()>0){
-                            if (list2.get(0).size()>12){
+                            if (list2.get(0).size()>13){
                                 Message msg=handler.obtainMessage();
                                 msg.what=0x104;
                                 msg.obj=list2;
@@ -841,29 +842,42 @@ public class InfoFragment extends Fragment {
 
     }
 
-    private void umSetColor(String fcColor){
 
-        if(fcColor.equals("N")){
-            cardView.setCardBackgroundColor(getResources().getColor(R.color.lightgray));
-            status.setTextColor(getResources().getColor(R.color.darkviolet));
-        }else  if(fcColor.equals("W")){
-            cardView.setCardBackgroundColor(getResources().getColor(R.color.lightgray));
-            status.setTextColor(Color.WHITE);
-        }else if(fcColor.equals("G")){
-            cardView.setCardBackgroundColor(getResources().getColor(R.color.limegreen));
-            status.setTextColor(Color.BLUE);
-        }else if(fcColor.equals("Y")){
-            cardView.setCardBackgroundColor(Color.YELLOW);
-            status.setTextColor(Color.RED);
-        }else if(fcColor.equals("R")){
-            cardView.setCardBackgroundColor(Color.RED);
-            status.setTextColor(Color.YELLOW);
-        }else if(fcColor.equals("V")){
-            cardView.setCardBackgroundColor(getResources().getColor(R.color.darkviolet));
-            status.setTextColor(Color.YELLOW);
-        }else{
-            cardView.setCardBackgroundColor(getResources().getColor(R.color.limegreen));
-            status.setTextColor(Color.WHITE);
+
+    private int getColorByKey(String color){
+         /*
+            W	白色
+            H	灰色
+            Y	黄色
+            G	绿色
+            V	紫色
+            B	蓝色
+            P	粉色
+            R	红色
+            K	黑色
+             */
+        switch (color)
+        {
+            case "W":
+                return Color.WHITE;
+            case "H":
+                return getResources().getColor(R.color.lable);
+            case "Y":
+                return Color.YELLOW;
+            case "G":
+                return Color.GREEN;
+            case "V":
+                return getResources().getColor(R.color.color_6);
+            case "B":
+                return Color.BLUE;
+            case "P":
+                return getResources().getColor(R.color.color_10);
+            case "R":
+                return Color.RED;
+            case "K":
+                return Color.BLACK;
+            default:
+                return getResources().getColor(R.color.lable);
         }
     }
 
