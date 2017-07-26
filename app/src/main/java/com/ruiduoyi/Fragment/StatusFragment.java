@@ -16,14 +16,11 @@ import android.view.animation.AnimationUtils;
 
 import com.ruiduoyi.R;
 import com.ruiduoyi.activity.BlYyfxActivity;
-import com.ruiduoyi.activity.DjbyActivity;
-import com.ruiduoyi.activity.HddjActivity;
 import com.ruiduoyi.activity.SbxxActivity;
 import com.ruiduoyi.activity.MjxxActivity;
 import com.ruiduoyi.activity.PzglActivity;
 import com.ruiduoyi.activity.ScrzActivity;
 import com.ruiduoyi.activity.DialogGActivity;
-import com.ruiduoyi.activity.DialogB5Activty;
 import com.ruiduoyi.activity.ZyzdActivity;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;

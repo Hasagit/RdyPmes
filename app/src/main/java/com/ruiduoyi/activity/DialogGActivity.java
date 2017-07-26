@@ -15,13 +15,11 @@ import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
 import android.widget.TextView;
-import android.widget.Toast;
 
 import com.ruiduoyi.R;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 
-import java.math.BigInteger;
 import java.util.List;
 
 public class DialogGActivity extends BaseDialogActivity implements View.OnClickListener{
@@ -122,7 +120,7 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
                             }else if(title.equals("设备点检")){
-                                intent=new Intent(DialogGActivity.this,DjbyActivity.class);
+                                intent=new Intent(DialogGActivity.this,SbdjActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
                             }

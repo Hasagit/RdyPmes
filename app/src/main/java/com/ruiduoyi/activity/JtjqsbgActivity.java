@@ -224,6 +224,11 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                             msg.obj=list_dt;
                             handler.sendMessage(msg);
                         }
+                    }else {
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x101;
+                        msg.obj=list_dt;
+                        handler.sendMessage(msg);
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoeJtxsInf 'A'",jtbh,sharedPreferences.getString("mac",""));

@@ -222,6 +222,11 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                             msg.obj=list;
                             handler.sendMessage(msg);
                         }
+                    }else {
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x108;
+                        msg.obj=list;
+                        handler.sendMessage(msg);
                     }
                 }
             }
@@ -244,9 +249,10 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                         msg.what=0x100;
                         msg.obj=list;
                     }
+                }else {
+                    msg.what=0x100;
+                    msg.obj=list;
                 }
-            }else {
-                msg.what=0x101;
             }
             handler.sendMessage(msg);
         }

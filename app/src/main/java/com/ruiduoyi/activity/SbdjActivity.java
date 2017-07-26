@@ -6,9 +6,7 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
-import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -32,7 +30,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class DjbyActivity extends BaseActivity implements View.OnClickListener{
+public class SbdjActivity extends BaseActivity implements View.OnClickListener{
     private Button spinner_btn,cancle_btn,add_btn,save_btn;
     private ListView listView_sb,listView_dj;
     private RadioGroup radioGroup;
@@ -169,6 +167,7 @@ public class DjbyActivity extends BaseActivity implements View.OnClickListener{
         dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppUtils.sendCountdownReceiver(SbdjActivity.this);
                 dialog.dismiss();
             }
         });
@@ -215,7 +214,7 @@ public class DjbyActivity extends BaseActivity implements View.OnClickListener{
                 if (convertView!=null){
                     view=convertView;
                 }else {
-                    view= LayoutInflater.from(DjbyActivity.this).inflate(R.layout.list_item_sbdj_sb,null);
+                    view= LayoutInflater.from(SbdjActivity.this).inflate(R.layout.list_item_sbdj_sb,null);
                 }
                 final Map<String,String>map=data.get(position);
                 TextView lab_1=(TextView)view.findViewById(R.id.lab_1);
@@ -231,6 +230,7 @@ public class DjbyActivity extends BaseActivity implements View.OnClickListener{
                 bg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        AppUtils.sendCountdownReceiver(SbdjActivity.this);
                         map.put("isSelect","1");
                         sbbh_text.setText(map.get("lab_1"));
                         sbmc_text.setText(map.get("lab_2"));
@@ -310,6 +310,7 @@ public class DjbyActivity extends BaseActivity implements View.OnClickListener{
         spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                AppUtils.sendCountdownReceiver(SbdjActivity.this);
                 spinner_btn.setText(data.get(position));
                 spinner_select_lb=list_spinner_dm.get(position);
                 spinner_list.dismiss();
@@ -370,6 +371,7 @@ public class DjbyActivity extends BaseActivity implements View.OnClickListener{
                 radioGroup_list.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
                     @Override
                     public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                        AppUtils.sendCountdownReceiver(SbdjActivity.this);
                         switch (checkedId){
                             case R.id.radio_ok:
                                 djData.get(position).put("lab_4","√");
@@ -537,6 +539,7 @@ public class DjbyActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        AppUtils.sendCountdownReceiver(SbdjActivity.this);
         switch (v.getId()){
             case R.id.cancle_btn:
                 finish();
@@ -558,6 +561,14 @@ public class DjbyActivity extends BaseActivity implements View.OnClickListener{
                 break;
             default:
                 break;
+        }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        if (dialog.isShow()){
+            dialog.dismiss();
         }
     }
 }
