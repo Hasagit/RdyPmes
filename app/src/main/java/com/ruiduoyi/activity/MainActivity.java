@@ -150,6 +150,33 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     };
 
 
+    public void  initData(){
+        sharedPreferences=getSharedPreferences("info",MODE_PRIVATE);
+        jtbh=sharedPreferences.getString("jtbh","");
+        WifiManager wifiManager=((WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE));
+        String mac_temp=wifiManager.getConnectionInfo().getMacAddress();
+        //mac_temp="c0:21:0d:94:26:fb";
+        if(mac_temp==null&&sharedPreferences.getString("mac","").equals("")) {
+            //Toast.makeText(this,"获取网卡物理地址失败，请连接wifi",Toast.LENGTH_LONG).show();
+        }else {
+            String[] mac_sz = mac_temp.split(":");
+            mac = "";
+            for (int i = 0; i < mac_sz.length; i++) {
+                mac = mac + mac_sz[i];
+            }
+            jtbh=sharedPreferences.getString("jtbh","");
+            //sbID=mac;
+        }
+
+        IntentFilter receiverfilter=new IntentFilter();
+        receiverfilter.addAction("com.Ruiduoyi.returnToInfoReceiver");
+        registerReceiver(returnToInfoReceiver,receiverfilter);
+        receiverfilter=new IntentFilter();
+        receiverfilter.addAction("com.Ruiduoyi.CountdownToInfo");
+        registerReceiver(countdownReceiver,receiverfilter);
+    }
+
+
     public void initView(){
 
         //初始化ViewPager
@@ -202,6 +229,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                         bottom_text3.setTextColor(getResources().getColor(R.color.bottom_bt_sl));
                         break;
                     case 2:
+                        AppUtils.sendUpdateOeeReceiver(MainActivity.this);
                         AppUtils.sendCountdownReceiver(MainActivity.this);
                         bottom_text1.setTextColor(getResources().getColor(R.color.bottom_bt_sl));
                         bottom_text2.setTextColor(getResources().getColor(R.color.bottom_bt_sl));
@@ -319,31 +347,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         timer_CountdownToInfo.schedule(timerTask,time*60*1000);
     }
 
-    public void  initData(){
-        sharedPreferences=getSharedPreferences("info",MODE_PRIVATE);
-        jtbh=sharedPreferences.getString("jtbh","");
-        WifiManager wifiManager=((WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE));
-        String mac_temp=wifiManager.getConnectionInfo().getMacAddress();
-        //mac_temp="c0:21:0d:94:26:fb";
-        if(mac_temp==null&&sharedPreferences.getString("mac","").equals("")) {
-            //Toast.makeText(this,"获取网卡物理地址失败，请连接wifi",Toast.LENGTH_LONG).show();
-        }else {
-            String[] mac_sz = mac_temp.split(":");
-            mac = "";
-            for (int i = 0; i < mac_sz.length; i++) {
-                mac = mac + mac_sz[i];
-            }
-            jtbh=sharedPreferences.getString("jtbh","");
-            //sbID=mac;
-        }
-
-        IntentFilter receiverfilter=new IntentFilter();
-        receiverfilter.addAction("com.Ruiduoyi.returnToInfoReceiver");
-        registerReceiver(returnToInfoReceiver,receiverfilter);
-        receiverfilter=new IntentFilter();
-        receiverfilter.addAction("com.Ruiduoyi.CountdownToInfo");
-        registerReceiver(countdownReceiver,receiverfilter);
-    }
 
     //更新导航栏时间
     private void updateTime(){

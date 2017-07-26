@@ -43,15 +43,15 @@ public class OeeAdapter extends ArrayAdapter{
             TextView lable_5=(TextView)view.findViewById(R.id.lab_5);
             Map<String,String>map=data.get(position);
             lable_1.setText(map.get("lab_1"));
-            lable_1.setTextColor(traToColor(map.get("color")));
+            lable_1.setTextColor(getColorByKey(map.get("color")));
             lable_2.setText(map.get("lab_2"));
-            lable_2.setTextColor(traToColor(map.get("color")));
+            lable_2.setTextColor(getColorByKey(map.get("color")));
             lable_3.setText(map.get("lab_3"));
-            lable_3.setTextColor(traToColor(map.get("color")));
+            lable_3.setTextColor(getColorByKey(map.get("color")));
             lable_4.setText(map.get("lab_4"));
-            lable_4.setTextColor(traToColor(map.get("color")));
+            lable_4.setTextColor(getColorByKey(map.get("color")));
             lable_5.setText(map.get("lab_5"));
-            lable_5.setTextColor(traToColor(map.get("color")));
+            lable_5.setTextColor(getColorByKey(map.get("color")));
         }else {
             view= LayoutInflater.from(getContext()).inflate(resource,null);
             TextView lable_1=(TextView)view.findViewById(R.id.lab_1);
@@ -61,20 +61,20 @@ public class OeeAdapter extends ArrayAdapter{
             TextView lable_5=(TextView)view.findViewById(R.id.lab_5);
             Map<String,String>map=data.get(position);
             lable_1.setText(map.get("lab_1"));
-            lable_1.setTextColor(traToColor(map.get("color")));
+            lable_1.setTextColor(getColorByKey(map.get("color")));
             lable_2.setText(map.get("lab_2"));
-            lable_2.setTextColor(traToColor(map.get("color")));
+            lable_2.setTextColor(getColorByKey(map.get("color")));
             lable_3.setText(map.get("lab_3"));
-            lable_3.setTextColor(traToColor(map.get("color")));
+            lable_3.setTextColor(getColorByKey(map.get("color")));
             lable_4.setText(map.get("lab_4"));
-            lable_4.setTextColor(traToColor(map.get("color")));
+            lable_4.setTextColor(getColorByKey(map.get("color")));
             lable_5.setText(map.get("lab_5"));
-            lable_5.setTextColor(traToColor(map.get("color")));
+            lable_5.setTextColor(getColorByKey(map.get("color")));
         }
         return view;
     }
     //根据字符串返回相对应的颜色
-    private int traToColor(String str){
+    /*private int traToColor(String str){
         int color;
         String temp=str;
         if(temp.trim().equals("W")){
@@ -90,5 +90,43 @@ public class OeeAdapter extends ArrayAdapter{
             color= Color.WHITE;
         }
         return color;
+    }*/
+
+    private int getColorByKey(String color){
+         /*
+            W	白色
+            H	灰色
+            Y	黄色
+            G	绿色
+            V	紫色
+            B	蓝色
+            P	粉色
+            R	红色
+            K	黑色
+             */
+        switch (color)
+        {
+            case "W":
+                return Color.WHITE;
+            case "H":
+                return getContext().getResources().getColor(R.color.lable);
+            case "Y":
+                return Color.YELLOW;
+            case "G":
+                return Color.GREEN;
+            case "V":
+                return getContext().getResources().getColor(R.color.color_6);
+            case "B":
+                return Color.BLUE;
+            case "P":
+                return getContext().getResources().getColor(R.color.color_10);
+            case "R":
+                return Color.RED;
+            case "K":
+                return Color.BLACK;
+            default:
+                return getContext().getResources().getColor(R.color.lable);
+        }
     }
+
 }

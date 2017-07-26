@@ -171,7 +171,11 @@ public class AppUtils {
         context.sendBroadcast(intent);
     }
 
-
+    public static void sendUpdateOeeReceiver(Context context){
+        Intent intent=new Intent();
+        intent.setAction("com.ruiduoyi.updateOee");
+        context.sendBroadcast(intent);
+    }
 
     public static void sendUpdateInfoFragmentReceiver(Context context){
         Intent intent=new Intent();

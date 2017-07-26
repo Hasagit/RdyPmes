@@ -37,7 +37,7 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
     private String sub_num;
     private Animation anim;
     private String wkno;
-    private PopupDialog dialog;
+    private PopupDialog dialog,delTipDialog;
     private EasyArrayAdapter adapter_mx;
 
     @Override
@@ -106,6 +106,10 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
                 dialog.dismiss();
             }
         });
+        delTipDialog=new PopupDialog(this,400,350);
+        delTipDialog.setTitle("提示");
+        delTipDialog.getCancle_btn().setText("取消");
+        delTipDialog.getOkbtn().setText("确定");
 
     }
 
@@ -149,9 +153,9 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
                         break;
                     case 0x103:
                         getHdmxData(zzdh_text.getText().toString(),"A",0x101);
-                        dialog.setMessageTextColor(Color.BLACK);
+                        /*dialog.setMessageTextColor(Color.BLACK);
                         dialog.setMessage("提交成功");
-                        dialog.show();
+                        dialog.show();*/
                         break;
                     case 0x104:
                         dialog.setMessageTextColor(Color.RED);
@@ -160,9 +164,9 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
                         break;
                     case 0x105:
                         getHdmxData(zzdh_text.getText().toString(),"A",0x101);
-                        dialog.setMessageTextColor(Color.BLACK);
+                        /*dialog.setMessageTextColor(Color.BLACK);
                         dialog.setMessage("删除成功");
-                        dialog.show();
+                        dialog.show();*/
                         break;
                 }
             }
@@ -335,6 +339,7 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
                 del_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+
                         AppUtils.sendCountdownReceiver(HddjActivity.this);
                         delData(lab_2.getText().toString(),lab_3.getText().toString());
                     }
@@ -371,30 +376,39 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
     }
 
     private void delData(final String ksds, final String jsds){
-        new Thread(new Runnable() {
+        delTipDialog.setMessage("确定要删除这条记录？\n"+"开始度数:"+ksds+"\n结束度数:"+jsds);
+        delTipDialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
             @Override
-            public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec  PAD_Up_Dlllist " +
-                        "  'B','"+zzdh_text.getText().toString()+"','"+jtbh+"',"+ksds+"," +
-                        jsds+",'"+wkno+"'");
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>0){
-                            if (list.get(0).get(0).equals("OK")){
-                                handler.sendEmptyMessage(0x105);
-                            }else {
-                                Message msg=handler.obtainMessage();
-                                msg.what=0x104;
-                                msg.obj=list.get(0).get(0);
-                                handler.sendMessage(msg);
+            public void onClick(View v) {
+                delTipDialog.dismiss();
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<List<String>>list=NetHelper.getQuerysqlResult("Exec  PAD_Up_Dlllist " +
+                                "  'B','"+zzdh_text.getText().toString()+"','"+jtbh+"',"+ksds+"," +
+                                jsds+",'"+wkno+"'");
+                        if (list!=null){
+                            if (list.size()>0){
+                                if (list.get(0).size()>0){
+                                    if (list.get(0).get(0).equals("OK")){
+                                        handler.sendEmptyMessage(0x105);
+                                    }else {
+                                        Message msg=handler.obtainMessage();
+                                        msg.what=0x104;
+                                        msg.obj=list.get(0).get(0);
+                                        handler.sendMessage(msg);
+                                    }
+                                }
                             }
+                        }else {
+                            AppUtils.uploadNetworkError("Exec  PAD_Up_Dlllist 'A'",jtbh,sharedPreferences.getString("mac",""));
                         }
                     }
-                }else {
-                    AppUtils.uploadNetworkError("Exec  PAD_Up_Dlllist 'A'",jtbh,sharedPreferences.getString("mac",""));
-                }
+                }).start();
             }
-        }).start();
+        });
+        delTipDialog.show();
+
     }
 
 
