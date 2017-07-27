@@ -4,6 +4,7 @@
     <color name="colorPrimaryDark">#303F9F</color>
     <color name="colorAccent">#FF4081</color>
     <color name="lable">#dcdcdc</color>
+    <color name="lable2">#55dcdcdc</color>
     <color name="fragment_bg">#cfcfcf</color>
     <color name="bottom_sl">#81a6d7</color>
     <color name="bottom_bt_sl">#898686</color>
@@ -34,4 +35,5 @@
     <color name="gdgl_3">#d5d5d5</color>
     <color name="g_true">#99ccff</color>
     <color name="g_false">#8899ccff</color>
+    <color name="cardview_bg">#bae3fb</color>
 </resources>

@@ -9,6 +9,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.ruiduoyi.R;
@@ -35,42 +36,23 @@ public class OeeAdapter extends ArrayAdapter{
     public View getView(int position,View convertView,ViewGroup parent) {
         View view;
         if(convertView!=null){
-            view= LayoutInflater.from(getContext()).inflate(resource,null);
-            TextView lable_1=(TextView)view.findViewById(R.id.lab_1);
-            TextView lable_2=(TextView)view.findViewById(R.id.lab_2);
-            TextView lable_3=(TextView)view.findViewById(R.id.lab_3);
-            TextView lable_4=(TextView)view.findViewById(R.id.lab_4);
-            TextView lable_5=(TextView)view.findViewById(R.id.lab_5);
-            Map<String,String>map=data.get(position);
-            lable_1.setText(map.get("lab_1"));
-            lable_1.setTextColor(getColorByKey(map.get("color")));
-            lable_2.setText(map.get("lab_2"));
-            lable_2.setTextColor(getColorByKey(map.get("color")));
-            lable_3.setText(map.get("lab_3"));
-            lable_3.setTextColor(getColorByKey(map.get("color")));
-            lable_4.setText(map.get("lab_4"));
-            lable_4.setTextColor(getColorByKey(map.get("color")));
-            lable_5.setText(map.get("lab_5"));
-            lable_5.setTextColor(getColorByKey(map.get("color")));
+            view=convertView;
         }else {
             view= LayoutInflater.from(getContext()).inflate(resource,null);
-            TextView lable_1=(TextView)view.findViewById(R.id.lab_1);
-            TextView lable_2=(TextView)view.findViewById(R.id.lab_2);
-            TextView lable_3=(TextView)view.findViewById(R.id.lab_3);
-            TextView lable_4=(TextView)view.findViewById(R.id.lab_4);
-            TextView lable_5=(TextView)view.findViewById(R.id.lab_5);
-            Map<String,String>map=data.get(position);
-            lable_1.setText(map.get("lab_1"));
-            lable_1.setTextColor(getColorByKey(map.get("color")));
-            lable_2.setText(map.get("lab_2"));
-            lable_2.setTextColor(getColorByKey(map.get("color")));
-            lable_3.setText(map.get("lab_3"));
-            lable_3.setTextColor(getColorByKey(map.get("color")));
-            lable_4.setText(map.get("lab_4"));
-            lable_4.setTextColor(getColorByKey(map.get("color")));
-            lable_5.setText(map.get("lab_5"));
-            lable_5.setTextColor(getColorByKey(map.get("color")));
         }
+        LinearLayout bg=(LinearLayout)view.findViewById(R.id.bg);
+        TextView lable_1=(TextView)view.findViewById(R.id.lab_1);
+        TextView lable_2=(TextView)view.findViewById(R.id.lab_2);
+        TextView lable_3=(TextView)view.findViewById(R.id.lab_3);
+        TextView lable_4=(TextView)view.findViewById(R.id.lab_4);
+        TextView lable_5=(TextView)view.findViewById(R.id.lab_5);
+        Map<String,String>map=data.get(position);
+        lable_1.setText(map.get("lab_1"));
+        lable_2.setText(map.get("lab_2"));
+        lable_3.setText(map.get("lab_3"));
+        lable_4.setText(map.get("lab_4"));
+        lable_5.setText(map.get("lab_5"));
+        bg.setBackgroundColor(getColorByKey(map.get("color")));
         return view;
     }
     //根据字符串返回相对应的颜色

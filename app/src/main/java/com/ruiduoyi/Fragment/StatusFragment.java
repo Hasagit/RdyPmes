@@ -16,6 +16,7 @@ import android.view.animation.AnimationUtils;
 
 import com.ruiduoyi.R;
 import com.ruiduoyi.activity.BlYyfxActivity;
+import com.ruiduoyi.activity.GycsActivity;
 import com.ruiduoyi.activity.SbxxActivity;
 import com.ruiduoyi.activity.MjxxActivity;
 import com.ruiduoyi.activity.PzglActivity;
@@ -394,6 +395,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 break;
             case R.id.gycs:
                 cardView_b6.startAnimation(anim);
+                Intent intent_gycs=new Intent(getContext(), GycsActivity.class);
+                startActivity(intent_gycs);
                 break;
             case R.id.zyzd:
                 cardView_b12.startAnimation(anim);
@@ -487,7 +490,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             case  R.id.sm:
                 if (isReady()){
                     cardView_g13.startAnimation(anim);
-                    startActivityByNetResult(getContext().getString(R.string.sm),"试模","OPR");
+                    startActivityByNetResult(getContext().getString(R.string.sm),"新模试模","OPR");
                 }
                 break;
             case  R.id.sl:

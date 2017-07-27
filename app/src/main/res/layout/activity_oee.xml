@@ -148,6 +148,8 @@
                         android:textColor="@android:color/black" />
                 </LinearLayout>
                 <ListView
+                    android:layout_marginBottom="15dp"
+                    android:background="@drawable/text_bg"
                     android:layout_width="800dp"
                     android:layout_height="match_parent"
                     android:id="@+id/list_oee"

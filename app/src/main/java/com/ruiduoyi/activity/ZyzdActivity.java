@@ -19,6 +19,8 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.ProgressBar;
 import android.widget.TextView;
+
+import com.github.barteksc.pdfviewer.PDFView;
 import com.ruiduoyi.R;
 import com.ruiduoyi.adapter.EasyArrayAdapter;
 import com.ruiduoyi.model.NetHelper;
@@ -99,6 +101,7 @@ public class ZyzdActivity extends BaseActivity {
                         File file=new File((String) msg.obj);
                         pdfView.recycle();
                         pdfView.fromFile(file).defaultPage(0).load();
+                        pdfView.setVisibility(View.VISIBLE);
                         break;
                     case 0x102:
                         progressBar.setVisibility(View.VISIBLE);
@@ -107,6 +110,7 @@ public class ZyzdActivity extends BaseActivity {
                         progressBar.setVisibility(View.GONE);
                         break;
                     case 0x104:
+                        pdfView.setVisibility(View.GONE);
                         dialog.setMessage("未维护对应文件");
                         dialog.show();
                         progressBar.setVisibility(View.GONE);

@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ruiduoyi"
     android:versionCode="3"
-    android:versionName="3.0.2.6">
+    android:versionName="3.0.2.9">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -41,6 +41,7 @@
             android:windowSoftInputMode="adjustUnspecified|stateHidden" />
         <activity
             android:name=".activity.DialogGActivity"
+            android:launchMode="singleTop"
             android:configChanges="orientation|keyboardHidden"
             android:screenOrientation="landscape"
             android:theme="@android:style/Theme.Dialog"
@@ -117,7 +118,8 @@
         <activity android:name=".activity.PgxjActivity" />
         <activity android:name=".activity.ZyzdActivity" />
         <activity android:name=".activity.HddjActivity" />
-        <activity android:name=".activity.SbdjActivity"></activity>
+        <activity android:name=".activity.SbdjActivity" />
+        <activity android:name=".activity.GycsActivity"></activity>
     </application>
 
 </manifest>
