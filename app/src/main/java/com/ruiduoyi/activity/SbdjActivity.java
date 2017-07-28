@@ -375,19 +375,19 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                         switch (checkedId){
                             case R.id.radio_ok:
                                 djData.get(position).put("lab_4","√");
-                                bg.setBackgroundColor(getResources().getColor(R.color.large));
+                                //bg.setBackgroundColor(getResources().getColor(R.color.large));
                                 break;
                             case R.id.radio_ng:
                                 djData.get(position).put("lab_4","X");
-                                bg.setBackgroundColor(getResources().getColor(R.color.color_7));
+                                //bg.setBackgroundColor(getResources().getColor(R.color.color_7));
                                 break;
                             case R.id.radio_dpd:
                                 djData.get(position).put("lab_4","");
-                                bg.setBackgroundColor(Color.WHITE);
+                                //bg.setBackgroundColor(Color.WHITE);
                                 break;
                             case R.id.radio_o:
                                 djData.get(position).put("lab_4","◎");
-                                bg.setBackgroundColor(getResources().getColor(R.color.fragment_bg));
+                                //bg.setBackgroundColor(getResources().getColor(R.color.fragment_bg));
                                 break;
 
                         }
@@ -395,19 +395,19 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                 });
                 switch (map.get("lab_4")){
                     case "√":
-                        bg.setBackgroundColor(getResources().getColor(R.color.large));
+                        //bg.setBackgroundColor(getResources().getColor(R.color.large));
                         radio_ok.setChecked(true);
                         break;
                     case "X":
-                        bg.setBackgroundColor(getResources().getColor(R.color.color_7));
+                        //bg.setBackgroundColor(getResources().getColor(R.color.color_7));
                         radio_ng.setChecked(true);
                         break;
                     case "◎":
-                        bg.setBackgroundColor(getResources().getColor(R.color.fragment_bg));
+                        //bg.setBackgroundColor(getResources().getColor(R.color.fragment_bg));
                         radio_o.setChecked(true);
                         break;
                     case "":
-                        bg.setBackgroundColor(Color.WHITE);
+                        //bg.setBackgroundColor(Color.WHITE);
                         radio_dpd.setChecked(true);
                         break;
                 }

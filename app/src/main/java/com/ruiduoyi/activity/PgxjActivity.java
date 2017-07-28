@@ -366,6 +366,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                     for (int i=0;i<adapter_yy.getSelectData().size();i++){
                         yydms=yydms+adapter_yy.getSelectData().get(i).get("lab_1")+";";
                     }
+                    List<String>result=new ArrayList<String>();
                     for (int i=0;i<data_cong.size();i++){
                         Map<String,String>map=data_cong.get(i);
 
@@ -376,25 +377,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                             if (list.size()>0){
                                 if (list.get(0).size()>0){
                                     if (list.get(0).get(0).equals("OK")){
-                                        List<List<String>>list2=NetHelper.getQuerysqlResult(
-                                                "Exec PAD_Up_Xjllist  'B','"+jtbh+"','',''," +
-                                                        "'','','','"+wkno+"'");
-                                        if (list2!=null){
-                                            if (list2.size()>0){
-                                                if (list2.get(0).size()>0){
-                                                    if (list2.get(0).get(0).equals("OK")){
-                                                        AppUtils.sendUpdateInfoFragmentReceiver(PgxjActivity.this);
-                                                        AppUtils.sendReturnToInfoReceiver(PgxjActivity.this);
-                                                        finish();
-                                                    }else {
-                                                        Message msg=handler.obtainMessage();
-                                                        msg.what=0x102;
-                                                        msg.obj="品质异常发出错误："+list2.get(0).get(0);
-                                                        handler.sendMessage(msg);
-                                                    }
-                                                }
-                                            }
-                                        }
+                                        result.add("OK");
                                     }else {
                                         Message msg=handler.obtainMessage();
                                         msg.what=0x102;
@@ -405,6 +388,30 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                             }
                         }else {
                             AppUtils.uploadNetworkError("Exec PAD_Up_Xjllist",jtbh,sharedPreferences.getString("mac",""));
+                        }
+
+
+                    }
+                    //如果所有都上传成功则发出品质异常
+                    if (result.toString().indexOf("OK")==data_cong.size()){
+                        List<List<String>>list2=NetHelper.getQuerysqlResult(
+                                "Exec PAD_Up_Xjllist  'B','"+jtbh+"','',''," +
+                                        "'','','','"+wkno+"'");
+                        if (list2!=null){
+                            if (list2.size()>0){
+                                if (list2.get(0).size()>0){
+                                    if (list2.get(0).get(0).equals("OK")){
+                                        AppUtils.sendUpdateInfoFragmentReceiver(PgxjActivity.this);
+                                        AppUtils.sendReturnToInfoReceiver(PgxjActivity.this);
+                                        finish();
+                                    }else {
+                                        Message msg=handler.obtainMessage();
+                                        msg.what=0x102;
+                                        msg.obj="品质异常发出错误："+list2.get(0).get(0);
+                                        handler.sendMessage(msg);
+                                    }
+                                }
+                            }
                         }
                     }
                 }

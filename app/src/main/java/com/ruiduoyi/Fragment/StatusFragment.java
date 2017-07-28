@@ -22,6 +22,7 @@ import com.ruiduoyi.activity.MjxxActivity;
 import com.ruiduoyi.activity.PzglActivity;
 import com.ruiduoyi.activity.ScrzActivity;
 import com.ruiduoyi.activity.DialogGActivity;
+import com.ruiduoyi.activity.SlcsActivity;
 import com.ruiduoyi.activity.ZyzdActivity;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
@@ -34,7 +35,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             cardView_g7,cardView_g8,cardView_g9,cardView_g10,cardView_g11,cardView_g12,cardView_g13,
             cardView_g14,cardView_g15,cardView_g16,cardView_g17,cardView_g18,cardView_g19,cardView_g20,cardView_g21,
             cardView_b1,cardView_b2,cardView_b3,cardView_b4,cardView_b5,cardView_b6,cardView_b7,
-            cardView_b8,cardView_b9,cardView_b10,cardView_b11,cardView_b12;
+            cardView_b8,cardView_b9,cardView_b10,cardView_b11,cardView_b12,cardView_b13;
     private String startType,startZldm,startZlmc;
     private Animation anim;
     private SharedPreferences sharedPreferences;
@@ -176,6 +177,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b10=(CardView)view.findViewById(R.id.pzgl);
         cardView_b11=(CardView)view.findViewById(R.id.scrz);
         cardView_b12=(CardView)view.findViewById(R.id.zyzd);
+        cardView_b13=(CardView)view.findViewById(R.id.slcs);
         cardView_g1=(CardView)view.findViewById(R.id.zmsw);
         cardView_g2=(CardView)view.findViewById(R.id.cxpt);
         cardView_g3=(CardView)view.findViewById(R.id.kjsl);
@@ -230,6 +232,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b10.setOnClickListener(this);
         cardView_b11.setOnClickListener(this);
         cardView_b12.setOnClickListener(this);
+        cardView_b13.setOnClickListener(this);
         dialog=new PopupDialog(getActivity(),400,350);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
@@ -411,6 +414,14 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 intent_djby.putExtra("zldm",getResources().getString(R.string.sbdj));
                 startActivity(intent_djby);
                 break;
+            case R.id.slcs:
+                cardView_b13.startAnimation(anim);
+                Intent intent_slcs=new Intent(getContext(), DialogGActivity.class);
+                intent_slcs.putExtra("title","上料参数");
+                intent_slcs.putExtra("type","DOC");
+                intent_slcs.putExtra("zldm",getResources().getString(R.string.slcs));
+                startActivity(intent_slcs);
+            break;
 
 
 
@@ -496,7 +507,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             case  R.id.sl:
                 if (isReady()){
                     cardView_g14.startAnimation(anim);
-                    startActivityByNetResult(getContext().getString(R.string.sl),"试料","OPR");
+                    startActivityByNetResult(getContext().getString(R.string.sl),"原料试料","OPR");
                 }
                 break;
             case  R.id.mjwx:

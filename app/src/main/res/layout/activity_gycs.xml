@@ -271,7 +271,7 @@
 
                         <LinearLayout
                             android:layout_width="match_parent"
-                            android:layout_height="wrap_content"
+                            android:layout_height="45dp"
                             android:layout_marginBottom="5dp"
                             android:layout_marginLeft="10dp"
                             android:layout_marginRight="10dp"
@@ -279,42 +279,42 @@
                             android:orientation="horizontal">
 
                             <TextView
-                                android:layout_width="75dp"
-                                android:layout_height="35dp"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
                                 android:gravity="center"
                                 android:text="成型周期(S)" />
 
                             <TextView
                                 android:id="@+id/cxzq"
-                                android:layout_width="155dp"
+                                android:layout_width="170dp"
                                 android:layout_height="35dp"
                                 android:background="@color/white"
                                 android:gravity="center|right" />
 
                             <TextView
-                                android:layout_width="75dp"
-                                android:layout_height="35dp"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="10dp"
                                 android:gravity="center"
                                 android:text="冷却时间(S)" />
 
                             <TextView
                                 android:id="@+id/lqsj"
-                                android:layout_width="155dp"
+                                android:layout_width="170dp"
                                 android:layout_height="35dp"
                                 android:background="@color/white"
                                 android:gravity="center|right" />
 
                             <TextView
-                                android:layout_width="75dp"
-                                android:layout_height="35dp"
+                                android:layout_width="60dp"
+                                android:layout_height="match_parent"
                                 android:layout_marginLeft="10dp"
                                 android:gravity="center"
                                 android:text="射胶时间(S)" />
 
                             <TextView
                                 android:id="@+id/sjsj"
-                                android:layout_width="155dp"
+                                android:layout_width="170dp"
                                 android:layout_height="35dp"
                                 android:background="@color/white"
                                 android:gravity="center|right" />
@@ -1480,7 +1480,7 @@
                                 android:layout_height="35dp"
                                 android:layout_marginLeft="10dp"
                                 android:gravity="center"
-                                android:text="喷嘴1" />
+                                android:text="喷嘴31" />
 
                             <TextView
                                 android:layout_width="100dp"

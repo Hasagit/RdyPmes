@@ -43,80 +43,80 @@
                     android:layout_marginTop="5dp">
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="模具编号"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/mjbh"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="模具名称"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/mjmc"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="模具尺寸"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/mjgg"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="模具吨位"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/dw"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
                 </TableRow>
 
                 <TableRow
@@ -125,80 +125,80 @@
                     android:layout_marginTop="5dp">
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="模具腔数"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/xs"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="成型周期"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/cxsj"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="模架编号"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/mjah"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="存放位置"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/cwdm"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
                 </TableRow>
 
                 <TableRow
@@ -207,81 +207,81 @@
                     android:layout_marginTop="5dp">
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="凸模材质"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/tmcz"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="责任人员"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/zrry"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="配套设备"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
                         android:id="@+id/mjsb"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
-                        android:visibility="invisible"
                         android:layout_width="wrap_content"
                         android:layout_height="35dp"
                         android:layout_weight="1"
                         android:gravity="center"
                         android:text="备注"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size"
+                        android:visibility="invisible" />
 
                     <TextView
-                        android:textSize="@dimen/mjxx_text_size"
-                        android:visibility="invisible"
                         android:layout_width="wrap_content"
                         android:layout_height="36dp"
                         android:layout_weight="4"
                         android:background="@drawable/text_bg"
                         android:gravity="center"
-                        android:textColor="@android:color/black" />
+                        android:textColor="@android:color/black"
+                        android:textSize="@dimen/mjxx_text_size"
+                        android:visibility="invisible" />
                 </TableRow>
             </TableLayout>
 
@@ -349,10 +349,10 @@
                         android:id="@+id/lineChart"
                         android:layout_width="match_parent"
                         android:layout_height="match_parent"
-                        android:layout_marginTop="10dp"
-                        android:layout_marginRight="10dp"
+                        android:layout_marginBottom="20dp"
                         android:layout_marginLeft="10dp"
-                        android:layout_marginBottom="20dp"></com.github.mikephil.charting.charts.LineChart>
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="10dp"></com.github.mikephil.charting.charts.LineChart>
                 </LinearLayout>
 
                 <LinearLayout
@@ -376,36 +376,37 @@
                         android:orientation="horizontal">
 
                         <TextView
-                            android:textSize="@dimen/mjxx_text_size"
-                            android:layout_width="160dp"
+                            android:layout_width="161dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/text_bg"
                             android:gravity="center"
                             android:text="生产日期"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/mjxx_text_size" />
 
                         <TextView
-                            android:textSize="@dimen/mjxx_text_size"
                             android:layout_width="100dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/text_bg"
                             android:gravity="center"
                             android:text="机台"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/mjxx_text_size" />
 
                         <TextView
-                            android:textSize="@dimen/mjxx_text_size"
                             android:layout_width="110dp"
                             android:layout_height="match_parent"
                             android:background="@drawable/text_bg"
                             android:gravity="center"
                             android:text="合模次数"
-                            android:textColor="@android:color/black" />
+                            android:textColor="@android:color/black"
+                            android:textSize="@dimen/mjxx_text_size" />
                     </LinearLayout>
 
                     <ListView
+                        android:background="@drawable/text_bg"
                         android:id="@+id/list_b2"
-                        android:layout_width="370dp"
+                        android:layout_width="371dp"
                         android:divider="@color/touming"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

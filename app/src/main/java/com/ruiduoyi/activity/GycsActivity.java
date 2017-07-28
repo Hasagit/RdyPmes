@@ -360,6 +360,7 @@ public class GycsActivity extends BaseActivity {
 
 
     private void onItemSelectEven(final String wjbh){
+        AppUtils.sendCountdownReceiver(this);
         jtbh_text.setText("");
         cpbh_text.setText("");
         mjbh_text.setText("");

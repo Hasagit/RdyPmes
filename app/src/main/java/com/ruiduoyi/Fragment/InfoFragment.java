@@ -200,6 +200,10 @@ public class InfoFragment extends Fragment {
                         editor.putString("jhsl",item.get(21));
                         editor.putString("lpsl",item.get(23));
                         editor.putString("blsl",item.get(24));
+                        editor.putString("mjqs",item.get(27));
+                        editor.putString("sjqs",item.get(17));
+                        editor.putString("jzzl",item.get(29));
+                        //editor.putString("jzzl","2");
                         editor.commit();
                         dq_3.setText(item.get(2));
                         dq_4.setText(item.get(3));

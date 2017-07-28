@@ -126,23 +126,42 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     view2.setImageResource(R.drawable.gpio_true);
                     break;
                 case 0x104:
+                    final List<List<String>>list= (List<List<String>>) msg.obj;
+                    if (list.get(0).get(3).equals(list.get(0).get(5))){
+                        dialog.setMessage("当前已是最新版本");
+                        dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                    }else {
+                        dialog.setMessage("当前版本:"+list.get(0).get(5)+"\n最新版本:"+list.get(0).get(3)+"\n是否立即更新？");
+                        dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.getOkbtn().setEnabled(false);
+                                dialog.setMessage("下载更新包当中...");
+                                new Thread(new Runnable() {
+                                    @Override
+                                    public void run() {
+                                        AppUtils.DownLoadFileByUrl(list.get(0).get(2),
+                                                Environment.getExternalStorageDirectory().getPath(),"RdyPmes.apk");
+                                        Intent intent = new Intent(Intent.ACTION_VIEW);
+                                        intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/RdyPmes.apk")),
+                                                "application/vnd.android.package-archive");
+                                        startActivity(intent);
+                                    }
+                                }).start();
+                            }
+                        });
+                    }
+                    dialog.show();
                     //Toast.makeText(MainActivity.this,"服务器异常",Toast.LENGTH_SHORT).show();
                     break;
                 case 0x105:
                     //Toast.makeText(MainActivity.this,"更新失败",Toast.LENGTH_SHORT).show();
                     break;
-                case 0x106:
-                    //Toast.makeText(MainActivity.this,"更新成功",Toast.LENGTH_SHORT).show();
-                    break;
-                case 0x107:
-                    dialog.setMessage("下载更新包中...");
-                    break;
-                case 0x108:
-                    dialog.setMessage("当前已是最新版本");
-                    dialog.getCancle_btn().setEnabled(true);
-                    break;
-                case 0x109:
-                    dialog.dismiss();
                 default:
                     break;
             }
@@ -257,6 +276,19 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         ymd_tx=(TextView)findViewById(R.id.ymd_tx);
         wifi_ig=(ImageView)findViewById(R.id.wifi_ig);
         updateTime();
+
+        dialog=new PopupDialog(this,400,300);
+        dialog.setBackgrounpColor(getResources().getColor(R.color.color_9));
+        dialog.getCancle_btn().setText("取消");
+        dialog.getOkbtn().setText("确定");
+        dialog.setTitle("提示");
+        dialog.getCancle_btn().setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                dialog.dismiss();
+            }
+        });
+
     }
 
     public void initLogoClieckEvent(){
@@ -264,64 +296,28 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         rdy_logo_img.setOnTouchListener(new OnDoubleClickListener(new OnDoubleClickListener.DoubleClickCallback() {
             @Override
             public void onDoubleClick() {
-                if (dialog==null){
-                    dialog=new PopupDialog(MainActivity.this,400,300);
-                    dialog.setMessage("现在更新会导致程序退出，是否立即更新？");
-                    dialog.setBackgrounpColor(getResources().getColor(R.color.color_9));
-                    dialog.setCancelable(false);
-                    dialog.getCancle_btn().setText("取消");
-                    dialog.getCancle_btn().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.dismiss();
-                            dialog=null;
-                        }
-                    });
-                    dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
-                        @Override
-                        public void onClick(View v) {
-                            dialog.getOkbtn().setEnabled(false);
-                            dialog.getCancle_btn().setEnabled(false);
-                            mviewPager.setEnabled(false);
-                            dialog.setMessage("检查更新中，请稍后...");
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_WebAddr");
-                                    if (list!=null){
-                                        if (list.size()>0){
-                                            String oldVersionName= AppUtils.getAppVersionName(MainActivity.this);
-                                            String newVersionName=list.get(0).get(3);
-                                            if (!oldVersionName.equals(newVersionName)){
-                                                handler.sendEmptyMessage(0x107);
-                                                AppUtils.DownLoadFileByUrl(list.get(0).get(2),
-                                                        Environment.getExternalStorageDirectory().getPath(),"RdyPmes.apk");
-                                                Intent intent = new Intent(Intent.ACTION_VIEW);
-                                                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/RdyPmes.apk")),
-                                                        "application/vnd.android.package-archive");
-                                                startActivity(intent);
-                                                handler.sendEmptyMessage(0x109);
-                                            }else {
-                                                AppUtils.uploadNetworkError("Exec PAD_Get_WebAddr NetWordError",jtbh,mac);
-                                                handler.sendEmptyMessage(0x108);
-                                            }
-
-                       /*Message msg=handler.obtainMessage();
-                        msg.what=0x107;
-                        msg.obj=list;
-                        handler.sendMessage(msg);*/
-                                        }
-                                    }else {
-                                        AppUtils.uploadNetworkError("Exec PAD_Get_WebAddr NetWordError",jtbh,mac);
-                                    }
+                dialog.getOkbtn().setEnabled(true);
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_WebAddr");
+                        if (list!=null){
+                            if (list.size()>0){
+                                if (list.get(0).size()>3){
+                                    String oldVersionName= AppUtils.getAppVersionName(MainActivity.this);
+                                    String newVersionName=list.get(0).get(3);
+                                    list.get(0).add(oldVersionName);
+                                    Message msg=handler.obtainMessage();
+                                    msg.what=0x104;
+                                    msg.obj=list;
+                                    handler.sendMessage(msg);
                                 }
-                            }).start();
+                            }
+                        }else {
+                            AppUtils.uploadNetworkError("Exec PAD_Get_WebAddr NetWordError",jtbh,mac);
                         }
-                    });
-                    dialog.getOkbtn().setText("确定");
-
-                    dialog.show();
-                }
+                    }
+                }).start();
             }
         }));
     }

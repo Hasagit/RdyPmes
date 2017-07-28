@@ -93,12 +93,9 @@ public class OeeActivity extends BaseActivity implements View.OnClickListener{
                         break;
                     case 0x102:
                         List<List<String>>list2=(List<List<String>>)msg.obj;
-                        if(list2.size()<1){
-                            //Toast.makeText(OeeActivity.this,"数据异常",Toast.LENGTH_SHORT).show();
-                        }else {
-                            initPieChat(p_chart,list2);
-                            p_chart.startAnimation(animation);
-                        }
+                        initPieChat(p_chart,list2);
+                        p_chart.startAnimation(animation);
+
                         break;
                     case 0x103:
                         List<List<String>>list3=(List<List<String>>)msg.obj;
@@ -108,6 +105,12 @@ public class OeeActivity extends BaseActivity implements View.OnClickListener{
                             initListView(list3);
                             listView.startAnimation(animation);
                         }
+                        break;
+                    case 0x104:
+                        p_chart.clear();
+                        break;
+                    case 0x105:
+                        h_char.clear();
                         break;
                     default:
                         break;
@@ -248,7 +251,7 @@ public class OeeActivity extends BaseActivity implements View.OnClickListener{
 
         dataSet.setValueLinePart1OffsetPercentage(80.f);
         dataSet.setValueLinePart1Length(0.2f);
-        dataSet.setValueLinePart2Length(0.4f);
+        dataSet.setValueLinePart2Length(0.5f);
         dataSet.setValueTextSize(15f);
         dataSet.setYValuePosition(PieDataSet.ValuePosition.OUTSIDE_SLICE);
 
@@ -359,8 +362,7 @@ public class OeeActivity extends BaseActivity implements View.OnClickListener{
                             msg1.obj=list1;
                         }
                     }else {
-                        msg1.what=0x100;
-                        msg1.obj=list1;
+                       handler.sendEmptyMessage(0x105);
                     }
                 }else {
                     msg1.what=0x101;
@@ -378,8 +380,7 @@ public class OeeActivity extends BaseActivity implements View.OnClickListener{
                             msg2.obj=list2;
                         }
                     }else {
-                        msg2.what=0x102;
-                        msg2.obj=list2;
+                        handler.sendEmptyMessage(0x104);
                     }
                 }else {
                     msg2.what=0x101;

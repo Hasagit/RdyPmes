@@ -24,7 +24,7 @@ import com.ruiduoyi.utils.AppUtils;
 
 public class BlYyfxActivity extends BaseActivity implements View.OnClickListener {
     private TextView sjsx_text,zzdh_text,gddh_text,scph_text,mjbh_text,cpbh_text,pmgg_text,mjmc_text,
-                blfx_text,yyfx_text,title_text,jhsl_text,lpsl_text,blpsl_text;
+                blfx_text,yyfx_text,title_text,jhsl_text,lpsl_text,blpsl_text,jzzl_text;
     private String sjsx_str,zzdh_str,gddh_str,scph_str,mjbh_str,cpbh_str,pmgg_str,jhsl_str,lpsl_str,
             blpsl_str;
     private Button cancle_btn,save_btn;
@@ -65,7 +65,7 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
         blfx_btn=(FrameLayout) findViewById(R.id.blfx_btn);
         yyfx_btn=(FrameLayout)findViewById(R.id.yyfx_btn);
         viewPager=(ViewPager)findViewById(R.id.viewPager);
-
+        jzzl_text=(TextView)findViewById(R.id.dq_12);
         blfx_btn.setOnClickListener(this);
         yyfx_btn.setOnClickListener(this);
         cancle_btn.setOnClickListener(this);
@@ -83,7 +83,7 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
         lpsl_text.setText(lpsl_str);
         blpsl_text.setText(blpsl_str);
         title_text.setText(zlmc);
-
+        jzzl_text.setText(sharedPreferences.getString("jzzl",""));
         initViewPager();
     }
 

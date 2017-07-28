@@ -5,12 +5,15 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.view.View;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
 import android.widget.AdapterView;
 import android.widget.Button;
 import android.widget.ListView;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.SimpleAdapter;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -34,14 +37,15 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
     private Button spinner;//不良产品下拉框
     private ListView listView,listView_register;
     private String jtbh;
-    private TextView sjsx_text,zzdh_text,gddh_text,scph_text,mjbh_text,cpbh_text,pmgg_text,mjmc_text,jhsl_text,lpsl_text,blpsl_text,bldm_text,blms_text;
-    private Button btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0,btn_clear,btn_submit,btn_del;
+    private TextView sjsx_text,zzdh_text,gddh_text,scph_text,mjbh_text,cpbh_text,
+            pmgg_text,mjmc_text,jhsl_text,lpsl_text,blpsl_text,bldm_text,blms_text,jzzl_text;
+    private Button btn_dian,btn_1,btn_2,btn_3,btn_4,btn_5,btn_6,btn_7,btn_8,btn_9,btn_0,btn_clear,btn_submit,btn_del;
     private TextView sub_text;
     private Animation anim;
     private String sub_num;
     private String wkno;
     private String sjsx_str,zzdh_str,gddh_str,scph_str,mjbh_str,cpbh_str,pmgg_str,jhsl_str,lpsl_str,
-            blpsl_str,mjmc_str;
+            blpsl_str,mjmc_str,jzzl_str;
     private SigleSelectAdapter adapter2;
     private List<Map<String,String>>data1;
     private int select_position;
@@ -49,6 +53,8 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
     private List<String>zzdh_list=new ArrayList<>();
     private int zzdh_position;
     private PopupDialog dialog;
+    private RadioGroup radioGroup;
+    private RadioButton radio_sl,radio_zl;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -125,6 +131,7 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         jhsl_str=sharedPreferences.getString("jhsl","");
         lpsl_str=sharedPreferences.getString("lpsl","");
         blpsl_str=sharedPreferences.getString("blsl","");
+        jzzl_str=sharedPreferences.getString("jzzl","");
         jtbh=sharedPreferences.getString("jtbh","");
         anim= AnimationUtils.loadAnimation(this,R.anim.sub_num_anim);
         Intent intent_from=getIntent();
@@ -133,6 +140,9 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
     }
 
     private void initView(){
+        radioGroup=(RadioGroup)findViewById(R.id.radioGroup);
+        radio_sl=(RadioButton)findViewById(R.id.radio_sl);
+        radio_zl=(RadioButton)findViewById(R.id.radio_zl);
         cancle_btn=(Button)findViewById(R.id.cancle_btn);
         spinner=(Button) findViewById(R.id.blcp_spinner);
         listView=(ListView)findViewById(R.id.list_b8);
@@ -150,7 +160,7 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         blpsl_text=(TextView)findViewById(R.id.dq_11);
         bldm_text=(TextView)findViewById(R.id.bldm_text);
         blms_text=(TextView)findViewById(R.id.blms_text);
-
+        jzzl_text=(TextView)findViewById(R.id.dq_12);
         sjsx_text.setText(sjsx_str);
         zzdh_text.setText(zzdh_str);
         gddh_text.setText(gddh_str);
@@ -162,7 +172,7 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         jhsl_text.setText(jhsl_str);
         lpsl_text.setText(lpsl_str);
         blpsl_text.setText(blpsl_str);
-
+        jzzl_text.setText(jzzl_str);
 
         btn_0=(Button)findViewById(R.id.btn_0);
         btn_1=(Button)findViewById(R.id.btn_1);
@@ -177,8 +187,10 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         btn_del=(Button)findViewById(R.id.btn_del);
         btn_submit=(Button)findViewById(R.id.btn_submit);
         btn_clear=(Button)findViewById(R.id.btn_clear);
+        btn_dian=(Button)findViewById(R.id.dian);
         listView_register=(ListView)findViewById(R.id.list_b8_2);
         cancle_btn.setOnClickListener(this);
+        btn_dian.setOnClickListener(this);
         btn_0.setOnClickListener(this);
         btn_1.setOnClickListener(this);
         btn_2.setOnClickListener(this);
@@ -204,6 +216,28 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
                 dialog.dismiss();
             }
         });
+
+        btn_dian.setEnabled(false);
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                switch (checkedId){
+                    case R.id.radio_sl:
+                        btn_dian.setEnabled(false);
+                        break;
+                    case R.id.radio_zl:
+                        btn_dian.setEnabled(true);
+                        if (jzzl_str.equals("")){
+                            dialog.setMessageTextColor(Color.RED);
+                            dialog.setMessage("没有维护净重重量的数据，只能按个数输入");
+                            dialog.show();
+                            radio_sl.setChecked(true);
+                        }
+                        break;
+                }
+            }
+        });
+
     }
 
     private void initListView(List<List<String>>lists){
@@ -262,6 +296,13 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
         switch (v.getId()){
             case R.id.cancle_btn:
                 finish();
+                break;
+            case R.id.dian:
+                sub_text.startAnimation(anim);
+                sub_num=sub_text.getText().toString();
+                if(sub_num.indexOf(".")<1){
+                    sub_text.setText(sub_num+".");
+                }
                 break;
             case R.id.btn_0:
                 sub_text.startAnimation(anim);
@@ -462,7 +503,7 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
             //Toast.makeText(this,"请先输入不良数",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (Integer.parseInt(lpsl_str)<Integer.parseInt(blpsl_str)+Integer.parseInt(sub_text.getText().toString().trim())){
+        if (Double.parseDouble(lpsl_str)<Double.parseDouble(blpsl_str)+Double.parseDouble(sub_text.getText().toString().trim())){
             dialog.setMessage("不良品总数量不能大于良品数量");
             dialog.setMessageTextColor(Color.RED);
             dialog.show();
@@ -476,9 +517,15 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
 
 
     private void upLoadOneData(String wkno){
+        String num;
+        if (radio_sl.isChecked()){
+            num=sub_text.getText().toString();
+        }else {
+            num=String.valueOf((int) (Double.parseDouble(sub_text.getText().toString())/Double.parseDouble(jzzl_str)));
+        }
         List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Add_BlmInfo " +
                 "'A','"+zzdh_list.get(zzdh_position)+"','','','"+jtbh+"','','"+bldm_text.getText().toString()+"'," +
-                "'"+sub_text.getText().toString()+"','"+wkno+"'");
+                "'"+num+"','"+wkno+"'");
         if (list!=null){
             if (list.size()>0){
                 if (list.get(0).size()>0){
