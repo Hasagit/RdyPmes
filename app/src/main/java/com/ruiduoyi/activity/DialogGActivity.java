@@ -8,12 +8,15 @@ import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
+import android.support.annotation.IdRes;
 import android.view.View;
 import android.view.WindowManager;
 import android.view.inputmethod.InputMethodManager;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.FrameLayout;
+import android.widget.LinearLayout;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 
 import com.ruiduoyi.R;
@@ -31,6 +34,9 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
     private String title,type,zldm,jtbh;
     private FrameLayout yy_bg;
     private boolean isFromBlyyfx;
+    private LinearLayout ds_bg;
+    private RadioGroup radioGroup;
+
     //接收刷卡串口广播
     private BroadcastReceiver receiver=new BroadcastReceiver() {
         @Override
@@ -59,39 +65,7 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                     final String two=readCardResult.substring(0,2);
                     if (readCardResult.substring(0,2).equals("OK")){
                         if (type.equals("OPR")){//执行指令操作
-                            new Thread(new Runnable() {
-                                @Override
-                                public void run() {
-                                    List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_SrvCon '"+jtbh+"','"+zldm+"','"+num+"',''");
-                                    if (list!=null){
-                                        if (list.size()>0){
-                                            if (list.get(0).size()>0){
-                                                if (list.get(0).get(0).trim().equals("OK")){
-                                                  if (isFromBlyyfx){//从BlyyfxActivity启动来的
-                                                      type="DOC";
-                                                      getNetData(0x101);
-                                                  }else {//从statusFragment启动来的
-                                                      Intent intent=new Intent();
-                                                      intent.setAction("UpdateInfoFragment");
-                                                      sendBroadcast(intent);
-                                                      if (!(title.equals("结束")|title.equals("人员上岗")|title.equals("品管巡机"))){
-                                                          Intent intent2=new Intent();
-                                                          intent2.setAction("com.Ruiduoyi.returnToInfoReceiver");
-                                                          sendBroadcast(intent2);
-                                                      }
-                                                      finish();
-                                                  }
-                                                }else {
-                                                    Message msg=handler.obtainMessage();
-                                                    msg.what=0x102;
-                                                    msg.obj=list.get(0).get(0);
-                                                    handler.sendMessage(msg);
-                                                }
-                                            }
-                                        }
-                                    }
-                                }
-                            }).start();
+                            execOPR();
                         }else {//执行文档操作
                             String wkno=readCardResult.substring(2,readCardResult.length());
                             Intent intent;
@@ -172,12 +146,37 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         title_text.setText(title);
         ok_btn.setOnClickListener(this);
         cancle_btn.setOnClickListener(this);
-
+        ds_bg=(LinearLayout)findViewById(R.id.ds_bg);
+        radioGroup=(RadioGroup)findViewById(R.id.radioGroup);
         InputMethodManager imm = (InputMethodManager)getSystemService(Context.INPUT_METHOD_SERVICE);
         imm.hideSoftInputFromWindow(num_edit.getWindowToken(),0);
         getWindow().setFlags(WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM,
                 WindowManager.LayoutParams.FLAG_ALT_FOCUSABLE_IM);
 
+
+
+        if (title.equals("定色")){
+            ds_bg.setVisibility(View.VISIBLE);
+        }
+        radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+            @Override
+            public void onCheckedChanged(RadioGroup group, @IdRes int checkedId) {
+                switch (checkedId){
+                    case R.id.radio_ye:
+                        title="定色";
+                        type="OPR";
+                        zldm=getResources().getString(R.string.ds);
+                        title_text.setText(title);
+                        break;
+                    case R.id.radio_no:
+                        title="腔数变更";
+                        type="DOC";
+                        zldm=getResources().getString(R.string.jtjqsbg);
+                        title_text.setText(title);
+                        break;
+                }
+            }
+        });
 
     }
 
@@ -187,6 +186,43 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         IntentFilter receiverfilter=new IntentFilter();
         receiverfilter.addAction("SerialPortNum");
         registerReceiver(receiver,receiverfilter);
+    }
+
+
+    private void execOPR(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_SrvCon '"+jtbh+"','"+zldm+"','"+num+"',''");
+                if (list!=null){
+                    if (list.size()>0){
+                        if (list.get(0).size()>0){
+                            if (list.get(0).get(0).trim().equals("OK")){
+                                if (isFromBlyyfx){//从BlyyfxActivity启动来的
+                                    type="DOC";
+                                    getNetData(0x101);
+                                }else {//从statusFragment启动来的
+                                    Intent intent=new Intent();
+                                    intent.setAction("UpdateInfoFragment");
+                                    sendBroadcast(intent);
+                                    if (!(title.equals("结束")|title.equals("人员上岗")|title.equals("品管巡机"))){
+                                        Intent intent2=new Intent();
+                                        intent2.setAction("com.Ruiduoyi.returnToInfoReceiver");
+                                        sendBroadcast(intent2);
+                                    }
+                                    finish();
+                                }
+                            }else {
+                                Message msg=handler.obtainMessage();
+                                msg.what=0x102;
+                                msg.obj=list.get(0).get(0);
+                                handler.sendMessage(msg);
+                            }
+                        }
+                    }
+                }
+            }
+        }).start();
     }
 
     private void getNetData(final int what){

@@ -38,13 +38,12 @@
             android:layout_width="500dp"
             android:layout_height="match_parent"
             android:layout_marginLeft="10dp"
-            android:layout_marginTop="10dp"
+            android:layout_marginTop="5dp"
             android:orientation="vertical">
 
             <LinearLayout
                 android:layout_width="match_parent"
-                android:layout_height="45dp"
-                android:layout_marginTop="5dp">
+                android:layout_height="45dp">
 
                 <TextView
                     android:layout_width="80dp"
@@ -309,6 +308,13 @@
                             android:layout_margin="2dp"
                             android:text="3"
                             android:textSize="20dp" />
+                        <Button
+                            android:id="@+id/btn_0"
+                            android:layout_width="@dimen/slcs_num_width"
+                            android:layout_height="@dimen/slcs_num_height"
+                            android:layout_margin="2dp"
+                            android:text="0"
+                            android:textSize="20dp" />
                     </LinearLayout>
 
                     <LinearLayout
@@ -339,6 +345,14 @@
                             android:layout_height="@dimen/slcs_num_height"
                             android:layout_margin="2dp"
                             android:text="6"
+                            android:textSize="20dp" />
+
+                        <Button
+                            android:id="@+id/btn_del"
+                            android:layout_width="@dimen/slcs_num_width"
+                            android:layout_height="@dimen/slcs_num_height"
+                            android:layout_margin="2dp"
+                            android:text="."
                             android:textSize="20dp" />
                     </LinearLayout>
 
@@ -371,29 +385,6 @@
                             android:layout_margin="2dp"
                             android:text="9"
                             android:textSize="20dp" />
-                    </LinearLayout>
-
-                    <LinearLayout
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_marginLeft="2dp"
-                        android:orientation="horizontal">
-
-                        <Button
-                            android:id="@+id/btn_0"
-                            android:layout_width="@dimen/slcs_num_width"
-                            android:layout_height="@dimen/slcs_num_height"
-                            android:layout_margin="2dp"
-                            android:text="0"
-                            android:textSize="20dp" />
-
-                        <Button
-                            android:id="@+id/btn_del"
-                            android:layout_width="@dimen/slcs_num_width"
-                            android:layout_height="@dimen/slcs_num_height"
-                            android:layout_margin="2dp"
-                            android:text="."
-                            android:textSize="20dp" />
 
                         <Button
                             android:id="@+id/btn_clear"
@@ -403,30 +394,20 @@
                             android:text="清除"
                             android:textSize="20dp" />
                     </LinearLayout>
-                </LinearLayout>
 
-                <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="match_parent"
-                    android:orientation="vertical">
-
-                    <Button
-                        android:layout_width="@dimen/blnum_width"
-                        android:layout_height="162dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="15dp"
-                        android:text="提交"
-                        android:textSize="20dp"
-                        android:visibility="invisible" />
-
-                    <Button
-                        android:id="@+id/btn_submit"
-                        android:layout_width="@dimen/blnum_width"
-                        android:layout_height="176dp"
-                        android:layout_marginLeft="5dp"
-                        android:layout_marginTop="10dp"
-                        android:text="提交"
-                        android:textSize="20dp" />
+                    <LinearLayout
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginLeft="2dp"
+                        android:orientation="horizontal">
+                        <Button
+                            android:id="@+id/btn_submit"
+                            android:layout_width="match_parent"
+                            android:layout_height="match_parent"
+                            android:layout_marginLeft="5dp"
+                            android:text="提交"
+                            android:textSize="20dp" />
+                    </LinearLayout>
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>

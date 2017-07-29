@@ -460,6 +460,7 @@
             </LinearLayout>
 
             <ListView
+                android:background="@drawable/text_bg"
                 android:layout_marginBottom="5dp"
                 android:id="@+id/list_jtjqsbg_2"
                 android:layout_width="match_parent"

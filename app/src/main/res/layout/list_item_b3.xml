@@ -32,7 +32,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:text="暂停"
+                android:text="结束"
                 android:id="@+id/off_btn"/>
         </LinearLayout>
         <TextView

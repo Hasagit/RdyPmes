@@ -154,6 +154,7 @@ public class SlcsActivity extends BaseActivity implements View.OnClickListener{
         dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppUtils.sendCountdownReceiver(SlcsActivity.this);
                 dialog.dismiss();
             }
         });
@@ -301,6 +302,7 @@ public class SlcsActivity extends BaseActivity implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        AppUtils.sendCountdownReceiver(SlcsActivity.this);
         switch (v.getId()){
             case R.id.d1bfbsd:
                 bfbsd_text.setBackgroundColor(getResources().getColor(R.color.small));

@@ -73,8 +73,9 @@
             </LinearLayout>
 
             <ListView
+                android:background="@drawable/text_bg"
                 android:id="@+id/list_blfx"
-                android:layout_width="match_parent"
+                android:layout_width="590dp"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:choiceMode="singleChoice"

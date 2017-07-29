@@ -70,10 +70,11 @@
     </LinearLayout>
 
     <ListView
+        android:background="@drawable/text_bg"
         android:layout_marginBottom="10dp"
         android:id="@+id/list_bl"
         android:divider="@color/touming"
-        android:layout_width="match_parent"
+        android:layout_width="710dp"
         android:layout_height="wrap_content"
         android:layout_weight="1"
         android:choiceMode="singleChoice"></ListView>

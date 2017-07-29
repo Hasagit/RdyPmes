@@ -3,6 +3,7 @@
     android:orientation="vertical" android:layout_width="1261dp"
     android:layout_height="70dp">
     <LinearLayout
+        android:layout_gravity="center_horizontal"
         android:layout_width="1250dp"
         android:layout_height="60dp"
         android:orientation="horizontal">

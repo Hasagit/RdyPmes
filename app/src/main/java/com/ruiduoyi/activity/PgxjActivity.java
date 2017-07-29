@@ -44,6 +44,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
     private YyfxAdapter adapter_yy;
     private PopupDialog dialog;
     private List<Map<String,String>>upload_data;
+    private PopupDialog dialog2;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -149,6 +150,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                 }
             }
         });
+        dialog2=new PopupDialog(PgxjActivity.this,400,350);
     }
 
     private void getNetData(){
@@ -431,7 +433,27 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                 break;
             case R.id.save_btn:
                 if (isReady()){
-                    uploadData();
+                    if (radio_ok.isChecked()){
+                        dialog2.setTitle("提示");
+                        dialog2.setMessage("请再次确认巡查腔数与实际腔数是否一致？");
+                        dialog2.getCancle_btn().setText("取消");
+                        dialog2.getCancle_btn().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog2.dismiss();
+                            }
+                        });
+                        dialog2.getOkbtn().setText("确定");
+                        dialog2.getOkbtn().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                uploadData();
+                            }
+                        });
+                        dialog2.show();
+                    }else {
+                        uploadData();
+                    }
                 }
                 break;
         }
@@ -441,6 +463,11 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
     @Override
     protected void onDestroy() {
         super.onDestroy();
-        dialog.dismiss();
+        if (dialog.isShow()){
+            dialog.dismiss();
+        }
+        if (dialog2.isShow()){
+            dialog2.dismiss();
+        }
     }
 }

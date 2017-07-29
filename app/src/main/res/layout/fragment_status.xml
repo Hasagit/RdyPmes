@@ -782,7 +782,8 @@
                         android:layout_width="@dimen/status_btn_width"
                         android:layout_height="@dimen/status_btn_height"
                         app:cardCornerRadius="@dimen/status_rad"
-                        app:cardElevation="@dimen/status_ele">
+                        app:cardElevation="@dimen/status_ele"
+                        >
                         <TextView
                             android:layout_gravity="center"
                             android:layout_width="wrap_content"

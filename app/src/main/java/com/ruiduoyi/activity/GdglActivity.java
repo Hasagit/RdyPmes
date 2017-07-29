@@ -42,6 +42,7 @@ public class GdglActivity extends BaseActivity implements View.OnClickListener{
                     break;
                 case 0x101:
                     getNetData();
+                    AppUtils.sendUpdateInfoFragmentReceiver(GdglActivity.this);
                     String result=(String) msg.obj;
                     if (!result.equals("OK")){
                         dialog.setMessage(result);
