@@ -13,6 +13,8 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.view.animation.Animation;
 import android.view.animation.AnimationUtils;
+import android.widget.FrameLayout;
+import android.widget.TextView;
 
 import com.ruiduoyi.R;
 import com.ruiduoyi.activity.BlYyfxActivity;
@@ -40,6 +42,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     private Animation anim;
     private SharedPreferences sharedPreferences;
     private PopupDialog dialog;
+    private FrameLayout unread_bg;
+    private TextView unread_text;
     public StatusFragment() {
 
     }
@@ -199,6 +203,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_g19=(CardView)view.findViewById(R.id.rysg) ;
         cardView_g20=(CardView)view.findViewById(R.id.pgxj) ;
         cardView_g21=(CardView)view.findViewById(R.id.js) ;
+        unread_bg=(FrameLayout)view.findViewById(R.id.unread_bg);
+        unread_text=(TextView)view.findViewById(R.id.unread_text);
         cardView_g1.setOnClickListener(this);
         cardView_g2.setOnClickListener(this);
         cardView_g3.setOnClickListener(this);
@@ -329,6 +335,20 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             return false;
         }
         return true;
+    }
+
+
+    public void setUnread(String num){
+        if (num.equals("0")){
+            unread_bg.setVisibility(View.GONE);
+        }else if (num.length()>2){
+            unread_text.setVisibility(View.VISIBLE);
+            unread_text.setText("");
+            unread_bg.setBackground(getResources().getDrawable(R.drawable.unread_more));
+        }else {
+            unread_text.setVisibility(View.VISIBLE);
+            unread_text.setText(num);
+        }
     }
 
 

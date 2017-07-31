@@ -41,6 +41,7 @@ import com.github.mikephil.charting.data.BarEntry;
 import com.github.mikephil.charting.formatter.IAxisValueFormatter;
 import com.github.mikephil.charting.interfaces.datasets.IBarDataSet;
 import com.ruiduoyi.R;
+import com.ruiduoyi.activity.MainActivity;
 import com.ruiduoyi.activity.ScrzActivity;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
@@ -64,12 +65,13 @@ public class InfoFragment extends Fragment {
                 mo_1,mo_2,mo_3,mo_4,mo_5,mo_6,mo_7,mo_8,tong_1,tong_2,tong_3,tong_4,tong_5,tong_6,jtbh_text,status,msg_text,
                 caozuo_text,jisu_text,cao_name_text,ji_name_text,labRym;
     private SharedPreferences sharedPreferences;
-    private ImageView img_1,img_2,img_3,img_4,img_5,img_6,img_7,img_8,img_pho1,img_pho2;
+    private ImageView img_1,img_2,img_3,img_4,img_5,img_6,img_7,img_8,img_0,img_pho1,img_pho2;
     private CardView cardView;
     private ScrollView tip_layout;
     private String filePhath;
     private Timer updateTimer;
     private String mac;
+    private MainActivity activity;
 
 
 
@@ -101,6 +103,7 @@ public class InfoFragment extends Fragment {
         IntentFilter receiverfilter=new IntentFilter();
         receiverfilter.addAction("UpdateInfoFragment");
         getContext().registerReceiver(receiver,receiverfilter);
+        activity= (MainActivity) getActivity();
     }
 
 
@@ -155,6 +158,7 @@ public class InfoFragment extends Fragment {
         cao_name_text=(TextView)view.findViewById(R.id.cao_name);
         caozuo_text=(TextView)view.findViewById(R.id.caozuo);
         labRym=(TextView)view.findViewById(R.id.labRym);
+        img_0=(ImageView)view.findViewById(R.id.img_0);
         img_1=(ImageView)view.findViewById(R.id.img_1);
         img_2=(ImageView)view.findViewById(R.id.img_2);
         img_3=(ImageView)view.findViewById(R.id.img_3);
@@ -385,12 +389,18 @@ public class InfoFragment extends Fragment {
         status.setText(item.get(10));
         cardView.setCardBackgroundColor(getColorByKey(item.get(2)));
         status.setTextColor(getColorByKey(item.get(13)));
+        activity.getStatusFragment().setUnread(item.get(14));
         String[] temp=item.get(11).split("\\\\n");
         String tip="";
         for (int i=0;i<temp.length;i++){
             tip=tip+temp[i]+"\n";
         }
         msg_text.setText(tip);
+        if (item.get(15).equals("1")){
+            img_0.setVisibility(View.VISIBLE);
+        }else {
+            img_0.setVisibility(View.GONE);
+        }
         if (item.get(3).equals("1")){
             img_1.setVisibility(View.VISIBLE);
         }else {
@@ -792,7 +802,7 @@ public class InfoFragment extends Fragment {
                     if(list2!=null){
                         handler.sendEmptyMessage(0x111);
                         if (list2.size()>0){
-                            if (list2.get(0).size()>13){
+                            if (list2.get(0).size()>15){
                                 Message msg=handler.obtainMessage();
                                 msg.what=0x104;
                                 msg.obj=list2;

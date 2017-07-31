@@ -62,6 +62,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
     private String mac;
     private PopupDialog dialog;
     private BroadcastReceiver gpioSignalReceiver;
+    private StatusFragment statusFragment;
     private BroadcastReceiver returnToInfoReceiver=new BroadcastReceiver() {
         @Override
         public void onReceive(Context context, Intent intent) {
@@ -207,7 +208,8 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         mtabLayout.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
         viewPagerAdapter=new ViewPagerAdapter(getSupportFragmentManager());
         viewPagerAdapter.addFragment(InfoFragment.newInstance(),getResources().getString(R.string.production_information));
-        viewPagerAdapter.addFragment(StatusFragment.newInstance(),getResources().getString(R.string.engineering_status));
+        statusFragment=new StatusFragment();
+        viewPagerAdapter.addFragment(statusFragment,getResources().getString(R.string.engineering_status));
         viewPagerAdapter.addFragment(ManageFragment.newInstance(),getResources().getString(R.string.production_management));
         //viewPagerAdapter.addFragment(TestFragment.newInstance(),"作业指导");
         mviewPager.setAdapter(viewPagerAdapter);
@@ -288,7 +290,6 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 dialog.dismiss();
             }
         });
-
     }
 
     public void initLogoClieckEvent(){
@@ -459,10 +460,9 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         event_gpio.MyObserverStart();*/
     }
 
-
-
-
-
+    public StatusFragment getStatusFragment() {
+        return statusFragment;
+    }
 
     @Override
     protected void onDestroy() {

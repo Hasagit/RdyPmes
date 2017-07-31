@@ -44,7 +44,6 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
     private Button cancle_btn;
     private Animation anim;
     private PopupDialog tipDialog;
-    private LinearLayout qs_bg,jtbh_bg;
     private Animation anim2;
     private Button begin_btn;
     private String wkno;
@@ -72,8 +71,6 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
         begin_btn=(Button)findViewById(R.id.begin_btn);
         cancle_btn=(Button)findViewById(R.id.cancle_btn);
 
-        jtbh_bg=(LinearLayout)findViewById(R.id.jtbh_bg);
-        qs_bg=(LinearLayout)findViewById(R.id.qs_bg);
         cancle_btn.setOnClickListener(this);
         begin_btn.setOnClickListener(this);
         jtbh_text.setText(jtbh);
