@@ -438,8 +438,8 @@ public class SlcsActivity extends BaseActivity implements View.OnClickListener{
             case R.id.btn_submit:
                 if (isReady()){
                     final PopupDialog dialog=new PopupDialog(SlcsActivity.this,400,300);
-                    dialog.setMessage("提交之后在平板上不能更改，如需更改请到电脑端更改");
-                    dialog.setMessageTextColor(Color.RED);
+                    dialog.setMessage("是否确认提交？");
+                    dialog.setMessageTextColor(Color.BLACK);
                     dialog.setTitle("提示");
                     dialog.getCancle_btn().setText("取消");
                     dialog.getCancle_btn().setOnClickListener(new View.OnClickListener() {

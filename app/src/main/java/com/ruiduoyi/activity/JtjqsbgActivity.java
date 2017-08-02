@@ -127,7 +127,16 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                         break;
                     case 0x104:
                         Map<String,String>map= (Map<String, String>) msg.obj;
-                        mjbh_text.setText(map.get("mjbh"));
+                        Intent intent=new Intent(JtjqsbgActivity.this,Jtjqsbg2Activity.class);
+                        intent.putExtra("wkno",wkno);
+                        intent.putExtra("zzdh",map.get("zzdh"));
+                        intent.putExtra("mjbh",map.get("mjbh"));
+                        intent.putExtra("mjmc",map.get("mjmc"));
+                        intent.putExtra("mjqs",map.get("mjqs"));
+                        intent.putExtra("cpqs",map.get("cpqs"));
+                        intent.putExtra("pmgg",map.get("pmgg"));
+                        startActivityForResult(intent,1);
+                        /*mjbh_text.setText(map.get("mjbh"));
                         mjmc_text.setText(map.get("mjmc"));
                         mjqs_text.setText(map.get("mjqs"));
                         cpbh_text.setText(map.get("wldm"));
@@ -140,7 +149,7 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                             sjqs_text.setBackgroundColor(Color.WHITE);
                         }else {
                             sjqs_text.setBackgroundColor(Color.RED);
-                        }
+                        }*/
                         break;
                     default:
                         break;

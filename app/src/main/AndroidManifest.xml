@@ -3,7 +3,7 @@
     xmlns:tools="http://schemas.android.com/tools"
     package="com.ruiduoyi"
     android:versionCode="3"
-    android:versionName="3.0.3.2">
+    android:versionName="3.0.3.3">
 
     <uses-permission android:name="android.permission.WRITE_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.ACCESS_WIFI_STATE" />
@@ -120,7 +120,8 @@
         <activity android:name=".activity.HddjActivity" />
         <activity android:name=".activity.SbdjActivity" />
         <activity android:name=".activity.GycsActivity" />
-        <activity android:name=".activity.SlcsActivity"></activity>
+        <activity android:name=".activity.SlcsActivity" />
+        <activity android:name=".activity.QsfhActivity"></activity>
     </application>
 
 </manifest>

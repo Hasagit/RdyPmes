@@ -142,7 +142,7 @@
                         android:layout_width="120dp"
                         android:layout_height="match_parent"
                         android:textColor="@android:color/black"
-                        android:text="制造单号"/>
+                        android:text="MES单号"/>
                     <TextView
                         android:background="@drawable/text_bg"
                         android:gravity="center"

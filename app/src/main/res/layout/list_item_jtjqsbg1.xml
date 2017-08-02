@@ -18,7 +18,7 @@
             <Button
                 android:layout_width="match_parent"
                 android:layout_height="65dp"
-                android:text="选择"
+                android:text="变更"
                 android:id="@+id/on_btn"/>
         </LinearLayout>
 

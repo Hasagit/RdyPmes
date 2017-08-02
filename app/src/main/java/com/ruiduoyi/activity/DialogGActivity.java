@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
@@ -43,7 +44,10 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         public void onReceive(Context context, Intent intent) {
             num=intent.getStringExtra("num");
             num_edit.setText(num);
-            getNetData(0x100);
+            if (sharedPreferences.getString("doIsFinish","OK").equals("OK")){
+                setIsFinishNo();
+                getNetData(0x100);
+            }
         }
     };
 
@@ -101,7 +105,12 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                                 intent=new Intent(DialogGActivity.this,SlcsActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
+                            }else if(title.equals("腔数复核")){
+                                intent=new Intent(DialogGActivity.this,QsfhActivity.class);
+                                intent.putExtra("wkno",wkno);
+                                startActivity(intent);
                             }
+                            setIsFinishOk();
                             finish();
 
                         }
@@ -186,6 +195,7 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         IntentFilter receiverfilter=new IntentFilter();
         receiverfilter.addAction("SerialPortNum");
         registerReceiver(receiver,receiverfilter);
+        setIsFinishOk();
     }
 
 
@@ -210,6 +220,7 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                                         intent2.setAction("com.Ruiduoyi.returnToInfoReceiver");
                                         sendBroadcast(intent2);
                                     }
+                                    setIsFinishOk();
                                     finish();
                                 }
                             }else {
@@ -217,9 +228,16 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                                 msg.what=0x102;
                                 msg.obj=list.get(0).get(0);
                                 handler.sendMessage(msg);
+                                setIsFinishOk();
                             }
+                        }else {
+                            setIsFinishOk();
                         }
+                    }else {
+                        setIsFinishOk();
                     }
+                }else {
+                    setIsFinishOk();
                 }
             }
         }).start();
@@ -238,9 +256,14 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                             msg.what=what;
                             msg.obj=list.get(0).get(0);
                             handler.sendMessage(msg);
+                        }else {
+                            setIsFinishOk();
                         }
+                    }else {
+                        setIsFinishOk();
                     }
                 }else {
+                    setIsFinishOk();
                     AppUtils.uploadNetworkError("PAD_Read_CardID",jtbh,sharedPreferences.getString("mac",""));
                 }
             }
@@ -266,6 +289,19 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                 break;
         }
     }
+
+    private void setIsFinishOk(){
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("doIsFinish","OK");
+        editor.commit();
+    }
+
+    private void setIsFinishNo(){
+        SharedPreferences.Editor editor=sharedPreferences.edit();
+        editor.putString("doIsFinish","NO");
+        editor.commit();
+    }
+
 
     @Override
     protected void onDestroy() {

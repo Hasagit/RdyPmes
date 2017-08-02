@@ -49,7 +49,7 @@
                     android:layout_width="80dp"
                     android:layout_height="match_parent"
                     android:gravity="center"
-                    android:text="制造单号" />
+                    android:text="MES单号" />
 
                 <TextView
                     android:id="@+id/zzdh"

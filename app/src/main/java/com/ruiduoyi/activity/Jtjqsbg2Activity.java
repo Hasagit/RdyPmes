@@ -38,13 +38,12 @@ import java.util.Map;
 public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListener{
     private Handler handler;
     private Animation anim;
-    private String jtbh,zzdh,wkno,mjbh, mjmc, mjqs, cpqs;;
+    private String jtbh,zzdh,wkno,mjbh, mjmc, mjqs, cpqs;
     private SharedPreferences sharedPreferences;
     private TextView jtbh_text,new_jtbh_text;
     private Button cancle_btn;
     private ListView listView_1;
     private PopupDialog dialog;
-    private List<Map<String, String>>data_dt;
     private Button jtbhSub_btn;
     private FrameLayout dtxx_btn,dtwz_btn;
     private ViewPager viewPager;

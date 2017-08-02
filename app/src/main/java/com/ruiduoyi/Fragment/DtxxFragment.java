@@ -29,8 +29,8 @@ import java.util.List;
 import java.util.Map;
 
 public class DtxxFragment extends Fragment {
-    private TextView mjbh_text,mjmc_text,mjxs_text,cpxs_text;
-    private String mjbh,mjqs,mjmc,cpqs,jtbh,zzdh,wkno;
+    private TextView mjbh_text,mjmc_text,mjxs_text,cpxs_text,pmgg_text;
+    private String mjbh,mjqs,mjmc,cpqs,jtbh,zzdh,wkno,pmgg;
     private SharedPreferences sharedPreferences;
     private ListView listView;
     private Handler handler;
@@ -63,11 +63,14 @@ public class DtxxFragment extends Fragment {
         mjxs_text=(TextView)view.findViewById(R.id.mjxs_text);
         cpxs_text=(TextView)view.findViewById(R.id.cpxs_text);
         listView=(ListView)view.findViewById(R.id.list_2);
+        pmgg_text=(TextView)view.findViewById(R.id.pmgg_text);
+
 
         mjbh_text.setText(mjbh);
         mjmc_text.setText(mjmc);
         mjxs_text.setText(mjqs);
         cpxs_text.setText(cpqs);
+        pmgg_text.setText(pmgg);
 
         if (!mjqs.equals(cpqs)){
             cpxs_text.setBackgroundColor(Color.RED);
@@ -96,6 +99,7 @@ public class DtxxFragment extends Fragment {
         cpqs=intent_from.getStringExtra("cpqs");
         zzdh=intent_from.getStringExtra("zzdh");
         wkno=intent_from.getStringExtra("wkno");
+        pmgg=intent_from.getStringExtra("pmgg");
 
         sharedPreferences=getContext().getSharedPreferences("info",Context.MODE_PRIVATE);
         jtbh=sharedPreferences.getString("jtbh","");
@@ -121,6 +125,7 @@ public class DtxxFragment extends Fragment {
                             data_dt.add(map);
                         }
                         initDutouList(data_dt);
+                        getGongdanData();
                         break;
                     case 0x105:
                         getGongdanData();

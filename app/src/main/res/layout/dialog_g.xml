@@ -59,14 +59,14 @@
         android:visibility="gone"
         android:layout_gravity="center_horizontal"
         android:layout_width="wrap_content"
-        android:layout_height="50dp"
-        android:orientation="horizontal">
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
         <TextView
-            android:textColor="@android:color/black"
+            android:textColor="@android:color/holo_red_dark"
             android:layout_marginRight="10dp"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
-            android:textSize="20dp"
+            android:textSize="25dp"
             android:layout_gravity="center_vertical"
             android:text="产品腔数与实际腔数是否一致？"/>
         <RadioGroup
@@ -82,7 +82,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="是"
-                android:textSize="20dp"
+                android:textSize="25dp"
                 android:id="@+id/radio_ye"/>
             <RadioButton
                 android:textColor="@android:color/holo_red_dark"
@@ -90,7 +90,7 @@
                 android:layout_weight="1"
                 android:layout_height="match_parent"
                 android:text="否"
-                android:textSize="20dp"
+                android:textSize="25dp"
                 android:id="@+id/radio_no"/>
         </RadioGroup>
     </LinearLayout>

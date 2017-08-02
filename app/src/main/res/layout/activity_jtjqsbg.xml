@@ -30,12 +30,13 @@
     </FrameLayout>
 
     <HorizontalScrollView
+        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
         <LinearLayout
             android:layout_width="match_parent"
-            android:layout_height="350dp"
+            android:layout_height="match_parent"
             android:orientation="vertical">
 
             <LinearLayout
@@ -73,7 +74,7 @@
                     android:layout_height="match_parent"
                     android:background="@drawable/text_bg"
                     android:gravity="center"
-                    android:text="制造单号"
+                    android:text="MES单号"
                     android:textColor="@android:color/black" />
 
                 <TextView
@@ -191,6 +192,7 @@
         android:background="@color/blue_sl_false"></LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="1"
@@ -470,6 +472,7 @@
     </LinearLayout>
 
     <LinearLayout
+        android:visibility="gone"
         android:layout_width="match_parent"
         android:layout_height="20dp"
         android:background="@color/blue_sl_false"></LinearLayout>

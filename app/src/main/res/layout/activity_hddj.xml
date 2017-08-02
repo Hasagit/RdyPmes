@@ -67,7 +67,7 @@
                     android:layout_width="108dp"
                     android:layout_height="match_parent"
                     android:textColor="@android:color/black"
-                    android:text="制造单号"/>
+                    android:text="MES单号"/>
                 <TextView
                     android:background="@drawable/text_bg"
                     android:gravity="center"
@@ -170,7 +170,7 @@
                     android:layout_marginLeft="10dp"
                     android:layout_marginRight="10dp"
                     android:gravity="center"
-                    android:text="制造单号"
+                    android:text="MES单号"
                     android:textColor="@android:color/black" />
 
                 <TextView

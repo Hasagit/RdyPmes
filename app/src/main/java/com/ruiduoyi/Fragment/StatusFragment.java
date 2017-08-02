@@ -19,6 +19,7 @@ import android.widget.TextView;
 import com.ruiduoyi.R;
 import com.ruiduoyi.activity.BlYyfxActivity;
 import com.ruiduoyi.activity.GycsActivity;
+import com.ruiduoyi.activity.QsfhActivity;
 import com.ruiduoyi.activity.SbxxActivity;
 import com.ruiduoyi.activity.MjxxActivity;
 import com.ruiduoyi.activity.PzglActivity;
@@ -37,7 +38,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
             cardView_g7,cardView_g8,cardView_g9,cardView_g10,cardView_g11,cardView_g12,cardView_g13,
             cardView_g14,cardView_g15,cardView_g16,cardView_g17,cardView_g18,cardView_g19,cardView_g20,cardView_g21,
             cardView_b1,cardView_b2,cardView_b3,cardView_b4,cardView_b5,cardView_b6,cardView_b7,
-            cardView_b8,cardView_b9,cardView_b10,cardView_b11,cardView_b12,cardView_b13;
+            cardView_b8,cardView_b9,cardView_b10,cardView_b11,cardView_b12,cardView_b13,cardView_qsfh;
     private String startType,startZldm,startZlmc;
     private Animation anim;
     private SharedPreferences sharedPreferences;
@@ -182,6 +183,9 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b11=(CardView)view.findViewById(R.id.scrz);
         cardView_b12=(CardView)view.findViewById(R.id.zyzd);
         cardView_b13=(CardView)view.findViewById(R.id.slcs);
+        cardView_qsfh=(CardView)view.findViewById(R.id.qsfh);
+
+
         cardView_g1=(CardView)view.findViewById(R.id.zmsw);
         cardView_g2=(CardView)view.findViewById(R.id.cxpt);
         cardView_g3=(CardView)view.findViewById(R.id.kjsl);
@@ -226,6 +230,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_g19.setOnClickListener(this);
         cardView_g20.setOnClickListener(this);
         cardView_g21.setOnClickListener(this);
+
+
         cardView_b1.setOnClickListener(this);
         cardView_b2.setOnClickListener(this);
         cardView_b3.setOnClickListener(this);
@@ -239,6 +245,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         cardView_b11.setOnClickListener(this);
         cardView_b12.setOnClickListener(this);
         cardView_b13.setOnClickListener(this);
+        cardView_qsfh.setOnClickListener(this);
         dialog=new PopupDialog(getActivity(),400,350);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
@@ -324,15 +331,24 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    private boolean isReady(){
+    private boolean isReady(String zldm){
         String zldming=sharedPreferences.getString("zldm_ss","");
         if (zldming.equals("50")|zldming.equals("51")|zldming.equals("52")|zldming.equals("53")|zldming.equals("54")|
-                zldming.equals("55")|zldming.equals("56")|zldming.equals("57")|zldming.equals("58")|
-                zldming.equals("59")|zldming.equals("60")|zldming.equals("61")|zldming.equals("62")|
+                zldming.equals("55")|zldming.equals("56")|zldming.equals("57")|zldming.equals("58")|zldming.equals("60")|zldming.equals("61")|zldming.equals("62")|
                 zldming.equals("63")|zldming.equals("64")|zldming.equals("65")|zldming.equals("66")|
                 zldming.equals("67")|zldming.equals("68")|zldming.equals("69")|zldming.equals("70")){
+
             dialog.show();
             return false;
+        }else if (zldming.equals("59")){
+            if (zldm.equals(getResources().getString(R.string.tiaoji))|
+                    zldm.equals(getResources().getString(R.string.pzyc))|
+                    zldm.equals(getResources().getString(R.string.mjwx))){
+                return true;
+            }else {
+                dialog.show();
+                return false;
+            }
         }
         return true;
     }
@@ -442,115 +458,123 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 intent_slcs.putExtra("zldm",getResources().getString(R.string.slcs));
                 startActivity(intent_slcs);
             break;
+            case R.id.qsfh:
+                cardView_qsfh.startAnimation(anim);
+                Intent intent_qsfh=new Intent(getContext(), DialogGActivity.class);
+                intent_qsfh.putExtra("title","腔数复核");
+                intent_qsfh.putExtra("type","DOC");
+                intent_qsfh.putExtra("zldm",getResources().getString(R.string.qsfh));
+                startActivity(intent_qsfh);
+                break;
 
 
 
 
             case  R.id.zmsw:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.zmsw))){
                     cardView_g1.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.zmsw),"装模升温","OPR");
                 }
                 break;
             case  R.id.cxpt:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.cxpt))){
                     cardView_g2.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.cxpt),"冲洗炮筒","OPR");
                 }
                 break;
             case  R.id.kjsl:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.kjsl))){
                     cardView_g3.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.kjsl),"开机试料","OPR");
                 }
                 break;
             case  R.id.ds:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.ds))){
                     cardView_g4.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.ds),"定色","OPR");
                 }
                 break;
             case  R.id.sjqc:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.sjqc))){
                     cardView_g5.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.sjqc),"三级清场","OPR");
                 }
                 break;
             case  R.id.sjjc:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.sjjc))){
                     cardView_g6.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.sjjc),"首件检查","OPR");
                 }
                 break;
             case  R.id.pzyc:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.pzyc))){
                     cardView_g7.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.pzyc),"品质异常","OPR");
                 }
                 break;
             case  R.id.tiaoji:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.tiaoji))){
                     cardView_g8.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.tiaoji),"调机","OPR");
                 }
                 break;
             case  R.id.ts:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.ts))){
                     cardView_g9.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.ts),"调色","OPR");
                 }
                 break;
             case  R.id.tingji:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.tingji))){
                     cardView_g10.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.tingji),"停机","OPR");
                 }
                 break;
             case  R.id.dl:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.dl))){
                     cardView_g11.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.dl),"待料","OPR");
                 }
                 break;
             case R.id.by:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.by))){
                     cardView_g12.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.by),"保养","OPR");
                 }
                 break;
             case  R.id.sm:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.sm))){
                     cardView_g13.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.sm),"新模试模","OPR");
                 }
                 break;
             case  R.id.sl:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.sl))){
                     cardView_g14.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.sl),"原料试料","OPR");
                 }
                 break;
             case  R.id.mjwx:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.mjwx))){
                     cardView_g15.startAnimation(anim);
                     //getActivity().finish();
                     startActivityByNetResult(getContext().getString(R.string.mjwx),"模具维修","OPR");
                 }
                 break;
             case R.id.jtwx:
-                if (isReady()){
+                if (isReady(getContext().getString(R.string.jtwx))){
                     cardView_g16.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.jtwx),"机台维修","OPR");
                 }
                 break;
             case R.id.zyg:
-               if (isReady()){
+               if (isReady(getContext().getString(R.string.zyg))){
                    cardView_g17.startAnimation(anim);
                    startActivityByNetResult(getContext().getString(R.string.zyg),"粘样盖","OPR");
                }
                 break;
             case R.id.cm:
-               if (isReady()){
+               if (isReady(getContext().getString(R.string.cm))){
                    cardView_g18.startAnimation(anim);
                    startActivityByNetResult(getContext().getString(R.string.cm),"拆模","OPR");
                }

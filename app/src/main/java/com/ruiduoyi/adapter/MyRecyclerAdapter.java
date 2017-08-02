@@ -21,6 +21,7 @@ import android.widget.FrameLayout;
 import android.widget.TextView;
 
 import com.ruiduoyi.R;
+import com.ruiduoyi.utils.AppUtils;
 
 public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.MyViewHolder> {
 
@@ -61,6 +62,7 @@ public class MyRecyclerAdapter extends RecyclerView.Adapter<MyRecyclerAdapter.My
         holder.bg.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppUtils.sendCountdownReceiver(mContext);
                 if (map.get("isSelect").equals("0")){
                     map.put("isSelect","2");
                     holder.select_btn.setCardBackgroundColor(mContext.getResources().getColor(R.color.color_9));

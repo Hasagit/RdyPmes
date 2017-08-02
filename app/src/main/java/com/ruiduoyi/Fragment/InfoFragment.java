@@ -321,6 +321,7 @@ public class InfoFragment extends Fragment {
                     List<List<String>>list_jcxx=(List<List<String>>)msg.obj;
                     SharedPreferences.Editor editor=sharedPreferences.edit();
                     editor.putString("zldm_ss",list_jcxx.get(0).get(1));
+                    //editor.putString("zldm_ss","59");
                     //editor.putString("waring",list_jcxx.get(0).get(5));
                     editor.commit();
                     initBasicInfo(list_jcxx);

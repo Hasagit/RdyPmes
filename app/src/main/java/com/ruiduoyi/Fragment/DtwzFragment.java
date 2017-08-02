@@ -108,6 +108,7 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
                         spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                             @Override
                             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                AppUtils.sendCountdownReceiver(getContext());
                                 spinner.setText(data_spinner.get(position));
                                 lbdm=list.get(position).get(0);
                                 spinner_list.dismiss();
@@ -257,6 +258,7 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
 
     @Override
     public void onClick(View v) {
+        AppUtils.sendCountdownReceiver(getContext());
         switch (v.getId()){
             case R.id.spinner:
                 if (spinner_list!=null){
