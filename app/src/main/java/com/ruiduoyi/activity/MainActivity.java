@@ -279,7 +279,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
         wifi_ig=(ImageView)findViewById(R.id.wifi_ig);
         updateTime();
 
-        dialog=new PopupDialog(this,400,300);
+        dialog=new PopupDialog(this,400,360);
         dialog.setBackgrounpColor(getResources().getColor(R.color.color_9));
         dialog.getCancle_btn().setText("取消");
         dialog.getOkbtn().setText("确定");

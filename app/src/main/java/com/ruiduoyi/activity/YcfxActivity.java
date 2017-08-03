@@ -68,13 +68,13 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         cancle_btn.setOnClickListener(this);
         sub_btn.setOnClickListener(this);
 
-        dialog=new PopupDialog(this,400,300);
+        dialog=new PopupDialog(this,400,360);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");
 
 
-        dialog_tip=new PopupDialog(this,400,300);
+        dialog_tip=new PopupDialog(this,400,360);
         dialog_tip.setTitle("提示");
         dialog_tip.getCancle_btn().setVisibility(View.GONE);
         dialog_tip.getOkbtn().setText("确定");

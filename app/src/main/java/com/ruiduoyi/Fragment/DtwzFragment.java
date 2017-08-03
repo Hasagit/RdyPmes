@@ -34,7 +34,7 @@ import java.util.Map;
 public class DtwzFragment extends Fragment implements View.OnClickListener{
 
     private Button spinner,btn_submit;
-    private String lbdm,jtbh,zzdh,wkno;
+    private String lbdm,jtbh,zzdh,wkno,mjqs;
     private SharedPreferences sharedPreferences;
     private PopupWindowSpinner spinner_list;
     private Handler handler;
@@ -70,7 +70,7 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
 
 
 
-        dialog=new PopupDialog(getActivity(),400,300);
+        dialog=new PopupDialog(getActivity(),400,360);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");
@@ -88,6 +88,7 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
         Intent intent_from=getActivity().getIntent();
         zzdh=intent_from.getStringExtra("zzdh");
         wkno=intent_from.getStringExtra("wkno");
+        mjqs=intent_from.getStringExtra("mjqs");
         sharedPreferences=getContext().getSharedPreferences("info",Context.MODE_PRIVATE);
         jtbh=sharedPreferences.getString("jtbh","");
         activity= (Jtjqsbg2Activity) getActivity();
@@ -116,7 +117,7 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
                         });
                         break;
                     case 0x102:
-                        activity.getDutouListData(zzdh);
+                        activity.getDutouListData(zzdh,mjqs);
                         //getGongdanData();
                         /*dialog.setMessageTextColor(Color.BLACK);
                         dialog.setMessage("提交成功");
@@ -135,7 +136,7 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
                         btn_submit.setText("提交");
                         data= (List<Map<String, String>>) msg.obj;
                         MyRecyclerAdapter adapter=new MyRecyclerAdapter(getContext(),data);
-                        GridLayoutManager layoutManager = new GridLayoutManager(getContext(),12);
+                        GridLayoutManager layoutManager = new GridLayoutManager(getContext(),msg.arg1);
                         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                         recyclerView.setLayoutManager(layoutManager);
                         recyclerView.setAdapter(adapter);
@@ -168,7 +169,7 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
                 }
             }
         }).start();
-        activity.getDutouListData(zzdh);
+        activity.getDutouListData(zzdh,mjqs);
 
     }
 

@@ -34,11 +34,12 @@ public class PopupWindowSpinner {
         this.data=data;
         this.resouse=resouse;
         textViewId=id;
+        int width_dp=((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, width, context.getResources().getDisplayMetrics()));
         contentView= LayoutInflater.from(context).inflate(R.layout.popupwindow_spinner,null);
         listView=(ListView)contentView.findViewById(R.id.pwspinner);
         adapter=new ArrayAdapter(context,resouse,id,data);
         listView.setAdapter(adapter);
-        popupWindow=new PopupWindow(width,ViewGroup.LayoutParams.WRAP_CONTENT);
+        popupWindow=new PopupWindow(width_dp,ViewGroup.LayoutParams.WRAP_CONTENT);
         popupWindow.setContentView(contentView);
         popupWindow.setOutsideTouchable(true);
         popupWindow.setBackgroundDrawable(new ColorDrawable(0xffffff));

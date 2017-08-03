@@ -76,7 +76,7 @@ public class DtxxFragment extends Fragment {
             cpxs_text.setBackgroundColor(Color.RED);
         }
 
-        dialog=new PopupDialog(getActivity(),400,300);
+        dialog=new PopupDialog(getActivity(),400,360);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");
@@ -129,7 +129,7 @@ public class DtxxFragment extends Fragment {
                         break;
                     case 0x105:
                         getGongdanData();
-                        activity.getDutouListData(zzdh);
+                        activity.getDutouListData(zzdh,mjqs);
                         Button button= (Button) msg.obj;
                         //button.setText("已修复");
                         /*dialog.setMessageTextColor(Color.BLACK);

@@ -425,6 +425,8 @@
         android:layout_margin="5dp">
 
         <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
             android:id="@+id/xuncha_layout"
             android:layout_width="match_parent"
             android:layout_height="match_parent"
@@ -534,6 +536,7 @@
             </LinearLayout>
 
             <ListView
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/text_bg"
                 android:id="@+id/xuncha_listView"
                 android:layout_width="1260dp"
@@ -554,6 +557,8 @@
             android:layout_height="match_parent"
             android:visibility="visible"></com.github.mikephil.charting.charts.LineChart>
         <LinearLayout
+            android:layout_marginLeft="5dp"
+            android:layout_marginBottom="5dp"
             android:visibility="gone"
             android:id="@+id/layout_4"
             android:layout_width="wrap_content"
@@ -614,6 +619,7 @@
             </LinearLayout>
 
             <ListView
+                android:layout_marginBottom="10dp"
                 android:background="@drawable/text_bg"
                 android:id="@+id/listView_2"
                 android:layout_width="810dp"

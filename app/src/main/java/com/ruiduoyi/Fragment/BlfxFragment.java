@@ -187,8 +187,7 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
         btn_submit.setOnClickListener(this);
         btn_clear.setOnClickListener(this);
 
-        readyDialog=new PopupDialog(getActivity(),400,300);
-        readyDialog=new PopupDialog(getActivity(),400,300);
+        readyDialog=new PopupDialog(getActivity(),400,360);
         readyDialog.setTitle("提示");
         readyDialog.getOkbtn().setText("确定");
         readyDialog.getCancle_btn().setVisibility(View.GONE);
@@ -199,7 +198,7 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
             }
         });
 
-        dialog=new PopupDialog(getActivity(),400,350);
+        dialog=new PopupDialog(getActivity(),400,360);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");

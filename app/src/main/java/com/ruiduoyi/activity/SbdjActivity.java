@@ -161,7 +161,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
             }
         });
 
-        dialog=new PopupDialog(this,400,300);
+        dialog=new PopupDialog(this,400,360);
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");
         dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {

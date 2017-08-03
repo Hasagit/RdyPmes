@@ -54,7 +54,7 @@ public class GdglActivity extends BaseActivity implements View.OnClickListener{
     };
 
     private void initView(){
-        dialog=new PopupDialog(this,400,300);
+        dialog=new PopupDialog(this,400,360);
         dialog.setBackgrounpColor(getResources().getColor(R.color.lable));
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");

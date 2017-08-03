@@ -111,7 +111,7 @@ public class YyfxFragment extends Fragment implements View.OnClickListener{
         spinner=(Button)view.findViewById(R.id.spinner);
         listView=(ListView)view.findViewById(R.id.list_bl);
         spinner.setOnClickListener(this);
-        isReadyDialog=new PopupDialog(getActivity(),400,300);
+        isReadyDialog=new PopupDialog(getActivity(),400,360);
         isReadyDialog.setTitle("提示");
         isReadyDialog.getOkbtn().setText("确定");
         isReadyDialog.getCancle_btn().setVisibility(View.GONE);

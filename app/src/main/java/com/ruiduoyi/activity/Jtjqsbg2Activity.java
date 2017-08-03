@@ -82,7 +82,7 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
 
 
 
-        dialog=new PopupDialog(this,400,300);
+        dialog=new PopupDialog(this,400,360);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");
@@ -173,6 +173,12 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                         };
                         listView_1.setAdapter(adapter);
                         break;
+                    case 0x102:
+                        String wz= (String) msg.obj;
+                        dialog.setMessage("存在超出模具腔数矩阵以外的腔:"+wz+"，请检查并修复");
+                        dialog.setMessageTextColor(Color.RED);
+                        dialog.show();
+                        break;
                     case 0x106:
                         dialog.setMessageTextColor(Color.RED);
                         dialog.setMessage((String) msg.obj);
@@ -200,6 +206,7 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                             if (list_gongdan.get(i).get(3).equals(zzdh)){
                             }
                         }
+                        break;
                     default:
                         break;
                 }
@@ -220,28 +227,6 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
     }
 
 
-    private void getGongdanData(){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                //工单信息表
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'A','"+jtbh+"'");
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>15){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x109;
-                            msg.obj=list;
-                            handler.sendMessage(msg);
-                        }
-                    }
-                }else {
-                    AppUtils.uploadNetworkError("Exec PAD_Get_MoeDet",jtbh,sharedPreferences.getString("mac",""));
-                }
-
-            }
-        }).start();
-    }
 
     //机台信息表
     private void getList2Data(final String zzdh){
@@ -346,11 +331,37 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
     }
 
     //堵头信息表
-    public void getDutouListData(final String zzdh){
+    public void getDutouListData(final String zzdh, final String cpqs){
         //堵头信息表
         new Thread(new Runnable() {
             @Override
             public void run() {
+                int qs=Integer.parseInt(cpqs);
+                int horizontal=12;
+                int vertical=12;
+                switch (qs){
+                    case 64:
+                        horizontal=8;
+                        vertical=8;
+                        break;
+                    case 144:
+                        horizontal=12;
+                        vertical=12;
+                        break;
+                    case 96:
+                        horizontal=8;
+                        vertical=12;
+                        break;
+                    case 32:
+                        horizontal=8;
+                        vertical=4;
+                        break;
+                    default:
+                        qs=144;
+                        horizontal=12;
+                        vertical=12;
+                        break;
+                }
                 List<List<String>>list_dt=NetHelper.getQuerysqlResult("Exec PAD_Get_MoeJtxsInf 'A','"+zzdh+"'");
                 if (list_dt!=null){
                     if (list_dt.size()>0){
@@ -364,12 +375,12 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
 
                             //初始化堵头位置的RecyclerView;
                             List<Map<String,String>>data=new ArrayList<Map<String, String>>();
-                            for (int i=0;i<144;i++){
+                            for (int i=0;i<qs;i++){
                                 Map<String,String>map=new HashMap<String, String>();
-                                int w=((i+1)/12)+1;
-                                int h=(i+1)%12;
+                                int w=((i+1)/horizontal)+1;
+                                int h=(i+1)%horizontal;
                                 if (h==0){
-                                    h=12;
+                                    h=horizontal;
                                     w=w-1;
                                 }
                                 String w_str=w+"";
@@ -389,15 +400,27 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                                 String[] temp=wz.split("-");
                                 int w=Integer.parseInt(temp[0]);
                                 int h=Integer.parseInt(temp[1]);
-                                int position=(w-1)*12+h-1;
-                                if (position>-1)
-                                    data.get(position).put("isSelect","1");
+                                int position=(w-1)*horizontal+h-1;
+                                if (position>-1){
+                                    try {
+                                        data.get(position).put("isSelect","1");
+                                    }catch (IndexOutOfBoundsException e){
+                                        Message msg_error=handler.obtainMessage();
+                                        msg_error.obj=wz;
+                                        msg_error.what=0x102;
+                                       handler.sendMessage(msg_error);
+                                    }
+                                }
+
+
                             }
 
 
                             Message msg_wz=handler.obtainMessage();
                             msg_wz.what=0x104;
                             msg_wz.obj=data;
+                            msg_wz.arg1=horizontal;
+                            msg_wz.arg2=vertical;
                             dtwzFragment.getHandler().sendMessage(msg_wz);
                         }
                     }else {
@@ -409,12 +432,12 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
 
                         //初始化堵头位置listView
                         List<Map<String,String>>data=new ArrayList<Map<String, String>>();
-                        for (int i=0;i<144;i++){
+                        for (int i=0;i<qs;i++){
                             Map<String,String>map=new HashMap<String, String>();
-                            int w=((i+1)/12)+1;
-                            int h=(i+1)%12;
+                            int w=((i+1)/horizontal)+1;
+                            int h=(i+1)%horizontal;
                             if (h==0){
-                                h=12;
+                                h=horizontal;
                                 w=w-1;
                             }
                             String w_str=w+"";
@@ -432,6 +455,8 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                         Message msg_wz=handler.obtainMessage();
                         msg_wz.what=0x104;
                         msg_wz.obj=data;
+                        msg_wz.arg1=horizontal;
+                        msg_wz.arg2=vertical;
                         dtwzFragment.getHandler().sendMessage(msg_wz);
                     }
                 }else {

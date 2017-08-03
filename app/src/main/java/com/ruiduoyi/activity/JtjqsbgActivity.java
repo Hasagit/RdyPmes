@@ -77,7 +77,7 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
 
 
 
-        tipDialog=new PopupDialog(this,400,300);
+        tipDialog=new PopupDialog(this,400,360);
         tipDialog.getCancle_btn().setVisibility(View.GONE);
         tipDialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
             @Override

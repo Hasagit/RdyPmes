@@ -94,7 +94,7 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
 
         sub_text=ksdu_text;
 
-        dialog=new PopupDialog(this,400,350);
+        dialog=new PopupDialog(this,400,360);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");
@@ -106,7 +106,7 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
                 dialog.dismiss();
             }
         });
-        delTipDialog=new PopupDialog(this,400,350);
+        delTipDialog=new PopupDialog(this,400,360);
         delTipDialog.setTitle("提示");
         delTipDialog.getCancle_btn().setText("取消");
         delTipDialog.getOkbtn().setText("确定");

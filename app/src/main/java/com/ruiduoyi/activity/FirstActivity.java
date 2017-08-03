@@ -40,12 +40,13 @@ public class FirstActivity extends BaseActivity{
     private boolean isJtbh=false;
     private boolean isNewVersion=false;
     private String jtbh;
+    private boolean isDestroy;
     private ImageView welc_img;
-    View contenView,contenView2;
-    PopupWindow dialog,dialog2;
+    private View contenView,contenView2;
+    private PopupWindow dialog,dialog2;
     private Button spiner_btn;
     private TextView jtbh_tip;
-    PopupDialog dialogAutoUpdate;
+    private PopupDialog dialogAutoUpdate;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +70,7 @@ public class FirstActivity extends BaseActivity{
 
 
     private void initData(){
+        isDestroy=false;
         File file=new File(Environment.getExternalStorageDirectory().getPath()+"/RdyPmes.apk");
         boolean is=file.exists();
         if(is){
@@ -162,9 +164,10 @@ public class FirstActivity extends BaseActivity{
 
                         dialog.setOutsideTouchable(false);
                         dialog.setBackgroundDrawable(new ColorDrawable(0xffffff));
-                        if (!FirstActivity.this.isFinishing()){
+                        if (!isDestroy){
                             dialog.showAtLocation(FirstActivity.this.getWindow().getDecorView(), Gravity.CENTER, 0, 0);
                         }
+
                     }else {
                         TextView msg_text=(TextView)contenView.findViewById(R.id.msg_text);
                         msg_text.setText("服务器连接异常\n系统每隔十秒重连一次 \n重连次数："+msg.arg1);
@@ -448,6 +451,7 @@ public class FirstActivity extends BaseActivity{
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        isDestroy=true;
         if (dialog2.isShowing()){
             dialog2.dismiss();
         }

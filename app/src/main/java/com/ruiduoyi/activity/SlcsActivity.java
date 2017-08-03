@@ -147,7 +147,7 @@ public class SlcsActivity extends BaseActivity implements View.OnClickListener{
 
 
 
-        dialog=new PopupDialog(this,400,300);
+        dialog=new PopupDialog(this,400,360);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");

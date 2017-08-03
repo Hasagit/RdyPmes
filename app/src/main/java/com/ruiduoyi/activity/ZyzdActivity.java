@@ -73,7 +73,7 @@ public class ZyzdActivity extends BaseActivity {
                 finish();
             }
         });
-        dialog=new PopupDialog(this,400,300);
+        dialog=new PopupDialog(this,400,360);
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
             @Override

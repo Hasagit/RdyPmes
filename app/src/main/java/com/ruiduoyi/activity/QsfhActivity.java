@@ -33,7 +33,7 @@ public class QsfhActivity extends BaseActivity {
     private String jtbh,zzdh,mjbh;
     private PopupDialog dialog;
     private String wkno;
-
+    private boolean isFirst=true;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -50,16 +50,18 @@ public class QsfhActivity extends BaseActivity {
         cancle_btn.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppUtils.sendCountdownReceiver(QsfhActivity.this);
                 finish();
             }
         });
-        dialog=new PopupDialog(this,400,350);
+        dialog=new PopupDialog(this,400,360);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");
         dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
+                AppUtils.sendCountdownReceiver(QsfhActivity.this);
                 dialog.dismiss();
             }
         });
@@ -197,12 +199,33 @@ public class QsfhActivity extends BaseActivity {
                 btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
-                        fuHeEven(data.get(position).get("lab_2"),data.get(position).get("lab_7"),wkno);
+                        AppUtils.sendCountdownReceiver(QsfhActivity.this);
+                        final PopupDialog dialog=new PopupDialog(QsfhActivity.this,400,360);
+                        dialog.setTitle("提示");
+                        dialog.setMessageTextColor(Color.BLACK);
+                        dialog.setMessage("确定复核该记录吗？");
+                        dialog.getOkbtn().setText("确定");
+                        dialog.getCancle_btn().setText("取消");
+                        dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                fuHeEven(data.get(position).get("lab_2"),data.get(position).get("lab_7"),wkno);
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.getCancle_btn().setOnClickListener(new View.OnClickListener() {
+                            @Override
+                            public void onClick(View v) {
+                                dialog.dismiss();
+                            }
+                        });
+                        dialog.show();
                     }
                 });
                 bg.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        AppUtils.sendCountdownReceiver(QsfhActivity.this);
                         for (int i=0;i<data.size();i++){
                             if (data.get(i).get("isSelect").equals("1")){
                                 data.get(i).put("isSelect","0");
@@ -216,6 +239,14 @@ public class QsfhActivity extends BaseActivity {
                 return view;
             }
         };
+        if (isFirst){
+            if (data.size()>0){
+                getList2Data(data.get(0).get("lab_1"),data.get(0).get("lab_2"),data.get(0).get("lab_7"));
+                data.get(0).put("isSelect","1");
+                adapter.notifyDataSetChanged();
+            }
+            isFirst=false;
+        }
 
         listView_1.setAdapter(adapter);
     }

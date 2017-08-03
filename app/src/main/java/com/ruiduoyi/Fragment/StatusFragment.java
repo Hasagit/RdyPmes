@@ -34,17 +34,18 @@ import com.ruiduoyi.view.PopupDialog;
 import java.util.List;
 
 public class StatusFragment extends Fragment implements View.OnClickListener{
-    private CardView cardView_g1,cardView_g2,cardView_g3,cardView_g4,cardView_g5,cardView_g6,
-            cardView_g7,cardView_g8,cardView_g9,cardView_g10,cardView_g11,cardView_g12,cardView_g13,
-            cardView_g14,cardView_g15,cardView_g16,cardView_g17,cardView_g18,cardView_g19,cardView_g20,cardView_g21,
-            cardView_b1,cardView_b2,cardView_b3,cardView_b4,cardView_b5,cardView_b6,cardView_b7,
-            cardView_b8,cardView_b9,cardView_b10,cardView_b11,cardView_b12,cardView_b13,cardView_qsfh;
+    private CardView cardView_zmsw,cardView_cxpt,cardView_kjsl,cardView_ds,cardView_sjqc,cardView_sjjc,
+            cardView_pzyc,cardView_tiaoji,cardView_ts,cardView_tingji,cardView_dl,cardView_by,cardView_xmsm,
+            cardView_ylsl,cardView_mjwx,cardView_jtwx,cardView_zyg,cardView_cm,cardView_rysg,cardView_pgxj,cardView_js,
+
+            cardView_gdgl,cardView_blfx,cardView_ycfx,cardView_qsbg,cardView_qsfh,cardView_gycs,cardView_mjxx,
+            cardView_sbdj,cardView_sbxx,cardView_pzgl,cardView_scrz,cardView_zyzd,cardView_slcs,cardView_hddj;
     private String startType,startZldm,startZlmc;
     private Animation anim;
     private SharedPreferences sharedPreferences;
     private PopupDialog dialog;
     private FrameLayout unread_bg;
-    private TextView unread_text;
+    private TextView unread_text,tiaoji_text,pzyc_text,mjwx_text;
     public StatusFragment() {
 
     }
@@ -170,83 +171,88 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     }
 
     public void initView(View view){
-        cardView_b1=(CardView)view.findViewById(R.id.gdgl);
-        cardView_b2=(CardView)view.findViewById(R.id.blfx);
-        cardView_b3=(CardView)view.findViewById(R.id.ycfx);
-        cardView_b4=(CardView)view.findViewById(R.id.jtjqsbg);
-        cardView_b5=(CardView)view.findViewById(R.id.hddj);
-        cardView_b6=(CardView)view.findViewById(R.id.gycs);
-        cardView_b7=(CardView)view.findViewById(R.id.djby);
-        cardView_b8=(CardView)view.findViewById(R.id.sbxx);
-        cardView_b9=(CardView)view.findViewById(R.id.mjxx);
-        cardView_b10=(CardView)view.findViewById(R.id.pzgl);
-        cardView_b11=(CardView)view.findViewById(R.id.scrz);
-        cardView_b12=(CardView)view.findViewById(R.id.zyzd);
-        cardView_b13=(CardView)view.findViewById(R.id.slcs);
+        cardView_gdgl=(CardView)view.findViewById(R.id.gdgl);
+        cardView_blfx=(CardView)view.findViewById(R.id.blfx);
+        cardView_ycfx=(CardView)view.findViewById(R.id.ycfx);
+        cardView_qsbg=(CardView)view.findViewById(R.id.jtjqsbg);
+        cardView_hddj=(CardView)view.findViewById(R.id.hddj);
+        cardView_gycs=(CardView)view.findViewById(R.id.gycs);
+        cardView_sbdj=(CardView)view.findViewById(R.id.djby);
+        cardView_sbxx=(CardView)view.findViewById(R.id.sbxx);
+        cardView_mjxx=(CardView)view.findViewById(R.id.mjxx);
+        cardView_pzgl=(CardView)view.findViewById(R.id.pzgl);
+        cardView_scrz=(CardView)view.findViewById(R.id.scrz);
+        cardView_zyzd=(CardView)view.findViewById(R.id.zyzd);
+        cardView_slcs=(CardView)view.findViewById(R.id.slcs);
         cardView_qsfh=(CardView)view.findViewById(R.id.qsfh);
 
 
-        cardView_g1=(CardView)view.findViewById(R.id.zmsw);
-        cardView_g2=(CardView)view.findViewById(R.id.cxpt);
-        cardView_g3=(CardView)view.findViewById(R.id.kjsl);
-        cardView_g4=(CardView)view.findViewById(R.id.ds);
-        cardView_g5=(CardView)view.findViewById(R.id.sjqc);
-        cardView_g6=(CardView)view.findViewById(R.id.sjjc);
-        cardView_g7=(CardView)view.findViewById(R.id.pzyc);
-        cardView_g8=(CardView)view.findViewById(R.id.tiaoji);
-        cardView_g9=(CardView)view.findViewById(R.id.ts);
-        cardView_g10=(CardView)view.findViewById(R.id.tingji);
-        cardView_g11=(CardView)view.findViewById(R.id.dl);
-        cardView_g12=(CardView)view.findViewById(R.id.by);
-        cardView_g13=(CardView)view.findViewById(R.id.sm);
-        cardView_g14=(CardView)view.findViewById(R.id.sl);
-        cardView_g15=(CardView)view.findViewById(R.id.mjwx);
-        cardView_g16=(CardView)view.findViewById(R.id.jtwx);
-        cardView_g17=(CardView)view.findViewById(R.id.zyg) ;
-        cardView_g18=(CardView)view.findViewById(R.id.cm) ;
-        cardView_g19=(CardView)view.findViewById(R.id.rysg) ;
-        cardView_g20=(CardView)view.findViewById(R.id.pgxj) ;
-        cardView_g21=(CardView)view.findViewById(R.id.js) ;
+        cardView_zmsw=(CardView)view.findViewById(R.id.zmsw);
+        cardView_cxpt=(CardView)view.findViewById(R.id.cxpt);
+        cardView_kjsl=(CardView)view.findViewById(R.id.kjsl);
+        cardView_ds=(CardView)view.findViewById(R.id.ds);
+        cardView_sjqc=(CardView)view.findViewById(R.id.sjqc);
+        cardView_sjjc=(CardView)view.findViewById(R.id.sjjc);
+        cardView_pzyc=(CardView)view.findViewById(R.id.pzyc);
+        cardView_tiaoji=(CardView)view.findViewById(R.id.tiaoji);
+        cardView_ts=(CardView)view.findViewById(R.id.ts);
+        cardView_tingji=(CardView)view.findViewById(R.id.tingji);
+        cardView_dl=(CardView)view.findViewById(R.id.dl);
+        cardView_by=(CardView)view.findViewById(R.id.by);
+        cardView_xmsm=(CardView)view.findViewById(R.id.sm);
+        cardView_ylsl=(CardView)view.findViewById(R.id.sl);
+        cardView_mjwx=(CardView)view.findViewById(R.id.mjwx);
+        cardView_jtwx=(CardView)view.findViewById(R.id.jtwx);
+        cardView_zyg=(CardView)view.findViewById(R.id.zyg) ;
+        cardView_cm=(CardView)view.findViewById(R.id.cm) ;
+        cardView_rysg=(CardView)view.findViewById(R.id.rysg) ;
+        cardView_pgxj=(CardView)view.findViewById(R.id.pgxj) ;
+        cardView_js=(CardView)view.findViewById(R.id.js) ;
+
+        mjwx_text=(TextView)view.findViewById(R.id.mjwx_text);
+        pzyc_text=(TextView)view.findViewById(R.id.pzyc_text);
+        tiaoji_text=(TextView)view.findViewById(R.id.tiaoji_text);
         unread_bg=(FrameLayout)view.findViewById(R.id.unread_bg);
         unread_text=(TextView)view.findViewById(R.id.unread_text);
-        cardView_g1.setOnClickListener(this);
-        cardView_g2.setOnClickListener(this);
-        cardView_g3.setOnClickListener(this);
-        cardView_g4.setOnClickListener(this);
-        cardView_g5.setOnClickListener(this);
-        cardView_g6.setOnClickListener(this);
-        cardView_g7.setOnClickListener(this);
-        cardView_g8.setOnClickListener(this);
-        cardView_g9.setOnClickListener(this);
-        cardView_g10.setOnClickListener(this);
-        cardView_g11.setOnClickListener(this);
-        cardView_g12.setOnClickListener(this);
-        cardView_g13.setOnClickListener(this);
-        cardView_g14.setOnClickListener(this);
-        cardView_g15.setOnClickListener(this);
-        cardView_g16.setOnClickListener(this);
-        cardView_g17.setOnClickListener(this);
-        cardView_g18.setOnClickListener(this);
-        cardView_g19.setOnClickListener(this);
-        cardView_g20.setOnClickListener(this);
-        cardView_g21.setOnClickListener(this);
 
-
-        cardView_b1.setOnClickListener(this);
-        cardView_b2.setOnClickListener(this);
-        cardView_b3.setOnClickListener(this);
-        cardView_b4.setOnClickListener(this);
-        cardView_b5.setOnClickListener(this);
-        cardView_b6.setOnClickListener(this);
-        cardView_b7.setOnClickListener(this);
-        cardView_b8.setOnClickListener(this);
-        cardView_b9.setOnClickListener(this);
-        cardView_b10.setOnClickListener(this);
-        cardView_b11.setOnClickListener(this);
-        cardView_b12.setOnClickListener(this);
-        cardView_b13.setOnClickListener(this);
+        cardView_gdgl.setOnClickListener(this);
+        cardView_blfx.setOnClickListener(this);
+        cardView_ycfx.setOnClickListener(this);
+        cardView_qsbg.setOnClickListener(this);
+        cardView_hddj.setOnClickListener(this);
+        cardView_gycs.setOnClickListener(this);
+        cardView_sbdj.setOnClickListener(this);
+        cardView_sbxx.setOnClickListener(this);
+        cardView_mjxx.setOnClickListener(this);
+        cardView_pzgl.setOnClickListener(this);
+        cardView_scrz.setOnClickListener(this);
+        cardView_zyzd.setOnClickListener(this);
+        cardView_slcs.setOnClickListener(this);
         cardView_qsfh.setOnClickListener(this);
-        dialog=new PopupDialog(getActivity(),400,350);
+
+
+        cardView_zmsw.setOnClickListener(this);
+        cardView_cxpt.setOnClickListener(this);
+        cardView_kjsl.setOnClickListener(this);
+        cardView_ds.setOnClickListener(this);
+        cardView_sjqc.setOnClickListener(this);
+        cardView_sjjc.setOnClickListener(this);
+        cardView_pzyc.setOnClickListener(this);
+        cardView_tiaoji.setOnClickListener(this);
+        cardView_ts.setOnClickListener(this);
+        cardView_tingji.setOnClickListener(this);
+        cardView_dl.setOnClickListener(this);
+        cardView_by.setOnClickListener(this);
+        cardView_xmsm.setOnClickListener(this);
+        cardView_ylsl.setOnClickListener(this);
+        cardView_mjwx.setOnClickListener(this);
+        cardView_jtwx.setOnClickListener(this);
+        cardView_zyg.setOnClickListener(this);
+        cardView_cm.setOnClickListener(this);
+        cardView_rysg.setOnClickListener(this);
+        cardView_pgxj.setOnClickListener(this);
+        cardView_js.setOnClickListener(this);
+        dialog=new PopupDialog(getActivity(),400,360);
         dialog.setTitle("提示");
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");
@@ -368,22 +374,28 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     }
 
 
+    public void setNGTextColor(int Color){
+        tiaoji_text.setTextColor(Color);
+        pzyc_text.setTextColor(Color);
+        mjwx_text.setTextColor(Color);
+    }
+
     @Override
     public void onClick(View v) {
         AppUtils.sendCountdownReceiver(getContext());
         switch (v.getId()){
             case R.id.sbxx://设备信息
-                cardView_b8.startAnimation(anim);
+                cardView_sbxx.startAnimation(anim);
                 Intent intent=new Intent(getContext(), SbxxActivity.class);
                 startActivity(intent);
                 break;
             case R.id.mjxx:
-                cardView_b9.startAnimation(anim);
+                cardView_mjxx.startAnimation(anim);
                 Intent intent_b2=new Intent(getContext(), MjxxActivity.class);
                 startActivity(intent_b2);
                 break;
             case R.id.gdgl:
-                cardView_b1.startAnimation(anim);
+                cardView_gdgl.startAnimation(anim);
                 Intent intent_b3=new Intent(getContext(),DialogGActivity.class );
                 intent_b3.putExtra("title","工单管理");
                 intent_b3.putExtra("zldm",getContext().getString(R.string.gdgl));
@@ -391,17 +403,17 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent_b3);
                 break;
             case R.id.pzgl:
-                cardView_b10.startAnimation(anim);
+                cardView_pzgl.startAnimation(anim);
                 Intent intent_b4=new Intent(getContext(), PzglActivity.class);
                 startActivity(intent_b4);
                 break;
             case R.id.scrz:
-                cardView_b11.startAnimation(anim);
+                cardView_scrz.startAnimation(anim);
                 Intent intent_b6=new Intent(getContext(), ScrzActivity.class);
                 startActivity(intent_b6);
                 break;
             case R.id.ycfx:
-                cardView_b3.startAnimation(anim);
+                cardView_ycfx.startAnimation(anim);
                 Intent intent_b7=new Intent(getContext(),DialogGActivity.class );
                 intent_b7.putExtra("title","异常分析");
                 intent_b7.putExtra("zldm",getContext().getString(R.string.ycfx));
@@ -409,7 +421,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent_b7);
                 break;
             case R.id.blfx:
-                cardView_b2.startAnimation(anim);
+                cardView_blfx.startAnimation(anim);
                 Intent intent_b8=new Intent(getContext(), DialogGActivity.class);
                 intent_b8.putExtra("title","不良分析");
                 intent_b8.putExtra("zldm",getContext().getString(R.string.blfx));
@@ -417,7 +429,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent_b8);
                 break;
             case R.id.jtjqsbg:
-                cardView_b4.startAnimation(anim);
+                cardView_qsbg.startAnimation(anim);
                 Intent intent_10=new Intent(getContext(), DialogGActivity.class);
                 intent_10.putExtra("title","腔数变更");
                 intent_10.putExtra("zldm",getResources().getString(R.string.jtjqsbg));
@@ -425,7 +437,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent_10);
                 break;
             case R.id.hddj:
-                cardView_b5.startAnimation(anim);
+                cardView_hddj.startAnimation(anim);
                 Intent intent_hddj=new Intent(getContext(), DialogGActivity.class);
                 intent_hddj.putExtra("title","耗电登记");
                 intent_hddj.putExtra("zldm",getResources().getString(R.string.hddj));
@@ -433,17 +445,17 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent_hddj);
                 break;
             case R.id.gycs:
-                cardView_b6.startAnimation(anim);
+                cardView_gycs.startAnimation(anim);
                 Intent intent_gycs=new Intent(getContext(), GycsActivity.class);
                 startActivity(intent_gycs);
                 break;
             case R.id.zyzd:
-                cardView_b12.startAnimation(anim);
+                cardView_zyzd.startAnimation(anim);
                 Intent intent_zyzd=new Intent(getContext(), ZyzdActivity.class);
                 startActivity(intent_zyzd);
                 break;
             case R.id.djby:
-                cardView_b7.startAnimation(anim);
+                cardView_sbdj.startAnimation(anim);
                 Intent intent_djby=new Intent(getContext(), DialogGActivity.class);
                 intent_djby.putExtra("title","设备点检");
                 intent_djby.putExtra("type","DOC");
@@ -451,7 +463,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 startActivity(intent_djby);
                 break;
             case R.id.slcs:
-                cardView_b13.startAnimation(anim);
+                cardView_slcs.startAnimation(anim);
                 Intent intent_slcs=new Intent(getContext(), DialogGActivity.class);
                 intent_slcs.putExtra("title","上料参数");
                 intent_slcs.putExtra("type","DOC");
@@ -472,119 +484,119 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
 
             case  R.id.zmsw:
                 if (isReady(getContext().getString(R.string.zmsw))){
-                    cardView_g1.startAnimation(anim);
+                    cardView_zmsw.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.zmsw),"装模升温","OPR");
                 }
                 break;
             case  R.id.cxpt:
                 if (isReady(getContext().getString(R.string.cxpt))){
-                    cardView_g2.startAnimation(anim);
+                    cardView_cxpt.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.cxpt),"冲洗炮筒","OPR");
                 }
                 break;
             case  R.id.kjsl:
                 if (isReady(getContext().getString(R.string.kjsl))){
-                    cardView_g3.startAnimation(anim);
+                    cardView_kjsl.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.kjsl),"开机试料","OPR");
                 }
                 break;
             case  R.id.ds:
                 if (isReady(getContext().getString(R.string.ds))){
-                    cardView_g4.startAnimation(anim);
+                    cardView_ds.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.ds),"定色","OPR");
                 }
                 break;
             case  R.id.sjqc:
                 if (isReady(getContext().getString(R.string.sjqc))){
-                    cardView_g5.startAnimation(anim);
+                    cardView_sjqc.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.sjqc),"三级清场","OPR");
                 }
                 break;
             case  R.id.sjjc:
                 if (isReady(getContext().getString(R.string.sjjc))){
-                    cardView_g6.startAnimation(anim);
+                    cardView_sjjc.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.sjjc),"首件检查","OPR");
                 }
                 break;
             case  R.id.pzyc:
                 if (isReady(getContext().getString(R.string.pzyc))){
-                    cardView_g7.startAnimation(anim);
+                    cardView_pzyc.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.pzyc),"品质异常","OPR");
                 }
                 break;
             case  R.id.tiaoji:
                 if (isReady(getContext().getString(R.string.tiaoji))){
-                    cardView_g8.startAnimation(anim);
+                    cardView_tiaoji.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.tiaoji),"调机","OPR");
                 }
                 break;
             case  R.id.ts:
                 if (isReady(getContext().getString(R.string.ts))){
-                    cardView_g9.startAnimation(anim);
+                    cardView_ts.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.ts),"调色","OPR");
                 }
                 break;
             case  R.id.tingji:
                 if (isReady(getContext().getString(R.string.tingji))){
-                    cardView_g10.startAnimation(anim);
+                    cardView_tingji.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.tingji),"停机","OPR");
                 }
                 break;
             case  R.id.dl:
                 if (isReady(getContext().getString(R.string.dl))){
-                    cardView_g11.startAnimation(anim);
+                    cardView_dl.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.dl),"待料","OPR");
                 }
                 break;
             case R.id.by:
                 if (isReady(getContext().getString(R.string.by))){
-                    cardView_g12.startAnimation(anim);
+                    cardView_by.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.by),"保养","OPR");
                 }
                 break;
             case  R.id.sm:
                 if (isReady(getContext().getString(R.string.sm))){
-                    cardView_g13.startAnimation(anim);
+                    cardView_xmsm.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.sm),"新模试模","OPR");
                 }
                 break;
             case  R.id.sl:
                 if (isReady(getContext().getString(R.string.sl))){
-                    cardView_g14.startAnimation(anim);
+                    cardView_ylsl.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.sl),"原料试料","OPR");
                 }
                 break;
             case  R.id.mjwx:
                 if (isReady(getContext().getString(R.string.mjwx))){
-                    cardView_g15.startAnimation(anim);
+                    cardView_mjwx.startAnimation(anim);
                     //getActivity().finish();
                     startActivityByNetResult(getContext().getString(R.string.mjwx),"模具维修","OPR");
                 }
                 break;
             case R.id.jtwx:
                 if (isReady(getContext().getString(R.string.jtwx))){
-                    cardView_g16.startAnimation(anim);
+                    cardView_jtwx.startAnimation(anim);
                     startActivityByNetResult(getContext().getString(R.string.jtwx),"机台维修","OPR");
                 }
                 break;
             case R.id.zyg:
                if (isReady(getContext().getString(R.string.zyg))){
-                   cardView_g17.startAnimation(anim);
+                   cardView_zyg.startAnimation(anim);
                    startActivityByNetResult(getContext().getString(R.string.zyg),"粘样盖","OPR");
                }
                 break;
             case R.id.cm:
                if (isReady(getContext().getString(R.string.cm))){
-                   cardView_g18.startAnimation(anim);
+                   cardView_cm.startAnimation(anim);
                    startActivityByNetResult(getContext().getString(R.string.cm),"拆模","OPR");
                }
                 break;
             case R.id.rysg:
-                cardView_g19.startAnimation(anim);
+                cardView_rysg.startAnimation(anim);
                 startActivityByNetResult(getContext().getString(R.string.rysg),"人员上岗","OPR");
                 break;
             case R.id.pgxj:
-                cardView_g20.startAnimation(anim);
+                cardView_pgxj.startAnimation(anim);
                 Intent intent_g20=new Intent(getContext(),DialogGActivity.class);
                 intent_g20.putExtra("zldm",getResources().getString(R.string.pgxj));
                 intent_g20.putExtra("title","品管巡机");
@@ -593,7 +605,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 //startActivityByNetResult(getContext().getString(R.string.pgxj),"品管巡机","OPR");
                 break;
             case R.id.js:
-                cardView_g21.startAnimation(anim);
+                cardView_js.startAnimation(anim);
                 exitEven();
                 break;
         }

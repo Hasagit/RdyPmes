@@ -397,6 +397,11 @@ public class InfoFragment extends Fragment {
             tip=tip+temp[i]+"\n";
         }
         msg_text.setText(tip);
+        if (item.get(1).equals("59")){
+            activity.getStatusFragment().setNGTextColor(Color.RED);
+        }else{
+            activity.getStatusFragment().setNGTextColor(Color.BLACK);
+        }
         if (item.get(15).equals("1")){
             img_0.setVisibility(View.VISIBLE);
         }else {

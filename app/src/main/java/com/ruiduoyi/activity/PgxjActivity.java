@@ -127,7 +127,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
         sjxs_text=(TextView)findViewById(R.id.dq_12);
         save_btn.setOnClickListener(this);
         cancle_btn.setOnClickListener(this);
-        dialog=new PopupDialog(this,400,300);
+        dialog=new PopupDialog(this,400,360);
         dialog.getCancle_btn().setVisibility(View.GONE);
         dialog.getOkbtn().setText("确定");
         dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
@@ -150,7 +150,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                 }
             }
         });
-        dialog2=new PopupDialog(PgxjActivity.this,400,350);
+        dialog2=new PopupDialog(PgxjActivity.this,400,360);
     }
 
     private void getNetData(){
