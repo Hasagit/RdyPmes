@@ -36,4 +36,6 @@
     <color name="g_true">#99ccff</color>
     <color name="g_false">#8899ccff</color>
     <color name="cardview_bg">#bae3fb</color>
+    <color name="zl_btn">#bfd999</color>
+    <color name="zl_bbtn">#b8dde8</color>
 </resources>

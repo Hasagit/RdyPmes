@@ -200,7 +200,7 @@
                 android:gravity="center"
                 android:text="堵头时间"/>
             <TextView
-                android:layout_width="150dp"
+                android:layout_width="100dp"
                 android:layout_height="match_parent"
                 android:background="@drawable/text_bg"
                 android:gravity="center"
@@ -211,12 +211,30 @@
                 android:background="@drawable/text_bg"
                 android:gravity="center"
                 android:text="修复时间"/>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:text="复核人员"/>
+            <TextView
+                android:layout_width="150dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:text="复核时间"/>
+            <TextView
+                android:layout_width="100dp"
+                android:layout_height="match_parent"
+                android:background="@drawable/text_bg"
+                android:gravity="center"
+                android:text="复核次数"/>
         </LinearLayout>
 
         <ListView
             android:layout_marginBottom="10dp"
             android:id="@+id/list_2"
-            android:layout_width="950dp"
+            android:layout_width="1250dp"
             android:layout_height="match_parent"
             android:background="@drawable/text_bg"
             android:divider="@color/touming"></ListView>

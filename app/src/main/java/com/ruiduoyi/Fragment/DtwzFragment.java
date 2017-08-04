@@ -4,7 +4,6 @@ import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Color;
-import android.net.Uri;
 import android.os.Bundle;
 import android.os.Handler;
 import android.os.Message;
@@ -20,14 +19,13 @@ import android.widget.Button;
 
 import com.ruiduoyi.R;
 import com.ruiduoyi.activity.Jtjqsbg2Activity;
-import com.ruiduoyi.adapter.MyRecyclerAdapter;
+import com.ruiduoyi.adapter.QsRecyclerAdapter;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -135,7 +133,7 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
                         btn_submit.setEnabled(true);
                         btn_submit.setText("提交");
                         data= (List<Map<String, String>>) msg.obj;
-                        MyRecyclerAdapter adapter=new MyRecyclerAdapter(getContext(),data);
+                        QsRecyclerAdapter adapter=new QsRecyclerAdapter(getContext(),data);
                         GridLayoutManager layoutManager = new GridLayoutManager(getContext(),msg.arg1);
                         layoutManager.setOrientation(LinearLayoutManager.VERTICAL);
                         recyclerView.setLayoutManager(layoutManager);

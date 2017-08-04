@@ -33,16 +33,17 @@
     <string name="gdgl">D03</string>
     <string name="jtjqsbg">D04</string>
     <string name="hddj">D05</string>
-    <string name="gycs">D05</string>
-    <string name="scrz">D06</string>
     <string name="ycfx">D07</string>
     <string name="blfx">D08</string>
     <string name="sbdj">D09</string>
     <string name="slcs">D10</string>
     <string name="qsfh">D11</string>
-
+    <string name="pzgl">D13</string>
+    <string name="scrz">D12</string>
+    <string name="gycs">D06</string>
+    <string name="zyzd">D14</string>
     <string name="gpio_update_time">10000</string>
     <string name="base_info_update_time">60000</string>
-    <string name="service_ip">http://192.168.2.119</string>
-    <!--<string name="service_ip">http://193.168.0.117</string>-->
+    <!--<string name="service_ip">http://192.168.2.120</string>-->
+    <string name="service_ip">http://193.168.0.117</string>
 </resources>

@@ -44,7 +44,7 @@
             android:text="堵头时间"/>
         <TextView
             android:id="@+id/lab_6"
-            android:layout_width="150dp"
+            android:layout_width="100dp"
             android:layout_height="match_parent"
             android:background="@drawable/text_bg"
             android:gravity="center"
@@ -56,5 +56,26 @@
             android:background="@drawable/text_bg"
             android:gravity="center"
             android:text="修复时间"/>
+        <TextView
+            android:id="@+id/lab_8"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/text_bg"
+            android:gravity="center"
+            android:text="复核人员"/>
+        <TextView
+            android:id="@+id/lab_9"
+            android:layout_width="150dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/text_bg"
+            android:gravity="center"
+            android:text="复核时间"/>
+        <TextView
+            android:id="@+id/lab_10"
+            android:layout_width="100dp"
+            android:layout_height="match_parent"
+            android:background="@drawable/text_bg"
+            android:gravity="center"
+            android:text="复核次数"/>
     </LinearLayout>
 </LinearLayout>

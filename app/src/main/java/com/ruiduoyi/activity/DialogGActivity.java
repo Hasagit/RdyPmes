@@ -73,41 +73,59 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                         }else {//执行文档操作
                             String wkno=readCardResult.substring(2,readCardResult.length());
                             Intent intent;
-                            if (title.equals("工单管理")){
+                            if (zldm.equals(getResources().getString(R.string.gdgl))){
                                 intent=new Intent(DialogGActivity.this,GdglActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
-                            }else if(title.equals("异常分析")){
+                            }else if(zldm.equals(getResources().getString(R.string.ycfx))){
                                 intent=new Intent(DialogGActivity.this,YcfxActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
-                            }else if(title.equals("不良分析")){
+                            }else if(zldm.equals(getResources().getString(R.string.blfx))){
                                 intent=new Intent(DialogGActivity.this,BlfxActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
-                            }else if(title.equals("腔数变更")){
+                            }else if(zldm.equals(getResources().getString(R.string.jtjqsbg))){
                                 intent=new Intent(DialogGActivity.this,JtjqsbgActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
-                            }else if (title.equals("品管巡机")){
+                            }else if (zldm.equals(getResources().getString(R.string.pgxj))){
                                 intent=new Intent(DialogGActivity.this,PgxjActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
-                            }else if(title.equals("耗电登记")){
+                            }else if(zldm.equals(getResources().getString(R.string.hddj))){
                                 intent=new Intent(DialogGActivity.this,HddjActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
-                            }else if(title.equals("设备点检")){
+                            }else if(zldm.equals(getResources().getString(R.string.sbdj))){
                                 intent=new Intent(DialogGActivity.this,SbdjActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
-                            }else if(title.equals("上料参数")){
+                            }else if(zldm.equals(getResources().getString(R.string.slcs))){
                                 intent=new Intent(DialogGActivity.this,SlcsActivity.class);
                                 intent.putExtra("wkno",wkno);
                                 startActivity(intent);
-                            }else if(title.equals("腔数复核")){
+                            }else if(zldm.equals(getResources().getString(R.string.qsfh))){
                                 intent=new Intent(DialogGActivity.this,QsfhActivity.class);
                                 intent.putExtra("wkno",wkno);
+                                startActivity(intent);
+                            }else if (zldm.equals(getResources().getString(R.string.sbxx))){
+                                intent=new Intent(DialogGActivity.this,SbxxActivity.class);
+                                startActivity(intent);
+                            }else if (zldm.equals(getResources().getString(R.string.mjxx))){
+                                intent=new Intent(DialogGActivity.this,MjxxActivity.class);
+                                startActivity(intent);
+                            }else if (zldm.equals(getResources().getString(R.string.pzgl))){
+                                intent=new Intent(DialogGActivity.this,PzglActivity.class);
+                                startActivity(intent);
+                            }else if (zldm.equals(getResources().getString(R.string.scrz))){
+                                intent=new Intent(DialogGActivity.this,ScrzActivity.class);
+                                startActivity(intent);
+                            }else if (zldm.equals(getResources().getString(R.string.gycs))){
+                                intent=new Intent(DialogGActivity.this,GycsActivity.class);
+                                startActivity(intent);
+                            }else if (zldm.equals(getResources().getString(R.string.zyzd))){
+                                intent=new Intent(DialogGActivity.this,ZyzdActivity.class);
                                 startActivity(intent);
                             }
                             setIsFinishOk();

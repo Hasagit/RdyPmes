@@ -258,7 +258,7 @@ public class QsfhActivity extends BaseActivity {
                 List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoexsFhInf 'B','"+jtbh+"','"+zzdh+"','"+mjbh+"'");
                 if (list!=null){
                     if (list.size()>0){
-                        if (list.get(0).size()>6){
+                        if (list.get(0).size()>9){
                             Message msg=handler.obtainMessage();
                             msg.what=0x101;
                             msg.obj=list;
@@ -288,11 +288,14 @@ public class QsfhActivity extends BaseActivity {
             map.put("lab_5",lists.get(i).get(4));
             map.put("lab_6",lists.get(i).get(5));
             map.put("lab_7",lists.get(i).get(6));
+            map.put("lab_8",lists.get(i).get(7));
+            map.put("lab_9",lists.get(i).get(8));
+            map.put("lab_10",lists.get(i).get(9));
             data.add(map);
         }
         SimpleAdapter adapter=new SimpleAdapter(this,data,R.layout.list_item_qsfh_2,
-                new String[]{"lab_1","lab_2","lab_3","lab_4","lab_5","lab_6","lab_7"},
-                new int[]{R.id.lab_1,R.id.lab_2,R.id.lab_3,R.id.lab_4,R.id.lab_5,R.id.lab_6,R.id.lab_7});
+                new String[]{"lab_1","lab_2","lab_3","lab_4","lab_5","lab_6","lab_7","lab_8","lab_9","lab_10",},
+                new int[]{R.id.lab_1,R.id.lab_2,R.id.lab_3,R.id.lab_4,R.id.lab_5,R.id.lab_6,R.id.lab_7,R.id.lab_8,R.id.lab_9,R.id.lab_10});
         listView_2.setAdapter(adapter);
     }
 
