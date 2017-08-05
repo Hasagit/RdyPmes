@@ -54,6 +54,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     private RecyclerView gRecycler,bRecycler;
     private ZLRecyclerViewAdapter gAdapter,bAdapter;
     private List<Map<String,String>>gdata,bdata;
+    private boolean isFirst=true;
     public StatusFragment() {
 
     }
@@ -407,7 +408,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmMstr");
                 if (list!=null){
                     if (list.size()>0){
-                        if (list.get(0).size()>2){
+                        if (list.get(0).size()>3){
                             Message msg=handler.obtainMessage();
                             msg.what=0x102;
                             msg.obj=list;
@@ -475,6 +476,10 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
 
     //遍历RecyclerView获取三个textView并将其颜色变成红色
     public void setNGTextColor(int Color){
+        if (isFirst){
+            isFirst=false;
+            return;
+        }
         if (gdata!=null){
             for (int i=0;i<gdata.size();i++){
                 String zldm=gdata.get(i).get("zldm");

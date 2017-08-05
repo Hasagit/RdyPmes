@@ -1,6 +1,7 @@
 package com.ruiduoyi.activity;
 
 import android.content.Intent;
+import android.graphics.Color;
 import android.os.Handler;
 import android.os.Message;
 import android.support.annotation.IdRes;
@@ -35,7 +36,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
     private Button save_btn,cancle_btn;
     private RadioButton radio_ok,radio_ng;
     private RadioGroup radioGroup;
-    private TextView zzdh_text,gddh_text,scph_text,wgrq_text,cpbh_text,pmgg_text,jhsl_text,lpsl_text,mjbh_text,mjmc_text,cpxs_text,sjxs_text;
+    private TextView tsqx_text,zzdh_text,gddh_text,scph_text,wgrq_text,cpbh_text,pmgg_text,jhsl_text,lpsl_text,mjbh_text,mjmc_text,cpxs_text,sjxs_text;
     private ListView congDanListView,yuanYinLisView;
     private Handler handler;
     private String wkno,jtbh;
@@ -125,6 +126,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
         mjmc_text=(TextView)findViewById(R.id.dq_10);
         cpxs_text=(TextView)findViewById(R.id.dq_11);
         sjxs_text=(TextView)findViewById(R.id.dq_12);
+        tsqx_text=(TextView)findViewById(R.id.dq_13);
         save_btn.setOnClickListener(this);
         cancle_btn.setOnClickListener(this);
         dialog=new PopupDialog(this,400,360);
@@ -230,7 +232,12 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
         mjmc_text.setText(list.get(7));
         cpxs_text.setText(list.get(14));
         sjxs_text.setText(list.get(15));
-
+        tsqx_text.setText(sharedPreferences.getString("tszlqx",""));
+        if (tsqx_text.getText().toString().equals("")){
+            tsqx_text.setBackgroundColor(Color.WHITE);
+        }else {
+            tsqx_text.setBackgroundColor(getResources().getColor(R.color.small));
+        }
         getCongListData(zzdh_text.getText().toString());
     }
 
@@ -435,7 +442,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                 if (isReady()){
                     if (radio_ok.isChecked()){
                         dialog2.setTitle("提示");
-                        dialog2.setMessage("请再次确认巡查腔数与实际腔数是否一致？");
+                        dialog2.setMessage("请确认巡查腔数与实际腔数是否一致？");
                         dialog2.getCancle_btn().setText("取消");
                         dialog2.getCancle_btn().setOnClickListener(new View.OnClickListener() {
                             @Override

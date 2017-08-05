@@ -63,7 +63,7 @@ public class InfoFragment extends Fragment {
     private TextView dq_1,dq_2,dq_3,dq_4,dq_5,dq_6,dq_7,dq_8,
                 xy_1,xy_2,xy_3,xy_4,xy_5,xy_6,xy_7,xy_8,
                 mo_1,mo_2,mo_3,mo_4,mo_5,mo_6,mo_7,mo_8,tong_1,tong_2,tong_3,tong_4,tong_5,tong_6,jtbh_text,status,msg_text,
-                caozuo_text,jisu_text,cao_name_text,ji_name_text,labRym;
+                caozuo_text,jisu_text,cao_name_text,ji_name_text,labRym,tsqx_text;
     private SharedPreferences sharedPreferences;
     private ImageView img_1,img_2,img_3,img_4,img_5,img_6,img_7,img_8,img_0,img_pho1,img_pho2;
     private CardView cardView;
@@ -157,6 +157,7 @@ public class InfoFragment extends Fragment {
         jisu_text=(TextView)view.findViewById(R.id.jisu);
         cao_name_text=(TextView)view.findViewById(R.id.cao_name);
         caozuo_text=(TextView)view.findViewById(R.id.caozuo);
+        tsqx_text=(TextView)view.findViewById(R.id.tsqx);
         labRym=(TextView)view.findViewById(R.id.labRym);
         img_0=(ImageView)view.findViewById(R.id.img_0);
         img_1=(ImageView)view.findViewById(R.id.img_1);
@@ -207,6 +208,7 @@ public class InfoFragment extends Fragment {
                         editor.putString("mjqs",item.get(27));
                         editor.putString("sjqs",item.get(17));
                         editor.putString("jzzl",item.get(29));
+                        editor.putString("tszlqx",item.get(31));
                         //editor.putString("jzzl","2");
                         editor.commit();
                         dq_3.setText(item.get(2));
@@ -223,6 +225,14 @@ public class InfoFragment extends Fragment {
                         xy_6.setText(item.get(13));
                         xy_7.setText(item.get(14));
                         xy_8.setText(item.get(15));
+
+                        tsqx_text.setText(item.get(31));
+                        if (item.get(31).equals("")){
+                            tsqx_text.setBackgroundColor(Color.WHITE);
+                        }else {
+                            tsqx_text.setBackgroundColor(getResources().getColor(R.color.small));
+                        }
+
                         mo_1.setText(item.get(4));
                         mo_2.setText(item.get(16));
                         mo_3.setText(item.get(28));//产品腔数
@@ -234,7 +244,7 @@ public class InfoFragment extends Fragment {
                         if (item.get(17).equals(item.get(28))){
                             mo_8.setBackgroundColor(Color.WHITE);
                         }else {
-                            mo_8.setBackgroundColor(Color.RED);
+                            mo_8.setBackgroundColor(getResources().getColor(R.color.small));
                         }
 
                         tong_1.setText(item.get(21));
@@ -243,6 +253,9 @@ public class InfoFragment extends Fragment {
                         tong_4.setText(item.get(24));
                         tong_5.setText(item.get(25));
                         tong_6.setText(item.get(26));
+
+
+
 
                         if (!(item.get(4).trim().equals("")|item.get(12).trim().equals(""))){
                             if(!item.get(4).trim().equals(item.get(12).trim())){
@@ -788,7 +801,7 @@ public class InfoFragment extends Fragment {
                     if(list!=null){
                         handler.sendEmptyMessage(0x111);
                         if(list.size()>0){
-                            if (list.get(0).size()>28){
+                            if (list.get(0).size()>31){
                                 Message msg=handler.obtainMessage();
                                 msg.what=0x100;
                                 msg.obj=list;

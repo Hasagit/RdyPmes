@@ -73,7 +73,9 @@ public class DtxxFragment extends Fragment {
         pmgg_text.setText(pmgg);
 
         if (!mjqs.equals(cpqs)){
-            cpxs_text.setBackgroundColor(Color.RED);
+            cpxs_text.setBackgroundColor(getResources().getColor(R.color.small));
+        }else {
+            cpxs_text.setBackgroundColor(Color.WHITE);
         }
 
         dialog=new PopupDialog(getActivity(),400,360);
@@ -149,7 +151,7 @@ public class DtxxFragment extends Fragment {
                             }
                         }
                         if (!mjxs_text.getText().equals(cpxs_text.getText().toString())){
-                            cpxs_text.setBackgroundColor(Color.RED);
+                            cpxs_text.setBackgroundColor(getResources().getColor(R.color.small));
                         }else {
                             cpxs_text.setBackgroundColor(Color.WHITE);
                         }

@@ -32,7 +32,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
-public class BlfxActivity extends BaseDialogActivity implements View.OnClickListener{
+public class BlfxActivity extends BaseActivity implements View.OnClickListener{
     private Button cancle_btn;
     private Button spinner;//不良产品下拉框
     private ListView listView,listView_register;
@@ -268,6 +268,10 @@ public class BlfxActivity extends BaseDialogActivity implements View.OnClickList
             List<String>item=lists.get(i);
             data.add(item.get(1)+"\t\t"+item.get(2));
             zzdh_list.add(item.get(0));
+        }
+        if (data.size()>0){
+            spinner.setText(data.get(0));
+            zzdh_position=0;
         }
         popupWindowSpinner=new PopupWindowSpinner(BlfxActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,305);
         popupWindowSpinner.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {

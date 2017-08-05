@@ -179,6 +179,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                     blmsList.setAdapter(adapter);
                     break;
                 case 0x110:
+                    AppUtils.sendUpdateInfoFragmentReceiver(YcfxActivity.this);
                     dialog.setMessage("提交成功");
                     dialog.setMessageTextColor(Color.BLACK);
                     dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {

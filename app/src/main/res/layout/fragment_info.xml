@@ -333,8 +333,7 @@
                 <!--当前工单-->
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="360dp"
-                    android:layout_marginTop="5dp"
+                    android:layout_height="415dp"
                     app:cardBackgroundColor="#dcdcdc"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="5dp">
@@ -587,6 +586,8 @@
                                         android:textSize="@dimen/text_size" />
                                 </LinearLayout>
 
+
+
                             </LinearLayout>
 
                             <LinearLayout
@@ -808,6 +809,31 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:layout_marginRight="7dp"
+                            android:layout_width="match_parent"
+                            android:layout_height="wrap_content"
+                            android:orientation="horizontal">
+
+                            <TextView
+                                android:layout_width="wrap_content"
+                                android:layout_height="wrap_content"
+                                android:layout_gravity="center_vertical"
+                                android:layout_marginRight="7dp"
+                                android:text="特殊质量缺陷"
+                                android:textColor="#000000"
+                                android:textSize="15dp" />
+
+                            <TextView
+                                android:id="@+id/tsqx"
+                                android:layout_width="match_parent"
+                                android:layout_height="30dp"
+                                android:layout_margin="3dp"
+                                android:background="@color/small"
+                                android:gravity="center_vertical"
+                                android:textSize="@dimen/text_size" />
+                        </LinearLayout>
+
+                        <LinearLayout
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="14dp"
@@ -839,8 +865,7 @@
                 <!--模具信息-->
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
-                    android:layout_height="@dimen/card_height"
-                    android:layout_marginTop="2dp"
+                    android:layout_height="124dp"
                     app:cardBackgroundColor="#dcdcdc"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="5dp">
@@ -867,12 +892,13 @@
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
                                 android:layout_marginRight="11dp"
+                                android:layout_marginTop="3dp"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
+
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -900,7 +926,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="5dp"
+
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -928,7 +954,7 @@
                                     android:layout_width="wrap_content"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="5dp"
+
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -956,13 +982,14 @@
                             <LinearLayout
                                 android:layout_width="match_parent"
                                 android:layout_height="wrap_content"
+                                android:layout_marginTop="3dp"
                                 android:layout_marginRight="11dp"
                                 android:orientation="horizontal">
 
                                 <LinearLayout
                                     android:layout_width="@dimen/tong_width"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
+
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -988,7 +1015,7 @@
                                 <LinearLayout
                                     android:layout_width="@dimen/tong_width"
                                     android:layout_height="wrap_content"
-                                    android:layout_marginTop="5dp"
+
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -1015,7 +1042,7 @@
                                     android:layout_width="@dimen/tong_width"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="5dp"
+
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -1042,7 +1069,6 @@
                                     android:layout_width="@dimen/tong_width"
                                     android:layout_height="wrap_content"
                                     android:layout_marginLeft="5dp"
-                                    android:layout_marginTop="5dp"
                                     android:layout_weight="1"
                                     android:orientation="horizontal">
 
@@ -1068,6 +1094,7 @@
                         </LinearLayout>
 
                         <LinearLayout
+                            android:visibility="gone"
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_marginRight="14dp"
@@ -1099,7 +1126,6 @@
                 <android.support.v7.widget.CardView
                     android:layout_width="match_parent"
                     android:layout_height="120dp"
-                    android:layout_marginTop="2dp"
                     app:cardBackgroundColor="#dcdcdc"
                     app:cardCornerRadius="5dp"
                     app:cardElevation="5dp">

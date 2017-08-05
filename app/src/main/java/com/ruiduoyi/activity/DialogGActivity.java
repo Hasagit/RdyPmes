@@ -265,7 +265,7 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("PAD_Read_CardID '"
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Read_CardID '"
                         +type+"','"+zldm+"','"+num+"'");
                 if (list!=null){
                     if (list.size()>0){

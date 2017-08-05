@@ -63,6 +63,7 @@ public class ZyzdActivity extends BaseActivity {
     private void initView(){
         title=(TextView)findViewById(R.id.title_text);
         pdfView=(com.github.barteksc.pdfviewer.PDFView) findViewById(R.id.pdfview);
+        pdfView.fromAsset("default.pdf").defaultPage(0).load();
         listView=(ListView)findViewById(R.id.list_zyzd);
         progressBar=(ProgressBar)findViewById(R.id.progress);
         cancle_btn=(Button)findViewById(R.id.cancle_btn);
@@ -101,7 +102,6 @@ public class ZyzdActivity extends BaseActivity {
                         File file=new File((String) msg.obj);
                         pdfView.recycle();
                         pdfView.fromFile(file).defaultPage(0).load();
-                        pdfView.setVisibility(View.VISIBLE);
                         break;
                     case 0x102:
                         progressBar.setVisibility(View.VISIBLE);
@@ -110,7 +110,7 @@ public class ZyzdActivity extends BaseActivity {
                         progressBar.setVisibility(View.GONE);
                         break;
                     case 0x104:
-                        pdfView.setVisibility(View.GONE);
+                        pdfView.fromAsset("default.pdf").defaultPage(0).load();
                         dialog.setMessage("未维护对应文件");
                         dialog.show();
                         progressBar.setVisibility(View.GONE);
@@ -221,7 +221,7 @@ public class ZyzdActivity extends BaseActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZyzdInf  'B','','"
+                    List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZyzdInf  'B','"+zzdh+"','"
                             +data.get(position).get("lab_1")+"'");
                     if (list!=null){
                         if (list.size()>0){
