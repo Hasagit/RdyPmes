@@ -403,8 +403,8 @@
                     android:textSize="15dp" />
 
                 <LinearLayout
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
+                    android:layout_width="545dp"
+                    android:layout_height="36dp"
                     android:background="@drawable/text_bg">
                     <TextView
                         android:id="@+id/dq_13"

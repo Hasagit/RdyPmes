@@ -2,7 +2,7 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Ruiduoyi.iml" filepath="$PROJECT_DIR$/Ruiduoyi.iml" />
+      <module fileurl="file://$PROJECT_DIR$/Ruiduoyi_HBJH.iml" filepath="$PROJECT_DIR$/Ruiduoyi_HBJH.iml" />
       <module fileurl="file://$PROJECT_DIR$/SerialPortLibrary/SerialPortLibrary.iml" filepath="$PROJECT_DIR$/SerialPortLibrary/SerialPortLibrary.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
       <module fileurl="file://$PROJECT_DIR$/Gpiolibrary/gpiolibrary.iml" filepath="$PROJECT_DIR$/Gpiolibrary/gpiolibrary.iml" />

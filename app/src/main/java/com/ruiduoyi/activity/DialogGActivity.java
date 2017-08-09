@@ -182,7 +182,7 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
 
 
 
-        if (title.equals("定色")){
+        if (zldm.equals(getResources().getString(R.string.ds))){
             ds_bg.setVisibility(View.VISIBLE);
         }
         radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
@@ -233,7 +233,9 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                                     Intent intent=new Intent();
                                     intent.setAction("UpdateInfoFragment");
                                     sendBroadcast(intent);
-                                    if (!(title.equals("结束")|title.equals("人员上岗")|title.equals("品管巡机"))){
+                                    if (!(zldm.equals(getResources().getString(R.string.js))|
+                                            zldm.equals(getResources().getString(R.string.rysg))|
+                                            zldm.equals(getResources().getString(R.string.pgxj)))){
                                         Intent intent2=new Intent();
                                         intent2.setAction("com.Ruiduoyi.returnToInfoReceiver");
                                         sendBroadcast(intent2);

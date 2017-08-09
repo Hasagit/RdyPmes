@@ -29,6 +29,7 @@
     </FrameLayout>
 
     <HorizontalScrollView
+        android:layout_marginLeft="2dp"
         android:layout_marginBottom="5dp"
         android:layout_width="match_parent"
         android:layout_height="300dp">
@@ -159,6 +160,7 @@
         android:layout_height="20dp"
         android:background="@color/blue_sl_false"></LinearLayout>
     <LinearLayout
+        android:layout_marginLeft="2dp"
         android:layout_marginTop="5dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"

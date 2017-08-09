@@ -94,6 +94,9 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
                     listView.setAdapter(adapter2);
                     break;
                 case 0x102:
+                    blpsl_text.setText(Integer.parseInt(blpsl_text.getText().toString())+
+                            Integer.parseInt(sub_text.getText().toString())+"");
+                    sub_text.setText("0");
                     List<List<String>>list2= (List<List<String>>) msg.obj;
                     List<Map<String,String>>data=new ArrayList<>();
                     for (int i=0;i<list2.size();i++){
@@ -555,5 +558,9 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        AppUtils.sendUpdateInfoFragmentReceiver(this);
+    }
 }

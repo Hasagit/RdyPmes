@@ -146,7 +146,7 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                                 new Thread(new Runnable() {
                                     @Override
                                     public void run() {
-                                        AppUtils.DownLoadFileByUrl(list.get(0).get(2),
+                                        NetHelper.DownLoadFileByUrl(list.get(0).get(2),
                                                 Environment.getExternalStorageDirectory().getPath(),"RdyPmes.apk");
                                         Intent intent = new Intent(Intent.ACTION_VIEW);
                                         intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/RdyPmes.apk")),

@@ -11,6 +11,7 @@ import android.os.Handler;
 import android.os.Message;
 import android.os.Bundle;
 import android.util.Log;
+import android.util.TypedValue;
 import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -28,6 +29,8 @@ import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
+
+import org.json.JSONArray;
 
 import java.io.DataOutputStream;
 import java.io.File;
@@ -47,6 +50,8 @@ public class FirstActivity extends BaseActivity{
     private Button spiner_btn;
     private TextView jtbh_tip;
     private PopupDialog dialogAutoUpdate;
+    int width_dp;
+    int height_dp;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -57,13 +62,15 @@ public class FirstActivity extends BaseActivity{
 
 
     private void initView(){
+        width_dp=((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,450, getResources().getDisplayMetrics()));
+        height_dp=((int)TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP, 350,getResources().getDisplayMetrics()));
         welc_img=(ImageView) findViewById(R.id.welcome_img);
         Glide.with(this).load(R.drawable.welcome).asGif().diskCacheStrategy(DiskCacheStrategy.SOURCE).into(welc_img);
        // Glide.with(this).load("file:///android_asset/welcome.gif").into(welc_img);
         contenView= LayoutInflater.from(FirstActivity.this).inflate(R.layout.popup_dialog3,null);
-        dialog=new PopupWindow(contenView, 450, 350);
+        dialog=new PopupWindow(contenView, width_dp, height_dp);
         contenView2= LayoutInflater.from(FirstActivity.this).inflate(R.layout.popup_dialog2,null);
-        dialog2=new PopupWindow(contenView2,  450, 400);
+        dialog2=new PopupWindow(contenView2,  width_dp, height_dp);
         spiner_btn=(Button)contenView2.findViewById(R.id.spinner_btn);
         jtbh_tip=(TextView)contenView2.findViewById(R.id.jtbh_tip);
     }
@@ -77,7 +84,7 @@ public class FirstActivity extends BaseActivity{
             file.delete();
         }
         sharedPreferences=getSharedPreferences("info",MODE_PRIVATE);
-        NetHelper.URL=getString(R.string.service_ip)+":8080/Service1.asmx";
+        NetHelper.URL=getString(R.string.service_ip)+":9090/Service1.asmx";
         getNetData(0);
         new Thread(new Runnable() {
             @Override
@@ -257,7 +264,8 @@ public class FirstActivity extends BaseActivity{
                         spiner_btn.setOnClickListener(new View.OnClickListener() {
                             @Override
                             public void onClick(View v) {
-                                final PopupWindowSpinner spinner=new PopupWindowSpinner(FirstActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,200);
+                                int width=((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200, getResources().getDisplayMetrics()));
+                                final PopupWindowSpinner spinner=new PopupWindowSpinner(FirstActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,width);
                                 spinner.showUpOn(spiner_btn);
                                 spinner.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
                                     @Override
@@ -285,7 +293,7 @@ public class FirstActivity extends BaseActivity{
                     break;
                 case 0x107:
                     isNewVersion=false;
-                    dialogAutoUpdate=new PopupDialog(FirstActivity.this,400,300);
+                    dialogAutoUpdate=new PopupDialog(FirstActivity.this,width_dp,height_dp);
                     dialogAutoUpdate.setTitle("温馨提示");
                     dialogAutoUpdate.setMessage("系统自动更新中...");
                     dialogAutoUpdate.getOkbtn().setVisibility(View.GONE);
@@ -410,6 +418,7 @@ public class FirstActivity extends BaseActivity{
             @Override
             public void run() {
                 List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_WebAddr");
+                //JSONArray array=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_WebAddr");
                 if (list!=null){
                     if (list.size()>0){
                        if (list.get(0).size()>4){
@@ -421,7 +430,7 @@ public class FirstActivity extends BaseActivity{
                            editor.commit();
                            if (!oldVersionName.equals(newVersionName)){
                                handler.sendEmptyMessage(0x107);
-                               AppUtils.DownLoadFileByUrl(list.get(0).get(2),
+                               NetHelper.DownLoadFileByUrl(list.get(0).get(2),
                                        Environment.getExternalStorageDirectory().getPath(),"RdyPmes.apk");
                                Intent intent = new Intent(Intent.ACTION_VIEW);
                                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/RdyPmes.apk")),

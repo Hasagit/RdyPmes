@@ -93,37 +93,6 @@ public class AppUtils {
     }
 
 
-    public static void DownLoadFileByUrl(String url_str,String filePath,String fileName){
-        URL url= null;
-        try {
-            File file=new File(filePath);
-           if (!file.exists()){
-               file.mkdir();
-           }
-            url = new URL(url_str);
-            HttpURLConnection urlConnection=(HttpURLConnection) url.openConnection();
-            urlConnection.setDoInput(true);
-            urlConnection.setUseCaches(false);
-            urlConnection.setRequestMethod("GET");
-            urlConnection.setConnectTimeout(5000);
-            urlConnection.connect();
-            InputStream in=urlConnection.getInputStream();
-            OutputStream out=new FileOutputStream(filePath+"/"+fileName,false);
-            byte[] buff=new byte[1024];
-            int size;
-            while ((size = in.read(buff)) != -1) {
-                out.write(buff, 0, size);
-            }
-        } catch (MalformedURLException e) {
-            e.printStackTrace();
-        } catch (FileNotFoundException e) {
-            e.printStackTrace();
-        } catch (ProtocolException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        }
-    }
 
 
     public static void setSystemTime(final Context cxt, String datetimes) {

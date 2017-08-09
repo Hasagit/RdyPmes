@@ -280,6 +280,7 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 holder.zl_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {
+                        AppUtils.sendCountdownReceiver(getContext());
                         holder.zl_btn.startAnimation(anim);
                         if (map.get("type").equals("OPR")){
                             if (isReady(map.get("zldm"))){

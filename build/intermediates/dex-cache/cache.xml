@@ -12,6 +12,24 @@
     </item>
     <item
         is-multidex="false"
+        jar="D:\FinishProject\Ruiduoyi_HBJH\app\libs\sqljdbc4.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="ecc4bc5c567954cdd1acd3c5985555c8d0355bb0">
+        <dex dex="D:\FinishProject\Ruiduoyi_HBJH\app\build\intermediates\pre-dexed\debug\sqljdbc4_34377e9903e11dcb37192c09503fb848d1fb2cd4.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\FinishProject\Ruiduoyi_HBJH\SerialPortLibrary\build\intermediates\bundles\default\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="5e0e83b24255bf0ed1d40088c008636aaeb91059">
+        <dex dex="D:\FinishProject\Ruiduoyi_HBJH\app\build\intermediates\pre-dexed\debug\classes_cb6a913366a957823a6a8d5220f0760b8d65fcea.jar" />
+    </item>
+    <item
+        is-multidex="false"
         jar="D:\Android_Project\Ruiduoyi\app\libs\ksoap2-android-assembly-3.3.0-jar-with-dependencies.jar"
         jumboMode="false"
         optimize="true"
@@ -21,12 +39,12 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\Android_Project\Ruiduoyi\SerialPortLibrary\build\intermediates\bundles\default\classes.jar"
+        jar="D:\FinishProject\Ruiduoyi_HBJH\Gpiolibrary\build\intermediates\bundles\default\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.3"
-        sha1="5e0e83b24255bf0ed1d40088c008636aaeb91059">
-        <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\classes_0d262f84584aaa023893da5d26bfef8a6065edcf.jar" />
+        sha1="8351fa88884802d7df02b9bf9e893737a651a7e0">
+        <dex dex="D:\FinishProject\Ruiduoyi_HBJH\app\build\intermediates\pre-dexed\debug\classes_4353d7b8a3fc082cb04bcf3c1301072d0c0fea89.jar" />
     </item>
     <item
         is-multidex="false"
@@ -54,6 +72,33 @@
         revision="25.0.3"
         sha1="8351fa88884802d7df02b9bf9e893737a651a7e0">
         <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\classes_8a85cdb75291ee30a783fdea5978a66000680fc7.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Android_Project\Ruiduoyi\SerialPortLibrary\build\intermediates\bundles\default\classes.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="5e0e83b24255bf0ed1d40088c008636aaeb91059">
+        <dex dex="D:\Android_Project\Ruiduoyi\app\build\intermediates\pre-dexed\debug\classes_0d262f84584aaa023893da5d26bfef8a6065edcf.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\FinishProject\Ruiduoyi_HBJH\Gpiolibrary\build\intermediates\bundles\default\libs\javalib.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="37abbc042b56315783594bfe96eadb7522202d90">
+        <dex dex="D:\FinishProject\Ruiduoyi_HBJH\app\build\intermediates\pre-dexed\debug\javalib_a1cd42c5c368fbd8710136fd187e6fc58e5f4747.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\FinishProject\Ruiduoyi_HBJH\app\libs\ksoap2-android-assembly-3.3.0-jar-with-dependencies.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="62681b8212ca52278feafec31775fd0cb096d99a">
+        <dex dex="D:\FinishProject\Ruiduoyi_HBJH\app\build\intermediates\pre-dexed\debug\ksoap2-android-assembly-3.3.0-jar-with-dependencies_6c0ac0f05d4d09405c030f5d4e783704f3b0703b.jar" />
     </item>
     <item
         is-multidex="false"

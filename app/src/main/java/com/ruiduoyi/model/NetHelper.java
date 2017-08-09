@@ -17,18 +17,26 @@ import org.apache.http.params.BasicHttpParams;
 import org.apache.http.params.HttpConnectionParams;
 import org.apache.http.params.HttpParams;
 import org.apache.http.util.EntityUtils;
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
 import org.ksoap2.SoapEnvelope;
 import org.ksoap2.serialization.SoapObject;
 import org.ksoap2.serialization.SoapSerializationEnvelope;
 import org.ksoap2.transport.HttpTransportSE;
 
 import java.io.BufferedReader;
+import java.io.File;
+import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.io.InputStreamReader;
+import java.io.OutputStream;
 import java.io.UnsupportedEncodingException;
 import java.net.HttpURLConnection;
 import java.net.MalformedURLException;
+import java.net.ProtocolException;
 import java.net.SocketTimeoutException;
 import java.net.URL;
 import java.net.URLEncoder;
@@ -290,7 +298,6 @@ public class NetHelper {
 
 
 
-
     public static boolean getRunsqlResult2(String sqlCommand){
         try{
             String cHttpAddress = URL+"/runSqlCommand?SqlCommand="+ URLEncoder.encode(sqlCommand,"utf-8")+"&Password=nopassword";
@@ -396,6 +403,7 @@ public class NetHelper {
     }
 
 
+
     public static List<List<String>> StringToList(String result) {
         List<List<String>>tab_list=new ArrayList<>();
         Log.e("result",result);
@@ -429,6 +437,39 @@ public class NetHelper {
             }
         }
         return tab_list;
+    }
+
+
+    public static void DownLoadFileByUrl(String url_str,String filePath,String fileName){
+        URL url= null;
+        try {
+            File file=new File(filePath);
+            if (!file.exists()){
+                file.mkdir();
+            }
+            url = new URL(url_str);
+            HttpURLConnection urlConnection=(HttpURLConnection) url.openConnection();
+            urlConnection.setDoInput(true);
+            urlConnection.setUseCaches(false);
+            urlConnection.setRequestMethod("GET");
+            urlConnection.setConnectTimeout(5000);
+            urlConnection.connect();
+            InputStream in=urlConnection.getInputStream();
+            OutputStream out=new FileOutputStream(filePath+"/"+fileName,false);
+            byte[] buff=new byte[1024];
+            int size;
+            while ((size = in.read(buff)) != -1) {
+                out.write(buff, 0, size);
+            }
+        } catch (MalformedURLException e) {
+            e.printStackTrace();
+        } catch (FileNotFoundException e) {
+            e.printStackTrace();
+        } catch (ProtocolException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
 
