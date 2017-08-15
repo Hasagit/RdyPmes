@@ -123,6 +123,10 @@ public class BlYyfxActivity extends BaseActivity implements View.OnClickListener
             public void onPageScrollStateChanged(int state) {
             }
         });
+        if (zldm.equals(getResources().getString(R.string.tiaoji))
+                |zldm.equals(getResources().getString(R.string.pzyc))){
+            viewPager.setCurrentItem(1);
+        }
     }
 
 

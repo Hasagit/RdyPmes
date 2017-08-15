@@ -305,7 +305,7 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
     private void initHdmxListView(List<List<String>>lists){
         final List<Map<String,String>>data=new ArrayList<>();
         for (int i=0;i<lists.size();i++){
-            if (lists.get(0).size()>6){
+            if (lists.get(0).size()<7){
                 break;
             }
             Map<String,String>map=new HashMap<>();
@@ -315,6 +315,8 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
             map.put("zzdh",lists.get(i).get(0));//制造单号
             map.put("lab_4",lists.get(i).get(4));//耗电度数
             map.put("id",lists.get(i).get(5));//id
+            map.put("lab_5",lists.get(i).get(6));
+            map.put("lab_6",lists.get(i).get(7));
             data.add(map);
         }
         adapter_mx=new EasyArrayAdapter(this,R.layout.list_item_hddj_mx,data) {
@@ -331,11 +333,16 @@ public class HddjActivity extends BaseActivity implements View.OnClickListener{
                 final TextView lab_2=(TextView)view.findViewById(R.id.lab_2);
                 final TextView lab_3=(TextView)view.findViewById(R.id.lab_3);
                 TextView lab_4=(TextView)view.findViewById(R.id.lab_4);
+                TextView lab_5=(TextView)view.findViewById(R.id.lab_5);
+                TextView lab_6=(TextView)view.findViewById(R.id.lab_6);
                 Button del_btn=(Button)view.findViewById(R.id.del_btn);
                 lab_1.setText(map.get("lab_1"));
                 lab_2.setText(map.get("lab_2"));
                 lab_3.setText(map.get("lab_3"));
                 lab_4.setText(map.get("lab_4"));
+                lab_5.setText(map.get("lab_5"));
+                lab_6.setText(map.get("lab_6"));
+
                 del_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
                     public void onClick(View v) {

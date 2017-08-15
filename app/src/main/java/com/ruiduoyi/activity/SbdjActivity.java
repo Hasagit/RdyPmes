@@ -102,9 +102,9 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                         break;
                     case 0x104:
                         getDjbh(sbbh_text.getText().toString());
-                        dialog.setMessageTextColor(Color.BLACK);
+                        /*dialog.setMessageTextColor(Color.BLACK);
                         dialog.setMessage("提交成功");
-                        dialog.show();
+                        dialog.show();*/
                         getDjListData(djbh_text.getText().toString());
                         break;
                     case 0x105:

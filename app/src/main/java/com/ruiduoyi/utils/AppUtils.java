@@ -183,6 +183,20 @@ public class AppUtils {
         });
     }
 
-
+    public static int calculate(String str,String substr){
+        if (str.length()>0){
+            String temp = str;
+            int count = 0;
+            int index = temp.indexOf(substr);
+            while (index != -1) {
+                temp = temp.substring(index + 1);
+                index = temp.indexOf(substr);
+                count++;
+            }
+            return count;
+        }else {
+            return 0;
+        }
+    }
 
 }

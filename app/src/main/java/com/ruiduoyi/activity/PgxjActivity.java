@@ -402,7 +402,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
 
                     }
                     //如果所有都上传成功则发出品质异常
-                    if (result.toString().indexOf("OK")==data_cong.size()){
+                    if (AppUtils.calculate(result.toString(),"OK")==data_cong.size()){
                         List<List<String>>list2=NetHelper.getQuerysqlResult(
                                 "Exec PAD_Up_Xjllist  'B','"+jtbh+"','',''," +
                                         "'','','','"+wkno+"'");

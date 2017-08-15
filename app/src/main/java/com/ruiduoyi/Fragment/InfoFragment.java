@@ -403,7 +403,8 @@ public class InfoFragment extends Fragment {
         status.setText(item.get(10));
         cardView.setCardBackgroundColor(getColorByKey(item.get(2)));
         status.setTextColor(getColorByKey(item.get(13)));
-        activity.getStatusFragment().setUnread(item.get(14));
+        activity.getStatusFragment().setYcUnread(item.get(14));
+        activity.getStatusFragment().setDjUnread(item.get(16));
         String[] temp=item.get(11).split("\\\\n");
         String tip="";
         for (int i=0;i<temp.length;i++){
@@ -821,7 +822,7 @@ public class InfoFragment extends Fragment {
                     if(list2!=null){
                         handler.sendEmptyMessage(0x111);
                         if (list2.size()>0){
-                            if (list2.get(0).size()>15){
+                            if (list2.get(0).size()>16){
                                 Message msg=handler.obtainMessage();
                                 msg.what=0x104;
                                 msg.obj=list2;

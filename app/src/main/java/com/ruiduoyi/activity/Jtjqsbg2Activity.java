@@ -365,7 +365,7 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                 List<List<String>>list_dt=NetHelper.getQuerysqlResult("Exec PAD_Get_MoeJtxsInf 'A','"+zzdh+"'");
                 if (list_dt!=null){
                     if (list_dt.size()>0){
-                        if (list_dt.get(0).size()>5){
+                        if (list_dt.get(0).size()>6){
                             //初始化堵头信息的ListView
                             Message msg=handler.obtainMessage();
                             msg.what=0x104;

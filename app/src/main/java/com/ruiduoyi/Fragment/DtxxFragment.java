@@ -124,6 +124,7 @@ public class DtxxFragment extends Fragment {
                             map.put("lab_4",list_dt.get(i).get(3));
                             map.put("lab_5",list_dt.get(i).get(4));
                             map.put("lab_6",list_dt.get(i).get(5));
+                            map.put("lab_0",list_dt.get(i).get(6));
                             data_dt.add(map);
                         }
                         initDutouList(data_dt);
@@ -176,6 +177,7 @@ public class DtxxFragment extends Fragment {
                     view = LayoutInflater.from(getContext()).inflate(R.layout.list_item_dutou_2, null);
                 }
                 final Map<String, String> map = data.get(position);
+                TextView lab_0 = (TextView)view.findViewById(R.id.lab_0);
                 TextView lab_1 = (TextView) view.findViewById(R.id.lab_1);
                 TextView lab_2 = (TextView) view.findViewById(R.id.lab_2);
                 TextView lab_3 = (TextView) view.findViewById(R.id.lab_3);
@@ -183,6 +185,7 @@ public class DtxxFragment extends Fragment {
                 TextView lab_5 = (TextView) view.findViewById(R.id.lab_5);
                 TextView lab_6 = (TextView) view.findViewById(R.id.lab_6);
                 final Button upload = (Button) view.findViewById(R.id.xiufu);
+                lab_0.setText(map.get("lab_0"));
                 lab_1.setText(map.get("lab_1"));
                 lab_2.setText(map.get("lab_2"));
                 lab_3.setText(map.get("lab_3"));

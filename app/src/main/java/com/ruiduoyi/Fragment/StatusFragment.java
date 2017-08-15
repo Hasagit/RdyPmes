@@ -49,8 +49,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     private Animation anim;
     private SharedPreferences sharedPreferences;
     private PopupDialog dialog;
-    private FrameLayout unread_bg;
-    private TextView unread_text,tiaoji_text,pzyc_text,mjwx_text;
+    private FrameLayout Yc_unread_bg,Dj_unread_bg;
+    private TextView Yc_unread_text,Dj_unread_text;
     private RecyclerView gRecycler,bRecycler;
     private ZLRecyclerViewAdapter gAdapter,bAdapter;
     private List<Map<String,String>>gdata,bdata;
@@ -274,8 +274,12 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                     holder.zl_btn.setCardBackgroundColor(getResources().getColor(R.color.zl_bbtn));
                 }
                 if (map.get("zldm").equals(getResources().getString(R.string.ycfx))){
-                    unread_bg=holder.unread_bg;
-                    unread_text=holder.unread_text;
+                    Yc_unread_bg=holder.unread_bg;
+                    Yc_unread_text=holder.unread_text;
+                }
+                if (map.get("zldm").equals(getResources().getString(R.string.sbdj))){
+                    Dj_unread_bg=holder.unread_bg;
+                    Dj_unread_text=holder.unread_text;
                 }
                 holder.zl_btn.setOnClickListener(new View.OnClickListener() {
                     @Override
@@ -459,21 +463,39 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    public void setUnread(String num){
-        if (unread_text!=null&&unread_bg!=null){
-            if (num.equals("0")){
-                unread_bg.setVisibility(View.GONE);
+    public void setYcUnread(String num){
+        if (Yc_unread_text!=null&&Yc_unread_bg!=null){
+            if (num.equals("0")|num.equals("")){
+                Yc_unread_bg.setVisibility(View.GONE);
             }else if (num.length()>2){
-                unread_text.setVisibility(View.VISIBLE);
-                unread_text.setText("");
-                unread_bg.setBackground(getResources().getDrawable(R.drawable.unread_more));
+                Yc_unread_text.setVisibility(View.VISIBLE);
+                Yc_unread_text.setText("");
+                Yc_unread_bg.setBackground(getResources().getDrawable(R.drawable.unread_more));
             }else {
-                unread_text.setText(num);
-                unread_bg.setVisibility(View.VISIBLE);
-                unread_bg.setBackground(getResources().getDrawable(R.drawable.unread_red));
+                Yc_unread_text.setText(num);
+                Yc_unread_bg.setVisibility(View.VISIBLE);
+                Yc_unread_bg.setBackground(getResources().getDrawable(R.drawable.unread_red));
             }
         }
     }
+
+
+    public void setDjUnread(String num){
+        if (Dj_unread_text!=null&&Dj_unread_bg!=null){
+            if (num.equals("0")|num.equals("")){
+                Dj_unread_bg.setVisibility(View.GONE);
+            }else if (num.length()>2){
+                Dj_unread_text.setVisibility(View.VISIBLE);
+                Dj_unread_text.setText("");
+                Dj_unread_bg.setBackground(getResources().getDrawable(R.drawable.unread_more));
+            }else {
+                Dj_unread_text.setText(num);
+                Dj_unread_bg.setVisibility(View.VISIBLE);
+                Dj_unread_bg.setBackground(getResources().getDrawable(R.drawable.unread_red));
+            }
+        }
+    }
+
 
     //遍历RecyclerView获取三个textView并将其颜色变成红色
     public void setNGTextColor(int Color){

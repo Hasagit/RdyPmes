@@ -6,6 +6,8 @@ import android.net.ConnectivityManager;
 import android.net.NetworkInfo;
 import android.util.Log;
 
+import com.ruiduoyi.utils.AppUtils;
+
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -372,7 +374,7 @@ public class NetHelper {
         HttpEntity entity = response.getEntity();
         String result=EntityUtils.toString(entity);
         Log.e("result",result);
-        if (result.indexOf("\n")>100){
+        if (AppUtils.calculate(result,"\n")>100){
             return null;
         }
         String[] str_line=result.split("\n");
@@ -383,7 +385,7 @@ public class NetHelper {
             //Log.e("result",str_line[i]);
             if(i>3&i<str_line.length-1){
                 String temp=str_line[i]+" ";
-                if (temp.indexOf("\t")>100){
+                if (AppUtils.calculate(temp,"\t")>100){
                     return null;
                 }
                 String[] items=temp.split("\t");
@@ -407,7 +409,7 @@ public class NetHelper {
     public static List<List<String>> StringToList(String result) {
         List<List<String>>tab_list=new ArrayList<>();
         Log.e("result",result);
-        if (result.indexOf("\n")>100){
+        if (AppUtils.calculate(result,"\n")>100){
             Log.e("out of size",result.indexOf("\n")+"");
             return null;
         }
@@ -419,7 +421,7 @@ public class NetHelper {
             //Log.e("result",str_line[i]);
             if(i>3&i<str_line.length-1){
                 String temp=str_line[i]+" ";
-                if (temp.indexOf("\t")>100){
+                if (AppUtils.calculate(temp,"\t")>100){
                     Log.e("out of size",result.indexOf("\t")+"");
                     return null;
                 }
