@@ -406,7 +406,7 @@
                     <ListView
                         android:background="@drawable/text_bg"
                         android:id="@+id/list_b2"
-                        android:layout_width="371dp"
+                        android:layout_width="370dp"
                         android:divider="@color/touming"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"

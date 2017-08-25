@@ -46,8 +46,6 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
     private List<Map<String,String>>allDjData;
     private EasyArrayAdapter djAdapter;
 
-
-
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -55,7 +53,6 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
         initData();
         initView();
     }
-
 
     private void initData(){
         sharedPreferences=getSharedPreferences("info",MODE_PRIVATE);
@@ -79,8 +76,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     case 0x101:
                         djbh_text.setText((String) msg.obj);
                         spinner_btn.setText("");
-                        getSpinnerData((String) msg.obj);
-                        getDjListData((String) msg.obj);
+                        //getDjListData((String) msg.obj);
                         break;
                     case 0x102:
                         initSpinnerList((List<List<String>>) msg.obj);
@@ -101,11 +97,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                         initDjListView(allDjData);
                         break;
                     case 0x104:
-                        getDjbh(sbbh_text.getText().toString());
-                        /*dialog.setMessageTextColor(Color.BLACK);
-                        dialog.setMessage("提交成功");
-                        dialog.show();*/
-                        getDjListData(djbh_text.getText().toString());
+                        djbh_text.setText((String)msg.obj);
                         break;
                     case 0x105:
                         dialog.setMessageTextColor(Color.RED);
@@ -118,9 +110,10 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                         dialog.show();
                         break;
                     case 0x107:
-                        dialog.setMessageTextColor(Color.BLACK);
-                        dialog.setMessage("提交成功");
+                        dialog.setMessage("请先新增点检编号");
+                        dialog.setMessageTextColor(Color.RED);
                         dialog.show();
+                       break;
                     default:
                         break;
                 }
@@ -129,7 +122,6 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
 
         getSbListData(jtbh);
     }
-
 
     private void initView(){
         radio_jt=(RadioButton)findViewById(R.id.radio_jt);
@@ -175,12 +167,11 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
 
     }
 
-
     private void getSbListData(final String sbbh){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'A','','"+sbbh+"',''");
+                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'A','','"+sbbh+"','',''");
                 if (list!=null){
                     Message msg=handler.obtainMessage();
                     msg.what=0x100;
@@ -203,6 +194,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
             Map<String,String>map=new HashMap<>();
             map.put("lab_1",lists.get(i).get(0));
             map.put("lab_2",lists.get(i).get(1));
+            map.put("lab_3",lists.get(i).get(2));
             map.put("isSelect","0");
             data.add(map);
         }
@@ -231,10 +223,12 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     @Override
                     public void onClick(View v) {
                         AppUtils.sendCountdownReceiver(SbdjActivity.this);
+                        djbh_text.setText("");
+                        initDjListView(new ArrayList<Map<String, String>>());
                         map.put("isSelect","1");
                         sbbh_text.setText(map.get("lab_1"));
                         sbmc_text.setText(map.get("lab_2"));
-                        getDjbh(map.get("lab_1"));
+                        getSpinnerData(map.get("lab_1"),map.get("lab_3"));
                         for (int i=0;i<data.size();i++){
                             if (i!=position){
                                 data.get(i).put("isSelect","0");
@@ -249,36 +243,11 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
         listView_sb.setAdapter(adapter);
     }
 
-    private void getDjbh(final String sbbh){
+    private void getSpinnerData(final String sbbh, final String sbtype){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'B','','','"+sbbh+"'");
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>2){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x101;
-                            msg.obj=list.get(0).get(0);
-                            handler.sendMessage(msg);
-                        }
-                    }else {
-                        Message msg=handler.obtainMessage();
-                        msg.what=0x101;
-                        msg.obj="";
-                        handler.sendMessage(msg);
-                    }
-                }
-            }
-        }).start();
-    }
-
-
-    private void getSpinnerData(final String djbh){
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'C','"+djbh+"','',''");
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'B','','','"+sbbh+"','"+sbtype+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>1){
@@ -290,7 +259,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     }else {
                         Message msg=handler.obtainMessage();
                         msg.what=0x102;
-                        msg.obj=list;
+                        msg.obj="";
                         handler.sendMessage(msg);
                     }
                 }
@@ -299,7 +268,8 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-    private void initSpinnerList(List<List<String>>lists){
+    private void initSpinnerList(final List<List<String>>lists){
+        spinner_select_lb=null;
         final List<String>data=new ArrayList<>();
         final List<String>list_spinner_dm=new ArrayList<>();
         for (int i=0;i<lists.size();i++){
@@ -311,33 +281,57 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
                 AppUtils.sendCountdownReceiver(SbdjActivity.this);
+                initDjListView(new ArrayList<Map<String, String>>());
                 spinner_btn.setText(data.get(position));
                 spinner_select_lb=list_spinner_dm.get(position);
                 spinner_list.dismiss();
-                selectByDjlb(data.get(position));
+                getDjDh(lists.get(0).get(0),sbbh_text.getText().toString());
             }
         });
+       //默认选中第一个
+        if (lists.size()>0){
+            spinner_btn.setText(data.get(0));
+            spinner_select_lb=list_spinner_dm.get(0);
+            spinner_list.dismiss();
+            //selectByDjlb(lists.get(0).get(0));
+            getDjDh(lists.get(0).get(0),sbbh_text.getText().toString());
+        }
     }
 
 
-    private void getDjListData(final String djbh){
+    private void getDjDh(final String djlb, final String sbdm){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'D','"+djbh+"','',''");
+                if (spinner_select_lb==null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x105;
+                    msg.obj="点检类别为空";
+                    handler.sendMessage(msg);
+                    return;
+                }
+                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'C','','','"+djlb+"','"+sbdm+"'");
                 if (list!=null){
                     if (list.size()>0){
-                        if (list.get(0).size()>0){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x103;
-                            msg.obj=list;
-                            handler.sendMessage(msg);
+                        if (list.get(0).size()>2){
+                           if (list.get(0).get(0).trim().equals("")){
+                               /*Message msg=handler.obtainMessage();
+                               msg.what=0x105;
+                               msg.obj="请先新增点检编号";
+                               handler.sendMessage(msg);*/
+                           }else {
+                               Message msg=handler.obtainMessage();
+                               msg.what=0x104;
+                               msg.obj=list.get(0).get(0);
+                               handler.sendMessage(msg);
+                               List<List<String>>list_dj=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf  'D',"+list.get(0).get(0)+",'','"+spinner_select_lb+"',''");
+                               Message msg2=handler.obtainMessage();
+                               msg2.what=0x103;
+                               msg2.obj=list_dj;
+                               handler.sendMessage(msg2);
+
+                           }
                         }
-                    }else {
-                        Message msg=handler.obtainMessage();
-                        msg.what=0x103;
-                        msg.obj=list;
-                        handler.sendMessage(msg);
                     }
                 }
             }
@@ -421,13 +415,21 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
+                if (spinner_select_lb==null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x105;
+                    msg.obj="点检类别为空";
+                    handler.sendMessage(msg);
+                    return;
+                }
                 List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Up_DjmMstr" +
-                        " 'A','"+djbh+"','"+sbdm+"','','','"+wkno+"'");
+                        " 'A','"+djbh+"','"+sbdm+"','"+spinner_select_lb+"','','','"+wkno+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>0){
                             if (list.get(0).get(0).equals("OK")){
                                 handler.sendEmptyMessage(0x104);
+                                getDjDh(spinner_select_lb,sbdm);
                             }else {
                                 Message msg=handler.obtainMessage();
                                 msg.what=0x105;
@@ -451,26 +453,22 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
         return true;
     }
 
-    private void selectByDjlb(String djlb){
-        djData=new ArrayList<>();
-        for (int i=0;i<allDjData.size();i++){
-            if (allDjData.get(i).get("lab_1").equals(djlb)){
-                //allDjData.get(i).put("lab_4","");
-                djData.add(allDjData.get(i));
-            }
-        }
-        initDjListView(djData);
-    }
-
     private void uploadData(){
         new Thread(new Runnable() {
             @Override
             public void run() {
+                if (spinner_select_lb==null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x105;
+                    msg.obj="点检类别为空";
+                    handler.sendMessage(msg);
+                    return;
+                }
                 List<String>result=new ArrayList<String>();
                 for (int i=0;i<allDjData.size();i++){
                     Map<String,String>map=allDjData.get(i);
                     List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Up_DjmMstr 'B','"+djbh_text.getText().toString()+
-                            "','"+sbbh_text.getText().toString()+"','"+map.get("bnlid")+"','"+map.get("lab_4")+"','"+wkno+"'");
+                            "','"+sbbh_text.getText().toString()+"','"+spinner_select_lb+"','"+map.get("bnlid")+"','"+map.get("lab_4")+"','"+wkno+"'");
                     if (list!=null){
                         if (list.size()>0){
                             if (list.get(0).size()>0){
@@ -506,7 +504,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     msg.obj=error;
                     handler.sendMessage(msg);
                 }else {
-                    handler.sendEmptyMessage(0x107);
+                    //handler.sendEmptyMessage(0x107);
                 }
 
             }

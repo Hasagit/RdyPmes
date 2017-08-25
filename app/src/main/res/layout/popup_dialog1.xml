@@ -29,6 +29,7 @@
             android:layout_height="wrap_content"
             android:layout_gravity="center"
             android:layout_marginLeft="10dp"
+            android:layout_marginRight="10dp"
             android:text="服务器连接异常"
             android:textColor="@android:color/holo_red_dark"
             android:textSize="23dp" />

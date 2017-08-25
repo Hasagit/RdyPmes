@@ -90,9 +90,9 @@ public class QsfhActivity extends BaseActivity {
                         initList2(new ArrayList<List<String>>());
                         break;
                     case 0x103://复核成功
-                        dialog.setMessageTextColor(Color.BLACK);
+                        /*dialog.setMessageTextColor(Color.BLACK);
                         dialog.setMessage("复核成功");
-                        dialog.show();
+                        dialog.show();*/
                         break;
                     case 0x104://复合失败
                         dialog.setMessageTextColor(Color.RED);

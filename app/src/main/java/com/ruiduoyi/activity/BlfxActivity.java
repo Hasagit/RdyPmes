@@ -510,8 +510,8 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
             //Toast.makeText(this,"请先输入不良数",Toast.LENGTH_SHORT).show();
             return false;
         }
-        if (Double.parseDouble(lpsl_str)<Double.parseDouble(blpsl_str)+Double.parseDouble(sub_text.getText().toString().trim())){
-            dialog.setMessage("不良品总数量不能大于良品数量");
+        if (Double.parseDouble(lpsl_str)<Double.parseDouble(sub_text.getText().toString().trim())){
+            dialog.setMessage("不良品数量不能大于良品数量");
             dialog.setMessageTextColor(Color.RED);
             dialog.show();
             //Toast.makeText(this,"不良品总数量不能大于良品数量",Toast.LENGTH_SHORT).show();
