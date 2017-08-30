@@ -259,7 +259,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     }else {
                         Message msg=handler.obtainMessage();
                         msg.what=0x102;
-                        msg.obj="";
+                        msg.obj=list;
                         handler.sendMessage(msg);
                     }
                 }
@@ -304,10 +304,10 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void run() {
                 if (spinner_select_lb==null){
-                    Message msg=handler.obtainMessage();
+                   /* Message msg=handler.obtainMessage();
                     msg.what=0x105;
                     msg.obj="点检类别为空";
-                    handler.sendMessage(msg);
+                    handler.sendMessage(msg);*/
                     return;
                 }
                 List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'C','','','"+djlb+"','"+sbdm+"'");
@@ -315,20 +315,16 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     if (list.size()>0){
                         if (list.get(0).size()>2){
                            if (list.get(0).get(0).trim().equals("")){
-                               /*Message msg=handler.obtainMessage();
-                               msg.what=0x105;
-                               msg.obj="请先新增点检编号";
-                               handler.sendMessage(msg);*/
+                               Message msg=handler.obtainMessage();
+                               msg.what=0x103;
+                               msg.obj=new ArrayList<List<String>>();
+                               handler.sendMessage(msg);
                            }else {
                                Message msg=handler.obtainMessage();
                                msg.what=0x104;
                                msg.obj=list.get(0).get(0);
                                handler.sendMessage(msg);
-                               List<List<String>>list_dj=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf  'D',"+list.get(0).get(0)+",'','"+spinner_select_lb+"',''");
-                               Message msg2=handler.obtainMessage();
-                               msg2.what=0x103;
-                               msg2.obj=list_dj;
-                               handler.sendMessage(msg2);
+                               getDjListData(list.get(0).get(0),spinner_select_lb);
 
                            }
                         }
@@ -336,6 +332,15 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                 }
             }
         }).start();
+    }
+
+
+    private void getDjListData(String djbh,String djlb){
+        List<List<String>>list_dj=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf  'D',"+djbh+",'','"+djlb+"',''");
+        Message msg2=handler.obtainMessage();
+        msg2.what=0x103;
+        msg2.obj=list_dj;
+        handler.sendMessage(msg2);
     }
 
 
@@ -416,10 +421,10 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void run() {
                 if (spinner_select_lb==null){
-                    Message msg=handler.obtainMessage();
+                    /*Message msg=handler.obtainMessage();
                     msg.what=0x105;
                     msg.obj="点检类别为空";
-                    handler.sendMessage(msg);
+                    handler.sendMessage(msg);*/
                     return;
                 }
                 List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Up_DjmMstr" +
@@ -458,10 +463,10 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void run() {
                 if (spinner_select_lb==null){
-                    Message msg=handler.obtainMessage();
+                   /* Message msg=handler.obtainMessage();
                     msg.what=0x105;
                     msg.obj="点检类别为空";
-                    handler.sendMessage(msg);
+                    handler.sendMessage(msg);*/
                     return;
                 }
                 List<String>result=new ArrayList<String>();
@@ -504,7 +509,11 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     msg.obj=error;
                     handler.sendMessage(msg);
                 }else {
-                    //handler.sendEmptyMessage(0x107);
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x106;
+                    msg.obj="保存成功";
+                    handler.sendMessage(msg);
+                    getDjDh(spinner_select_lb,sbbh_text.getText().toString());
                 }
 
             }

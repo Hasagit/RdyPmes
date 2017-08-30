@@ -442,6 +442,94 @@ public class NetHelper {
     }
 
 
+    //返回JsonArray
+    public static JSONArray getQuerysqlResultJsonArray(String sqlCommand){
+        try{
+            String cHttpAddress = URL+"/QuerySqlCommand?SqlCommand="+ URLEncoder.encode(sqlCommand,"utf-8")+"&Password=nopassword";
+            HttpGet request = new HttpGet(cHttpAddress);
+            HttpParams httpParams = new BasicHttpParams();
+            HttpConnectionParams.setConnectionTimeout(httpParams, 10000);
+            HttpClient httpClient = new DefaultHttpClient(httpParams);
+            HttpResponse response = httpClient.execute(request);
+            Log.e("sql",sqlCommand);
+            return responToJsonArray(response);
+
+        }catch (Exception e){
+            e.printStackTrace();
+        }
+        return null;
+    }
+
+
+    //将服务器返回数据转换成JsonArray
+    public static JSONArray responToJsonArray(HttpResponse response) throws IOException, JSONException {
+        List<List<String>>tab_list=new ArrayList<>();
+        JSONArray array=new JSONArray();
+        List<String>zd_list=new ArrayList<>();
+        HttpEntity entity = response.getEntity();
+        String result=EntityUtils.toString(entity);
+        Log.e("result",result);
+        if (AppUtils.calculate(result,"\n")>200){
+            return null;
+        }
+        String[] str_line=result.split("\n");
+        for (int i=0;i<str_line.length;i++){
+            if (i>100){
+                break;
+            }
+            //Log.e("result",str_line[i]);
+            if (i==3){
+                String temp=str_line[i]+" ";
+                if (AppUtils.calculate(temp,"\t")>100){
+                    return null;
+                }
+                String[] items=temp.split("\t");
+                for(int j=0;j<items.length;j++){
+                    if (j>100){
+                        break;
+                    }
+                    if (j+1==items.length){
+                        break;
+                    }
+                    zd_list.add(items[j+1].trim());
+                    //Log.e("item",items[j]);
+                    //Log.e("test","--------"+j);
+                }
+
+            }
+
+
+            if(i>3&i<str_line.length-1){
+                String temp=str_line[i]+" ";
+                if (AppUtils.calculate(temp,"\t")>100){
+                    return null;
+                }
+                String[] items=temp.split("\t");
+                List<String>tab_item=new ArrayList<>();
+                for(int j=0;j<items.length;j++){
+                    if (j>100){
+                        break;
+                    }
+                    tab_item.add(items[j].trim());
+                    //Log.e("item",items[j]);
+                    //Log.e("test","--------"+j);
+                }
+                tab_list.add(tab_item);
+            }
+        }
+        for (int i=0;i<tab_list.size();i++){
+            List<String>item=tab_list.get(i);
+            JSONObject jsonObject=new JSONObject();
+            for (int j=0;j<item.size();j++){
+                jsonObject.put(zd_list.get(j),item.get(j));
+            }
+            array.put(jsonObject);
+        }
+        return array;
+    }
+
+
+
     public static void DownLoadFileByUrl(String url_str,String filePath,String fileName){
         URL url= null;
         try {

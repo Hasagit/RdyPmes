@@ -30,21 +30,21 @@
     </item>
     <item
         is-multidex="false"
-        jar="D:\Beifen\Ruiduoyi_HBJH\app\libs\sqljdbc4.jar"
-        jumboMode="false"
-        optimize="true"
-        revision="25.0.3"
-        sha1="ecc4bc5c567954cdd1acd3c5985555c8d0355bb0">
-        <dex dex="D:\Beifen\Ruiduoyi_HBJH\app\build\intermediates\pre-dexed\debug\sqljdbc4_6879151c0c2a4f5cdc808bef406596021ac1e6b1.jar" />
-    </item>
-    <item
-        is-multidex="false"
         jar="D:\FinishProject\Ruiduoyi_HBJH\Gpiolibrary\build\intermediates\bundles\default\classes.jar"
         jumboMode="false"
         optimize="true"
         revision="25.0.3"
         sha1="8351fa88884802d7df02b9bf9e893737a651a7e0">
         <dex dex="D:\FinishProject\Ruiduoyi_HBJH\app\build\intermediates\pre-dexed\debug\classes_4353d7b8a3fc082cb04bcf3c1301072d0c0fea89.jar" />
+    </item>
+    <item
+        is-multidex="false"
+        jar="D:\Beifen\Ruiduoyi_HBJH\app\libs\sqljdbc4.jar"
+        jumboMode="false"
+        optimize="true"
+        revision="25.0.3"
+        sha1="ecc4bc5c567954cdd1acd3c5985555c8d0355bb0">
+        <dex dex="D:\Beifen\Ruiduoyi_HBJH\app\build\intermediates\pre-dexed\debug\sqljdbc4_6879151c0c2a4f5cdc808bef406596021ac1e6b1.jar" />
     </item>
     <item
         is-multidex="false"
