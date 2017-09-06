@@ -27,6 +27,9 @@ import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -69,11 +72,15 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0x100://初始化
-                    List<List<String>>list_spinner=(List<List<String>>)msg.obj;
-                    initSpinner(list_spinner);
+                    JSONArray list_spinner= (JSONArray) msg.obj;
+                    try {
+                        initSpinner(list_spinner);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 0x101:
-                    List<List<String>>list1= (List<List<String>>) msg.obj;
+                    /*List<List<String>>list1= (List<List<String>>) msg.obj;
                     data1=new ArrayList<>();
                     for (int i=0;i<list1.size();i++){
                         Map<String,String>map=new HashMap<>();
@@ -91,10 +98,33 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
                         }
 
                     };
-                    listView.setAdapter(adapter2);
+                    listView.setAdapter(adapter2);*/
+                    try {
+                        JSONArray list1= (JSONArray) msg.obj;
+                        data1=new ArrayList<>();
+                        for (int i=0;i<list1.length();i++){
+                            Map<String,String>map=new HashMap<>();
+                            map.put("lab_1",list1.getJSONObject(i).getString("bll_bldm"));
+                            map.put("lab_2",list1.getJSONObject(i).getString("bll_blmc"));
+                            map.put("lab_3","0");
+                            data1.add(map);
+                        }
+                        adapter2= new SigleSelectAdapter(BlfxActivity.this, data1) {
+                            @Override
+                            public void onRadioSelectListener(int position,Map<String, String> map) {
+                                select_position=position;
+                                bldm_text.setText(map.get("lab_1"));
+                                blms_text.setText(map.get("lab_2"));
+                            }
+
+                        };
+                        listView.setAdapter(adapter2);
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
                     break;
                 case 0x102:
-                    blpsl_text.setText(Integer.parseInt(blpsl_text.getText().toString())+
+                    /*blpsl_text.setText(Integer.parseInt(blpsl_text.getText().toString())+
                             Integer.parseInt(sub_text.getText().toString())+"");
                     sub_text.setText("0");
                     List<List<String>>list2= (List<List<String>>) msg.obj;
@@ -112,7 +142,29 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
                             new String[]{"lab_1","lab_2","lab_3","lab_4"},new int[]{R.id.lab_1,R.id.lab_2,
                             R.id.lab_3,R.id.lab_4});
                     listView_register.setAdapter(adapter);
-                    listView_register.startAnimation(anim);
+                    listView_register.startAnimation(anim);*/
+                    try {
+                        /*blpsl_text.setText(Integer.parseInt(blpsl_text.getText().toString())+
+                                Integer.parseInt(sub_text.getText().toString())+"");*/
+                        sub_text.setText("0");
+                        JSONArray list2= (JSONArray) msg.obj;
+                        List<Map<String,String>>data=new ArrayList<>();
+                        for (int i=0;i<list2.length();i++){
+                            Map<String,String>map=new HashMap<>();
+                            map.put("lab_1",list2.getJSONObject(i).getString("v_bldm"));
+                            map.put("lab_2",list2.getJSONObject(i).getString("v_blms"));
+                            map.put("lab_3",list2.getJSONObject(i).getString("v_blsl"));
+                            map.put("lab_4",list2.getJSONObject(i).getString("v_jlrq"));
+                            data.add(map);
+                        }
+                        SimpleAdapter adapter=new SimpleAdapter(BlfxActivity.this,data,R.layout.list_item_b8_2,
+                                new String[]{"lab_1","lab_2","lab_3","lab_4"},new int[]{R.id.lab_1,R.id.lab_2,
+                                R.id.lab_3,R.id.lab_4});
+                        listView_register.setAdapter(adapter);
+                        listView_register.startAnimation(anim);
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
                     break;
                 default:
                     break;
@@ -265,12 +317,11 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-    private void initSpinner(List<List<String>>lists){
+    private void initSpinner(JSONArray lists) throws JSONException {
         final List<String>data=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
-            List<String>item=lists.get(i);
-            data.add(item.get(1)+"\t\t"+item.get(2));
-            zzdh_list.add(item.get(0));
+        for (int i=0;i<lists.length();i++){
+            data.add(lists.getJSONObject(i).getString("v_wldm")+"\t\t"+lists.getJSONObject(i).get("v_pmgg"));
+            zzdh_list.add(lists.getJSONObject(i).getString("v_zzdh"));
         }
         if (data.size()>0){
             spinner.setText(data.get(0));
@@ -425,16 +476,13 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void run() {
 
-                //产品选取
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'D','"+jtbh+"','"+zzdh_str+"'");
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>2){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x100;
-                            msg.obj=list;
-                            handler.sendMessage(msg);
-                        }
+                JSONArray array=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_ZlmYywh 'D','"+jtbh+"','"+zzdh_str+"'");
+                if (array!=null){
+                    if (array.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x100;
+                        msg.obj=array;
+                        handler.sendMessage(msg);
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_ZlmYywh 'D'",sharedPreferences.getString("jtnh",""),
@@ -442,16 +490,14 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
                 }
 
 
-                //不良表格
-                List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_Blllist");
-                if (list1!=null){
-                    if (list1.size()>0){
-                        if (list1.get(0).size()>1){
+
+                JSONArray array1=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_Blllist");
+                if (array1!=null){
+                    if (array1.length()>0){
                             Message msg=handler.obtainMessage();
                             msg.what=0x101;
-                            msg.obj=list1;
+                            msg.obj=array1;
                             handler.sendMessage(msg);
-                        }
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_Blllist",sharedPreferences.getString("jtbh",""),
@@ -459,15 +505,15 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
                 }
 
 
-                List<List<String>>list2=NetHelper.getQuerysqlResult("Exec PAD_Get_BlmInfo '"+jtbh+"'");
+
+
+                JSONArray list2=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_BlmInfo '"+jtbh+"'");
                 if (list2!=null){
-                    if (list2.size()>0){
-                        if (list2.get(0).size()>3){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x102;
-                            msg.obj=list2;
-                            handler.sendMessage(msg);
-                        }
+                    if (list2.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x102;
+                        msg.obj=list2;
+                        handler.sendMessage(msg);
                     }
                 }
 
@@ -482,7 +528,11 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                upLoadOneData(wkno);
+                try {
+                    upLoadOneData(wkno);
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }
@@ -523,33 +573,29 @@ public class BlfxActivity extends BaseActivity implements View.OnClickListener{
 
 
 
-    private void upLoadOneData(String wkno){
+    private void upLoadOneData(String wkno) throws JSONException {
         String num;
         if (radio_sl.isChecked()){
             num=sub_text.getText().toString();
         }else {
             num=String.valueOf((int) (Double.parseDouble(sub_text.getText().toString())/Double.parseDouble(jzzl_str)));
         }
-        List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Add_BlmInfo " +
+        JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Add_BlmInfo " +
                 "'A','"+zzdh_list.get(zzdh_position)+"','','','"+jtbh+"','','"+bldm_text.getText().toString()+"'," +
                 "'"+num+"','"+wkno+"'");
         if (list!=null){
-            if (list.size()>0){
-                if (list.get(0).size()>0){
-                    if (list.get(0).get(0).equals("OK")){
-                        List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_BlmInfo '"+jtbh+"'");
-                        if (list1!=null){
-                            if (list1.size()>0){
-                                if (list1.get(0).size()>3){
-                                    Message msg=handler.obtainMessage();
-                                    msg.what=0x102;
-                                    msg.obj=list1;
-                                    handler.sendMessage(msg);
-                                }
-                            }
+            if (list.length()>0){
+                if (list.getJSONObject(0).getString("Column1").equals("OK")){
+                    JSONArray list1=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_BlmInfo '"+jtbh+"'");
+                    if (list1!=null){
+                        if (list1.length()>0){
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x102;
+                            msg.obj=list1;
+                            handler.sendMessage(msg);
                         }
-                        return ;
                     }
+                    return ;
                 }
             }
         }else {

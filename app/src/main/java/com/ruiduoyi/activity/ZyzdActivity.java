@@ -27,6 +27,9 @@ import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.File;
 import java.io.FileOutputStream;
 import java.io.IOException;
@@ -96,7 +99,7 @@ public class ZyzdActivity extends BaseActivity {
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x100:
-                        initListView((List<List<String>>) msg.obj);
+                        initListView((JSONArray) msg.obj);
                         break;
                     case 0x101:
                         File file=new File((String) msg.obj);
@@ -128,7 +131,7 @@ public class ZyzdActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list1= NetHelper.getQuerysqlResult("Exec PAD_Get_ZyzdInf  'A','"+zzdh+"',''");
+                /*List<List<String>>list1= NetHelper.getQuerysqlResult("Exec PAD_Get_ZyzdInf  'A','"+zzdh+"',''");
                 if (list1!=null){
                     if (list1.size()>0){
                         if (list1.get(0).size()>1){
@@ -140,6 +143,17 @@ public class ZyzdActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_ZyzdInf  'A'",jtbh,sharedPreferences.getString("msc",""));
+                }*/
+                JSONArray list1= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_ZyzdInf  'A','"+zzdh+"',''");
+                if (list1!=null){
+                    if (list1.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x100;
+                        msg.obj=list1;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_ZyzdInf  'A'",jtbh,sharedPreferences.getString("msc",""));
                 }
             }
         }).start();
@@ -147,14 +161,18 @@ public class ZyzdActivity extends BaseActivity {
 
 
 
-    private void initListView(List<List<String>>lists){
+    private void initListView(JSONArray lists){
         final List<Map<String,String>>data=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
-            Map<String,String>map=new HashMap<>();
-            map.put("lab_1",lists.get(i).get(0));
-            map.put("lab_2",lists.get(i).get(1));
-            map.put("isSelect","0");
-            data.add(map);
+        try {
+            for (int i=0;i<lists.length();i++){
+                Map<String,String>map=new HashMap<>();
+                map.put("lab_1",lists.getJSONObject(i).getString("doc_djbh"));
+                map.put("lab_2",lists.getJSONObject(i).getString("doc_name"));
+                map.put("isSelect","0");
+                data.add(map);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
         final EasyArrayAdapter adapter=new EasyArrayAdapter(this,R.layout.list_item_zyzd,data) {
             @Override
@@ -221,7 +239,7 @@ public class ZyzdActivity extends BaseActivity {
             new Thread(new Runnable() {
                 @Override
                 public void run() {
-                    List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZyzdInf  'B','"+zzdh+"','"
+                    /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZyzdInf  'B','"+zzdh+"','"
                             +data.get(position).get("lab_1")+"'");
                     if (list!=null){
                         if (list.size()>0){
@@ -255,6 +273,43 @@ public class ZyzdActivity extends BaseActivity {
                                     handler.sendEmptyMessage(0x104);
                                     e.printStackTrace();
                                 }
+                            }
+                        }
+                    }*/
+                    JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_ZyzdInf  'B','"+zzdh+"','"
+                            +data.get(position).get("lab_1")+"'");
+                    if (list!=null){
+                        if (list.length()>0){
+                            try {
+                                String url_str=list.getJSONObject(0).getString("doc_webpath");
+                                handler.sendEmptyMessage(0x102);
+                                URL url=new URL(url_str);
+                                HttpURLConnection urlConnection= (HttpURLConnection) url.openConnection();
+                                urlConnection.setDoInput(true);
+                                urlConnection.setUseCaches(false);
+                                urlConnection.setRequestMethod("GET");
+                                urlConnection.setConnectTimeout(5000);
+                                urlConnection.connect();
+                                InputStream in=urlConnection.getInputStream();
+                                OutputStream out=new FileOutputStream(filePath,false);
+                                byte[] buff=new byte[1024];
+                                int size;
+                                while ((size = in.read(buff)) != -1) {
+                                    out.write(buff, 0, size);
+                                }
+                                Message msg=handler.obtainMessage();
+                                msg.what=0x101;
+                                msg.obj=filePath;
+                                handler.sendMessage(msg);
+                                handler.sendEmptyMessage(0x103);
+                            } catch (MalformedURLException e) {
+                                e.printStackTrace();
+                                handler.sendEmptyMessage(0x104);
+                            } catch (IOException e) {
+                                handler.sendEmptyMessage(0x104);
+                                e.printStackTrace();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
                     }

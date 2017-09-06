@@ -17,7 +17,9 @@
     <dimen name="blyyfx_text_width">230dp</dimen>
     <dimen name="num_widht">100dp</dimen>
     <dimen name="num_height">75dp</dimen>
-    <dimen name="blnum_width">95dp</dimen>
+    <dimen name="hdnum_width">95dp</dimen>
+    <dimen name="hdnum_height">75dp</dimen>
+    <dimen name="blnum_width">114dp</dimen>
     <dimen name="blnum_height">83dp</dimen>
     <dimen name="ycfx_width">200dp</dimen>
     <dimen name="ycfx_height">35dp</dimen>
@@ -26,7 +28,7 @@
     <dimen name="tong_width">160dp</dimen>
     <dimen name="hddj_width">105dp</dimen>
     <dimen name="hddj_height">40dp</dimen>
-    <dimen name="hddj_num__height">75dp</dimen>
+    <dimen name="hddj_num_height">75dp</dimen>
     <dimen name="slcs_num_height">86dp</dimen>
     <dimen name="slcs_num_width">123dp</dimen>
     <dimen name="zl_width">182dp</dimen>

@@ -20,6 +20,9 @@ import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -59,7 +62,7 @@ public class SlcsActivity extends BaseActivity implements View.OnClickListener{
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x100:
-                        initListView((List<List<String>>) msg.obj);
+                        initListView((JSONArray) msg.obj);
                         break;
                     case 0x101:
                         getListData();
@@ -165,7 +168,7 @@ public class SlcsActivity extends BaseActivity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_SllInf '"+sharedPreferences.getString("zzdh","")+"'");
+                /*List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_SllInf '"+sharedPreferences.getString("zzdh","")+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>7){
@@ -182,29 +185,42 @@ public class SlcsActivity extends BaseActivity implements View.OnClickListener{
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_SllInf",sharedPreferences.getString("jtbh",""),"");
+                }*/
+               JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_SllInf '"+sharedPreferences.getString("zzdh","")+"'");
+                if (list!=null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x100;
+                    msg.obj=list;
+                    handler.sendMessage(msg);
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_SllInf",sharedPreferences.getString("jtbh",""),"");
                 }
             }
         }).start();
     }
 
-    private void initListView(List<List<String>>lists){
-        List<Map<String,String>>data=new ArrayList<>();
-        for(int i=0;i<lists.size();i++){
-            Map<String,String>map=new HashMap<>();
-            map.put("lab_1",lists.get(i).get(0));
-            map.put("lab_2",lists.get(i).get(1));
-            map.put("lab_3",lists.get(i).get(2));
-            map.put("lab_4",lists.get(i).get(3));
-            map.put("lab_5",lists.get(i).get(4));
-            map.put("lab_6",lists.get(i).get(5));
-            map.put("lab_7",lists.get(i).get(6));
-            map.put("lab_8",lists.get(i).get(7));
-            data.add(map);
+    private void initListView(JSONArray lists){
+        try {
+            List<Map<String,String>>data=new ArrayList<>();
+            for(int i=0;i<lists.length();i++){
+                Map<String,String>map=new HashMap<>();
+                map.put("lab_1",lists.getJSONObject(i).getString("sll_sjxs"));
+                map.put("lab_2",lists.getJSONObject(i).getString("sll_sdrate"));
+                map.put("lab_3",lists.getJSONObject(i).getString("sll_glbzl"));
+                map.put("lab_4",lists.getJSONObject(i).getString("sll_smsjzl"));
+                map.put("lab_5",lists.getJSONObject(i).getString("sll_mmsmzl"));
+                map.put("lab_6",lists.getJSONObject(i).getString("sll_smph"));
+                map.put("lab_7",lists.getJSONObject(i).getString("sll_jlrymc"));
+                map.put("lab_8",lists.getJSONObject(i).getString("sll_jlrq"));
+                data.add(map);
+            }
+            SimpleAdapter adapter=new SimpleAdapter(this,data,R.layout.list_item_slcs,
+                    new String[]{"lab_1","lab_2","lab_3","lab_4","lab_5","lab_6","lab_7","lab_8"},
+                    new  int[]{R.id.lab_1,R.id.lab_2,R.id.lab_3,R.id.lab_4,R.id.lab_5,R.id.lab_6,R.id.lab_7,R.id.lab_8});
+            listView.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        SimpleAdapter adapter=new SimpleAdapter(this,data,R.layout.list_item_slcs,
-                new String[]{"lab_1","lab_2","lab_3","lab_4","lab_5","lab_6","lab_7","lab_8"},
-                new  int[]{R.id.lab_1,R.id.lab_2,R.id.lab_3,R.id.lab_4,R.id.lab_5,R.id.lab_6,R.id.lab_7,R.id.lab_8});
-        listView.setAdapter(adapter);
     }
 
     private boolean isReady(){
@@ -260,7 +276,7 @@ public class SlcsActivity extends BaseActivity implements View.OnClickListener{
                 String sjscl_str=forMatNum(sjscl_num,1);
                 String smzl_str=forMatNum(smzl_num,1);
 
-                List<List<String>>list=NetHelper.getQuerysqlResult(
+               /* List<List<String>>list=NetHelper.getQuerysqlResult(
                         "Exec PAD_Up_SllList  '"+zzdh_text.getText().toString()+"','"+bfbsd_str+"','"
                                 +mghlbz_str+"','"+sjscl_str+"','"+smzl_str+"','"+smlph_text.getText().toString()
                                 +"','"+wkno+"'");
@@ -293,8 +309,38 @@ public class SlcsActivity extends BaseActivity implements View.OnClickListener{
                     msg.obj="提交失败";
                     handler.sendMessage(msg);
                     AppUtils.uploadNetworkError("Eexc PAD_Up_SllList",sharedPreferences.getString("jtbh",""),"");
+                }*/
+                try {
+                    JSONArray list=NetHelper.getQuerysqlResultJsonArray(
+                            "Exec PAD_Up_SllList  '"+zzdh_text.getText().toString()+"','"+bfbsd_str+"','"
+                                    +mghlbz_str+"','"+sjscl_str+"','"+smzl_str+"','"+smlph_text.getText().toString()
+                                    +"','"+wkno+"'");
+                    if (list!=null){
+                        if (list.length()>0){
+                            if (list.getJSONObject(0).getString("Column1").equals("OK")){
+                                handler.sendEmptyMessage(0x101);
+                            }else {
+                                Message msg=handler.obtainMessage();
+                                msg.what=0x102;
+                                msg.obj=list.getJSONObject(0).getString("Column1");
+                                handler.sendMessage(msg);
+                            }
+                        }else {
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x102;
+                            msg.obj="提交失败";
+                            handler.sendMessage(msg);
+                        }
+                    }else {
+                        Message msg = handler.obtainMessage();
+                        msg.what = 0x102;
+                        msg.obj = "提交失败";
+                        handler.sendMessage(msg);
+                        AppUtils.uploadNetworkError("Eexc PAD_Up_SllList", sharedPreferences.getString("jtbh", ""), "");
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
-
             }
         }).start();
     }

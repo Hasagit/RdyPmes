@@ -16,6 +16,9 @@ import com.ruiduoyi.model.AppDataBase;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.File;
 import java.io.FileNotFoundException;
 import java.io.FileOutputStream;
@@ -190,14 +193,18 @@ public class GpioService extends Service {
                         String num=map.get("num");
                         String desc=map.get("desc");
                         sql="exec PAD_SrvDataUp '"+mac+"','"+jtbh+"','"+zldm+"','"+gpio+"','"+time+"',"+num+",'"+desc+"'\n";
-                        List<List<String>>list_result= NetHelper.getQuerysqlResult(sql);
+                        JSONArray list_result= NetHelper.getQuerysqlResultJsonArray(sql);
                         if (list_result!=null){
-                            if (list_result.size()>0){
-                                if (list_result.get(0).get(0).equals("OK")){
-                                    //handler.sendEmptyMessage(0x106);
-                                    dataBase.deleteGpio(time);
-                                }else {
-                                    break;
+                            if (list_result.length()>0){
+                                try {
+                                    if (list_result.getJSONObject(0).getString("Column1").equals("OK")){
+                                        //handler.sendEmptyMessage(0x106);
+                                        dataBase.deleteGpio(time);
+                                    }else {
+                                        break;
+                                    }
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
                                 }
                             }else {
                                 break;

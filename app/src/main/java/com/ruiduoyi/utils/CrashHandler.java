@@ -189,7 +189,7 @@ public class CrashHandler implements UncaughtExceptionHandler {
                     String sql="Exec PAD_Add_PadLogInfo '6','"+sb+"','"+
                             mContext.getSharedPreferences("info",Context.MODE_PRIVATE).getString("jtbh","")+
                             "','"+mContext.getSharedPreferences("info",Context.MODE_PRIVATE).getString("mac","")+"'";
-                    NetHelper.getQuerysqlResult(sql);
+                    NetHelper.getQuerysqlResultJsonArray(sql);
                     Log.w("","");
                 }
             }).start();

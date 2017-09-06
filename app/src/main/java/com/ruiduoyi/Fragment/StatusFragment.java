@@ -36,6 +36,10 @@ import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -87,18 +91,22 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0x100:
-                    List<String>list=(List<String>)msg.obj;
-                    startType=list.get(2);
-                    startZldm=list.get(0);
-                    startZlmc=list.get(1);
+                    try {
+                        JSONObject list= (JSONObject) msg.obj;
+                        startType=list.getString("v_yytype");
+                        startZldm=list.getString("v_zldm");
+                        startZlmc=list.getString("v_zlmc");
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 0x101:
                     break;
                 case 0x102:
                     gdata=new ArrayList<>();
                     bdata=new ArrayList<>();
-                    initRecyclerView((List<List<String>>) msg.obj,gRecycler,"OPR",gdata);
-                    initRecyclerView((List<List<String>>) msg.obj,bRecycler,"DOC",bdata);
+                    initRecyclerView((JSONArray) msg.obj,gRecycler,"OPR",gdata);
+                    initRecyclerView((JSONArray) msg.obj,bRecycler,"DOC",bdata);
                     break;
             }
         }
@@ -114,29 +122,27 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                 String waring;
 
                 //请求当前指令及是否超时信息
-                List<List<String>>list2= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+sharedPreferences.getString("jtbh","")+"'");
-                if(list2!=null) {
-                    if (list2.size() > 0) {
-                        if (list2.get(0).size() > 11) {
-                            zldming= list2.get(0).get(1);
-                            waring = list2.get(0).get(5);
+                try {
+                    JSONArray list2= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_JtmZtInfo '"+sharedPreferences.getString("jtbh","")+"'");
+                    if(list2!=null) {
+                        if (list2.length() > 0) {
+                            zldming= list2.getJSONObject(0).getString("kbl_zldm");
+                            waring = list2.getJSONObject(0).getString("kbl_waring");
                         }else {
                             return;
                         }
                     }else {
                         return;
                     }
-                }else {
-                    return;
-                }
 
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A','"+sharedPreferences.getString("jtbh","")+"','"+zldming+"'");
 
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>2){
-                            String startType=list.get(0).get(2);
-                            zlmcing=list.get(0).get(1);
+
+                    JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_ZlmYywh 'A','"+sharedPreferences.getString("jtbh","")+"','"+zldming+"'");
+
+                    if (list!=null){
+                        if (list.length()>0){
+                            String startType=list.getJSONObject(0).getString("v_yytype");
+                            zlmcing=list.getJSONObject(0).getString("v_zlmc");
                             switch (startType) {
                                 case "A":
                                     Intent intent_g21 = new Intent(getContext(), DialogGActivity.class);
@@ -181,6 +187,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                             }
                         }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -242,24 +250,28 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
     }
 
 
-    private void initRecyclerView(List<List<String>>lists, RecyclerView recyclerView, final String place, final List<Map<String,String>>data){
+    private void initRecyclerView(JSONArray lists, RecyclerView recyclerView, final String place, final List<Map<String,String>>data){
         int max=0;
         if (place.equals("OPR")){
             max=19;
         }else if (place.equals("DOC")){
             max=13;
         }
-        for (int i=0;i<lists.size();i++){
-            if (lists.get(i).get(3).equals(place)){
-                Map<String,String>map=new HashMap<>();
-                map.put("zldm",lists.get(i).get(0));
-                map.put("type",lists.get(i).get(2));
-                map.put("zlmc",lists.get(i).get(1));
-                data.add(map);
-                if (data.size()>max){
-                    break;
+        try {
+            for (int i=0;i<lists.length();i++){
+                if (lists.getJSONObject(i).getString("zlm_type").equals(place)){
+                    Map<String,String>map=new HashMap<>();
+                    map.put("zldm",lists.getJSONObject(i).getString("zlm_zldm"));
+                    map.put("type",lists.getJSONObject(i).getString("zlm_cardflag"));
+                    map.put("zlmc",lists.getJSONObject(i).getString("zlm_zlmc"));
+                    data.add(map);
+                    if (data.size()>max){
+                        break;
+                    }
                 }
             }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
 
 
@@ -339,16 +351,16 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'A',"+sharedPreferences.getString("jtbh","")+",'"+zldm+"'");
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>2){
+                try {
+                    JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_ZlmYywh 'A','"+sharedPreferences.getString("jtbh","")+"','"+zldm+"'");
+                    if (list!=null){
+                        if (list.length()>0){
                             Message msg=handler.obtainMessage();
-                            msg.obj=list.get(0);
+                            msg.obj=list.getJSONObject(0);
                             msg.what=0x100;
                             handler.sendMessage(msg);
                             Intent intent;
-                            switch (list.get(0).get(2)){
+                            switch (list.getJSONObject(0).getString("v_yytype")){
                                 case "A":
                                     intent=new Intent(getContext(), BlYyfxActivity.class);
                                     intent.putExtra("title",title);
@@ -370,23 +382,21 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                                     break;
                                 case "S":
                                     //请求当前指令及是否超时信息
-                                    List<List<String>>list2= NetHelper.getQuerysqlResult("Exec PAD_Get_JtmZtInfo '"+sharedPreferences.getString("jtbh","")+"'");
+                                    JSONArray list2= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_JtmZtInfo '"+sharedPreferences.getString("jtbh","")+"'");
                                     if(list2!=null) {
-                                        if (list2.size() > 0) {
-                                            if (list2.get(0).size() > 11) {
-                                                String waring = list2.get(0).get(5);
-                                                if (waring.equals("1")){//如果超时了则必须要弹出蓝框
-                                                    Intent intent_blyyfx=new Intent(getContext(),BlYyfxActivity.class);
-                                                    intent_blyyfx.putExtra("title",zldm);
-                                                    intent_blyyfx.putExtra("zldm",title);
-                                                    startActivity(intent_blyyfx);
-                                                }else {//如果没有超时则直接启动结束
-                                                    Intent intent_js = new Intent(getContext(), DialogGActivity.class);
-                                                    intent_js.putExtra("zldm", zldm);
-                                                    intent_js.putExtra("title", title);
-                                                    intent_js.putExtra("type", "OPR");
-                                                    startActivity(intent_js);
-                                                }
+                                        if (list2.length() > 0) {
+                                            String waring = list2.getJSONObject(0).getString("kbl_waring");
+                                            if (waring.equals("1")){//如果超时了则必须要弹出蓝框
+                                                Intent intent_blyyfx=new Intent(getContext(),BlYyfxActivity.class);
+                                                intent_blyyfx.putExtra("title",zldm);
+                                                intent_blyyfx.putExtra("zldm",title);
+                                                startActivity(intent_blyyfx);
+                                            }else {//如果没有超时则直接启动结束
+                                                Intent intent_js = new Intent(getContext(), DialogGActivity.class);
+                                                intent_js.putExtra("zldm", zldm);
+                                                intent_js.putExtra("title", title);
+                                                intent_js.putExtra("type", "OPR");
+                                                startActivity(intent_js);
                                             }
                                         }
                                     }
@@ -401,6 +411,8 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
                             }
                         }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -410,21 +422,12 @@ public class StatusFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmMstr");
+                JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_ZlmMstr");
                 if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>3){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x102;
-                            msg.obj=list;
-                            handler.sendMessage(msg);
-                        }
-                    }else {
-                        Message msg=handler.obtainMessage();
-                        msg.what=0x102;
-                        msg.obj=list;
-                        handler.sendMessage(msg);
-                    }
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x102;
+                    msg.obj=list;
+                    handler.sendMessage(msg);
                 }else {
                     try {
                         Thread.currentThread().sleep(2000);

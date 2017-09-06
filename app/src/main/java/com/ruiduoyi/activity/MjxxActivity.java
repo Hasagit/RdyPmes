@@ -25,6 +25,9 @@ import com.ruiduoyi.R;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -51,38 +54,45 @@ public class MjxxActivity extends BaseActivity implements View.OnClickListener{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0x100:
-                    List<List<String>>list1=( List<List<String>>)msg.obj;
-                    mjbh_text.setText(list1.get(0).get(0));
-                    mjmc_text.setText(list1.get(0).get(1));
-                    mjcc_text.setText(list1.get(0).get(2));
-                    mjah_text.setText(list1.get(0).get(3));
-                    mjdw_text.setText(list1.get(0).get(4));
-                    mjqs_text.setText(list1.get(0).get(5));
-                    cxzq_text.setText(list1.get(0).get(6));
-                    cfwz_text.setText(list1.get(0).get(7));
-                    tmcz_text.setText(list1.get(0).get(8));
-                    zrry_text.setText(list1.get(0).get(9));
-                    ptsb_text.setText(list1.get(0).get(10));
+                    try {
+                        JSONArray list1= (JSONArray) msg.obj;
+                        mjbh_text.setText(list1.getJSONObject(0).getString("v_mjbh"));
+                        mjmc_text.setText(list1.getJSONObject(0).getString("v_mjmc"));
+                        mjcc_text.setText(list1.getJSONObject(0).getString("v_mjgg"));
+                        mjah_text.setText(list1.getJSONObject(0).getString("v_mjah"));
+                        mjdw_text.setText(list1.getJSONObject(0).getString("v_dw"));
+                        mjqs_text.setText(list1.getJSONObject(0).getString("v_xs"));
+                        cxzq_text.setText(list1.getJSONObject(0).getString("v_cxsj"));
+                        cfwz_text.setText(list1.getJSONObject(0).getString("v_cwdm"));
+                        tmcz_text.setText(list1.getJSONObject(0).getString("v_tmcz"));
+                        zrry_text.setText(list1.getJSONObject(0).getString("v_zrry"));
+                        ptsb_text.setText(list1.getJSONObject(0).getString("v_mjsb"));
+                    }catch (JSONException e){
+                        e.printStackTrace();
+                    }
                     break;
                 case 0x101:
                     //Toast.makeText(MjxxActivity.this,"服务器异常",Toast.LENGTH_SHORT).show();
                     break;
                 case 0x102:
-                    List<List<String>>list=(List<List<String>>)msg.obj;
+                    JSONArray list= (JSONArray) msg.obj;
                     List<Map<String,String>>listview_data=new ArrayList<>();
-                    for (int i=0;i<list.size();i++){
-                        List<String>items=list.get(i);
+                    for (int i=0;i<list.length();i++){
                         Map<String,String>map=new HashMap<>();
-                        map.put("lab_1",items.get(0));
-                        map.put("lab_2",items.get(1));
-                        map.put("lab_3",items.get(2));
+                        try {
+                            map.put("lab_1",list.getJSONObject(i).getString("v_scrq"));
+                            map.put("lab_2",list.getJSONObject(i).getString("v_jtbh"));
+                            map.put("lab_3",list.getJSONObject(i).getString("v_hmcs"));
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         listview_data.add(map);
                     }
                     initListView(listview_data);
                     listView.startAnimation(anim);
                     break;
                 case 0x103:
-                    List<List<String>>list_scdt=(List<List<String>>)msg.obj;
+                    JSONArray list_scdt= (JSONArray) msg.obj;
                     initLineChar(list_scdt);
                     mDoubleLineChar.startAnimation(anim);
                     break;
@@ -129,7 +139,7 @@ public class MjxxActivity extends BaseActivity implements View.OnClickListener{
         listView.setAdapter(adapter);
     }
 
-    private void initLineChar(List<List<String>>lists){
+    private void initLineChar(JSONArray lists){
         //设置数值选择监听
         //mDoubleLineChar.setOnChartValueSelectedListener(this);
         // 没有描述的文本
@@ -201,13 +211,16 @@ public class MjxxActivity extends BaseActivity implements View.OnClickListener{
         //mDoubleLineChar.animateX(2500);
     }
 
-    private void setData(List<List<String>>lists) {
+    private void setData(JSONArray lists) {
         ArrayList<Entry> yVals2 = new ArrayList<Entry>();
         ArrayList<Entry> yVals3 = new ArrayList<Entry>();
-        for (int i = 0; i < lists.size(); i++) {
-            List<String>item=lists.get(i);
-            yVals2.add(new Entry(i,Float.parseFloat(item.get(1))));
-            yVals3.add(new Entry(i,Float.parseFloat(item.get(0))));
+        for (int i = 0; i < lists.length(); i++) {
+            try {
+                yVals2.add(new Entry(i,Float.parseFloat(lists.getJSONObject(i).getString("v_sjcxsj"))));
+                yVals3.add(new Entry(i,Float.parseFloat(lists.getJSONObject(i).getString("v_cxsj"))));
+            }catch (JSONException e){
+                e.printStackTrace();
+            }
         }
 
         /*for (int i = 0; i < count - 1; i++) {
@@ -302,7 +315,7 @@ public class MjxxActivity extends BaseActivity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_MjmMstr '"+mjbh+"'");
+                /*List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_MjmMstr '"+mjbh+"'");
                 if (list1!=null){
                     if (list1.size()>0){
                         if (list1.get(0).size()>10){
@@ -315,10 +328,22 @@ public class MjxxActivity extends BaseActivity implements View.OnClickListener{
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MjmMstr",jtbh,
                             sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list1=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MjmMstr '"+mjbh+"'");
+                if (list1!=null){
+                    if (list1.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x100;
+                        msg.obj=list1;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_MjmMstr",jtbh,
+                            sharedPreferences.getString("mac",""));
                 }
 
                 //生产动态线程
-                List<List<String>>list2=NetHelper.getQuerysqlResult("Exec PAD_Get_MjmRzm '"+zzdh+"','"+mjbh+"'");
+                /*List<List<String>>list2=NetHelper.getQuerysqlResult("Exec PAD_Get_MjmRzm '"+zzdh+"','"+mjbh+"'");
                 if (list2!=null){
                     if (list2.size()>0){
                         if (list2.get(0).size()>2){
@@ -331,11 +356,23 @@ public class MjxxActivity extends BaseActivity implements View.OnClickListener{
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MjmRzm",jtbh,
                             sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list2=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MjmRzm '"+zzdh+"','"+mjbh+"'");
+                if (list2!=null){
+                    if (list2.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x103;
+                        msg.obj=list2;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_MjmRzm",jtbh,
+                            sharedPreferences.getString("mac",""));
                 }
 
 
                 //生产履历线程
-                List<List<String>>list3=NetHelper.getQuerysqlResult("Exec PAD_Get_MjmHml '"+mjbh+"'");
+               /* List<List<String>>list3=NetHelper.getQuerysqlResult("Exec PAD_Get_MjmHml '"+mjbh+"'");
                 if (list3!=null){
                     if (list3.size()>0){
                         if (list3.get(0).size()>2){
@@ -344,6 +381,17 @@ public class MjxxActivity extends BaseActivity implements View.OnClickListener{
                             msg.obj=list3;
                             handler.sendMessage(msg);
                         }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("PAD_Get_MjmHml",jtbh,sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list3=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MjmHml '"+mjbh+"'");
+                if (list3!=null){
+                    if (list3.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x102;
+                        msg.obj=list3;
+                        handler.sendMessage(msg);
                     }
                 }else {
                     AppUtils.uploadNetworkError("PAD_Get_MjmHml",jtbh,sharedPreferences.getString("mac",""));

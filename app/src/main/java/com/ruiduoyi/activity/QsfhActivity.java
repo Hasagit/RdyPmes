@@ -21,6 +21,9 @@ import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -81,13 +84,17 @@ public class QsfhActivity extends BaseActivity {
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x100:
-                        initList1((List<List<String>>) msg.obj);
+                        try {
+                            initList1((JSONArray) msg.obj);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case 0x101:
-                        initList2((List<List<String>>) msg.obj);
+                        initList2((JSONArray) msg.obj);
                         break;
                     case 0x102:
-                        initList2(new ArrayList<List<String>>());
+                        initList2(new JSONArray());
                         break;
                     case 0x103://复核成功
                         /*dialog.setMessageTextColor(Color.BLACK);
@@ -109,7 +116,7 @@ public class QsfhActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoexsFhInf 'A','"+jtbh+"','"+zzdh+"','"+mjbh+"'");
+               /* List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoexsFhInf 'A','"+jtbh+"','"+zzdh+"','"+mjbh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>13){
@@ -126,31 +133,39 @@ public class QsfhActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoexsFhInf 'A'",jtbh,sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MoexsFhInf 'A','"+jtbh+"','"+zzdh+"','"+mjbh+"'");
+                if (list!=null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x100;
+                    msg.obj=list;
+                    handler.sendMessage(msg);
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_MoexsFhInf 'A'",jtbh,sharedPreferences.getString("mac",""));
                 }
             }
         }).start();
     }
 
-    private void initList1(List<List<String>>lists){
+    private void initList1(JSONArray lists) throws JSONException {
         final List<Map<String,String>>data=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
+        for (int i=0;i<lists.length();i++){
             Map<String,String>map=new HashMap<>();
-            Map<String,String>map2=new HashMap<>();
             map.put("isSelect","0");
-            map.put("btn",lists.get(i).get(0));
-            map.put("lab_1",lists.get(i).get(1));
-            map.put("lab_2",lists.get(i).get(2));
-            map.put("lab_3",lists.get(i).get(3));
-            map.put("lab_4",lists.get(i).get(4));
-            map.put("lab_5",lists.get(i).get(5));
-            map.put("lab_6",lists.get(i).get(6));
-            map.put("lab_7",lists.get(i).get(7));
-            map.put("lab_8",lists.get(i).get(8));
-            map.put("lab_9",lists.get(i).get(9));
-            map.put("lab_10",lists.get(i).get(10));
-            map.put("lab_11",lists.get(i).get(11));
-            map.put("lab_12",lists.get(i).get(12));
-            map.put("lab_13",lists.get(i).get(13));
+            map.put("btn",lists.getJSONObject(i).getString("dxm_cmd"));
+            map.put("lab_1",lists.getJSONObject(i).getString("dxm_jtbh"));
+            map.put("lab_2",lists.getJSONObject(i).getString("dxm_zzdh"));
+            map.put("lab_3",lists.getJSONObject(i).getString("moe_sodh"));
+            map.put("lab_4",lists.getJSONObject(i).getString("moe_ph"));
+            map.put("lab_5",lists.getJSONObject(i).getString("dxm_wldm"));
+            map.put("lab_6",lists.getJSONObject(i).getString("itm_pmgg"));
+            map.put("lab_7",lists.getJSONObject(i).getString("dxm_mjbh"));
+            map.put("lab_8",lists.getJSONObject(i).getString("mjm_mjmc"));
+            map.put("lab_9",lists.getJSONObject(i).getString("itd_xs"));
+            map.put("lab_10",lists.getJSONObject(i).getString("dxm_bgxs"));
+            map.put("lab_11",lists.getJSONObject(i).getString("dxm_dtsl"));
+            map.put("lab_12",lists.getJSONObject(i).getString("dxm_bgrymc"));
+            map.put("lab_13",lists.getJSONObject(i).getString("dxm_bgrq"));
             data.add(map);
         }
         EasyArrayAdapter adapter=new EasyArrayAdapter(this,R.layout.list_item_qsfh_1,data) {
@@ -255,7 +270,7 @@ public class QsfhActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoexsFhInf 'B','"+jtbh+"','"+zzdh+"','"+mjbh+"'");
+                /*List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoexsFhInf 'B','"+jtbh+"','"+zzdh+"','"+mjbh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>9){
@@ -272,38 +287,51 @@ public class QsfhActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoexsFhInf 'B'",jtbh,sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MoexsFhInf 'B','"+jtbh+"','"+zzdh+"','"+mjbh+"'");
+                if (list!=null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x101;
+                    msg.obj=list;
+                    handler.sendMessage(msg);
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_MoexsFhInf 'B'",jtbh,sharedPreferences.getString("mac",""));
                 }
             }
         }).start();
     }
 
-    private void initList2(List<List<String>>lists){
-        List<Map<String,String>>data=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
-            Map<String,String>map=new HashMap<>();
-            map.put("lab_1",lists.get(i).get(0));
-            map.put("lab_2",lists.get(i).get(1));
-            map.put("lab_3",lists.get(i).get(2));
-            map.put("lab_4",lists.get(i).get(3));
-            map.put("lab_5",lists.get(i).get(4));
-            map.put("lab_6",lists.get(i).get(5));
-            map.put("lab_7",lists.get(i).get(6));
-            map.put("lab_8",lists.get(i).get(7));
-            map.put("lab_9",lists.get(i).get(8));
-            map.put("lab_10",lists.get(i).get(9));
-            data.add(map);
+    private void initList2(JSONArray lists){
+        try {
+            List<Map<String,String>>data=new ArrayList<>();
+            for (int i=0;i<lists.length();i++){
+                Map<String,String>map=new HashMap<>();
+                map.put("lab_1",lists.getJSONObject(i).getString("dxd_dxwz"));
+                map.put("lab_2",lists.getJSONObject(i).getString("dxd_yyms"));
+                map.put("lab_3",lists.getJSONObject(i).getString("dxd_ztms"));
+                map.put("lab_4",lists.getJSONObject(i).getString("dxd_jlrymc"));
+                map.put("lab_5",lists.getJSONObject(i).getString("dxd_jlrq"));
+                map.put("lab_6",lists.getJSONObject(i).getString("dxd_qrrymc"));
+                map.put("lab_7",lists.getJSONObject(i).getString("dxd_qrrq"));
+                map.put("lab_8",lists.getJSONObject(i).getString("dxd_fhrymc"));
+                map.put("lab_9",lists.getJSONObject(i).getString("dxd_fhrq"));
+                map.put("lab_10",lists.getJSONObject(i).getString("dxd_fhcnt"));
+                data.add(map);
+            }
+            SimpleAdapter adapter=new SimpleAdapter(this,data,R.layout.list_item_qsfh_2,
+                    new String[]{"lab_1","lab_2","lab_3","lab_4","lab_5","lab_6","lab_7","lab_8","lab_9","lab_10",},
+                    new int[]{R.id.lab_1,R.id.lab_2,R.id.lab_3,R.id.lab_4,R.id.lab_5,R.id.lab_6,R.id.lab_7,R.id.lab_8,R.id.lab_9,R.id.lab_10});
+            listView_2.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        SimpleAdapter adapter=new SimpleAdapter(this,data,R.layout.list_item_qsfh_2,
-                new String[]{"lab_1","lab_2","lab_3","lab_4","lab_5","lab_6","lab_7","lab_8","lab_9","lab_10",},
-                new int[]{R.id.lab_1,R.id.lab_2,R.id.lab_3,R.id.lab_4,R.id.lab_5,R.id.lab_6,R.id.lab_7,R.id.lab_8,R.id.lab_9,R.id.lab_10});
-        listView_2.setAdapter(adapter);
     }
 
     private void fuHeEven(final String zzdh, final String mjbh, final String wkno){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Up_MoexsFh '"+zzdh+"'," +
+                /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Up_MoexsFh '"+zzdh+"'," +
                         "'"+mjbh+"','"+wkno+"'");
                 if (list!=null){
                     if (list.size()>0){
@@ -322,7 +350,29 @@ public class QsfhActivity extends BaseActivity {
                     AppUtils.uploadNetworkError("Exec PAD_Up_MoexsFh",jtbh,"");
                 }
                 handler.sendEmptyMessage(0x102);
-                getList1Data();
+                getList1Data();*/
+                try {
+                    JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Up_MoexsFh '"+zzdh+"'," +
+                            "'"+mjbh+"','"+wkno+"'");
+                    if (list!=null){
+                        if (list.length()>0){
+                            if (list.getJSONObject(0).getString("Column1").equals("OK")){
+                                handler.sendEmptyMessage(0x103);
+                            }else {
+                                Message msg=handler.obtainMessage();
+                                msg.what=0x104;
+                                msg.obj=list.getJSONObject(0).getString("Column1");
+                                handler.sendMessage(msg);
+                            }
+                        }
+                    }else {
+                        AppUtils.uploadNetworkError("Exec PAD_Up_MoexsFh",jtbh,"");
+                    }
+                    handler.sendEmptyMessage(0x102);
+                    getList1Data();
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
             }
         }).start();
     }

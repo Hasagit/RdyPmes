@@ -40,6 +40,9 @@ import com.ruiduoyi.service.SerialPortService;
 import com.ruiduoyi.view.AppDialog;
 import com.ruiduoyi.view.PopupDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.io.File;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
@@ -127,38 +130,45 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                     view2.setImageResource(R.drawable.gpio_true);
                     break;
                 case 0x104:
-                    final List<List<String>>list= (List<List<String>>) msg.obj;
-                    if (list.get(0).get(3).equals(list.get(0).get(5))){
-                        dialog.setMessage("当前已是最新版本");
-                        dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.dismiss();
-                            }
-                        });
-                    }else {
-                        dialog.setMessage("当前版本:"+list.get(0).get(5)+"\n最新版本:"+list.get(0).get(3)+"\n是否立即更新？");
-                        dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                dialog.getOkbtn().setEnabled(false);
-                                dialog.setMessage("下载更新包当中...");
-                                new Thread(new Runnable() {
-                                    @Override
-                                    public void run() {
-                                        NetHelper.DownLoadFileByUrl(list.get(0).get(2),
-                                                Environment.getExternalStorageDirectory().getPath(),"RdyPmes.apk");
-                                        Intent intent = new Intent(Intent.ACTION_VIEW);
-                                        intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/RdyPmes.apk")),
-                                                "application/vnd.android.package-archive");
-                                        startActivity(intent);
-                                    }
-                                }).start();
-                            }
-                        });
+                    try {
+                        final JSONArray array= (JSONArray) msg.obj;
+                        if (array.getJSONObject(0).getString("v_WebAppVer").equals(array.getJSONObject(0).getString("oldver"))){
+                            dialog.setMessage("当前已是最新版本");
+                            dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.dismiss();
+                                }
+                            });
+                        }else {
+                            dialog.setMessage("当前版本:"+array.getJSONObject(0).getString("oldver")+"\n最新版本:"+array.getJSONObject(0).getString("v_WebAppVer")+"\n是否立即更新？");
+                            dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+                                @Override
+                                public void onClick(View v) {
+                                    dialog.getOkbtn().setEnabled(false);
+                                    dialog.setMessage("下载更新包当中...");
+                                    new Thread(new Runnable() {
+                                        @Override
+                                        public void run() {
+                                          try {
+                                              NetHelper.DownLoadFileByUrl(array.getJSONObject(0).getString("v_WebAppPath"),
+                                                      Environment.getExternalStorageDirectory().getPath(),"RdyPmes.apk");
+                                              Intent intent = new Intent(Intent.ACTION_VIEW);
+                                              intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/RdyPmes.apk")),
+                                                      "application/vnd.android.package-archive");
+                                              startActivity(intent);
+                                          }catch (JSONException e){
+                                              e.printStackTrace();
+                                          }
+                                        }
+                                    }).start();
+                                }
+                            });
+                        }
+                        dialog.show();
+                    }catch (JSONException e){
+                        e.printStackTrace();
                     }
-                    dialog.show();
-                    //Toast.makeText(MainActivity.this,"服务器异常",Toast.LENGTH_SHORT).show();
                     break;
                 case 0x105:
                     //Toast.makeText(MainActivity.this,"更新失败",Toast.LENGTH_SHORT).show();
@@ -301,21 +311,23 @@ public class MainActivity extends BaseActivity implements View.OnClickListener {
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_WebAddr");
-                        if (list!=null){
-                            if (list.size()>0){
-                                if (list.get(0).size()>3){
+                        try {
+                            JSONArray array=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_WebAddr");
+                            if (array!=null){
+                                if (array.length()>0){
                                     String oldVersionName= AppUtils.getAppVersionName(MainActivity.this);
-                                    String newVersionName=list.get(0).get(3);
-                                    list.get(0).add(oldVersionName);
+                                    String newVersionName=array.getJSONObject(0).getString("v_WebAppVer");
+                                    array.getJSONObject(0).put("oldver",oldVersionName);
                                     Message msg=handler.obtainMessage();
                                     msg.what=0x104;
-                                    msg.obj=list;
+                                    msg.obj=array;
                                     handler.sendMessage(msg);
                                 }
+                            }else {
+                                AppUtils.uploadNetworkError("Exec PAD_Get_WebAddr NetWordError",jtbh,mac);
                             }
-                        }else {
-                            AppUtils.uploadNetworkError("Exec PAD_Get_WebAddr NetWordError",jtbh,mac);
+                        }catch (JSONException e){
+                            e.printStackTrace();
                         }
                     }
                 }).start();

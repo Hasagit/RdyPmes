@@ -24,6 +24,9 @@ import com.ruiduoyi.R;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.List;
 
 public class DialogGActivity extends BaseDialogActivity implements View.OnClickListener{
@@ -221,11 +224,11 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_SrvCon '"+jtbh+"','"+zldm+"','"+num+"',''");
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>0){
-                            if (list.get(0).get(0).trim().equals("OK")){
+                try {
+                    JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_SrvCon '"+jtbh+"','"+zldm+"','"+num+"',''");
+                    if (list!=null){
+                        if (list.length()>0){
+                            if (list.getJSONObject(0).getString("Column1").trim().equals("OK")){
                                 if (isFromBlyyfx){//从BlyyfxActivity启动来的
                                     type="DOC";
                                     getNetData(0x101);
@@ -246,7 +249,7 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                             }else {
                                 Message msg=handler.obtainMessage();
                                 msg.what=0x102;
-                                msg.obj=list.get(0).get(0);
+                                msg.obj=list.getJSONObject(0).getString("Column1");
                                 handler.sendMessage(msg);
                                 setIsFinishOk();
                             }
@@ -256,8 +259,8 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
                     }else {
                         setIsFinishOk();
                     }
-                }else {
-                    setIsFinishOk();
+                }catch (JSONException e){
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -267,24 +270,24 @@ public class DialogGActivity extends BaseDialogActivity implements View.OnClickL
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Read_CardID '"
-                        +type+"','"+zldm+"','"+num+"'");
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>0){
+                try {
+                    JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Read_CardID '"
+                            +type+"','"+zldm+"','"+num+"'");
+                    if (list!=null){
+                        if (list.length()>0){
                             Message msg=handler.obtainMessage();
                             msg.what=what;
-                            msg.obj=list.get(0).get(0);
+                            msg.obj=list.getJSONObject(0).getString("Column1");
                             handler.sendMessage(msg);
                         }else {
                             setIsFinishOk();
                         }
                     }else {
                         setIsFinishOk();
+                        AppUtils.uploadNetworkError("PAD_Read_CardID",jtbh,sharedPreferences.getString("mac",""));
                     }
-                }else {
-                    setIsFinishOk();
-                    AppUtils.uploadNetworkError("PAD_Read_CardID",jtbh,sharedPreferences.getString("mac",""));
+                }catch (JSONException e){
+
                 }
             }
         }).start();

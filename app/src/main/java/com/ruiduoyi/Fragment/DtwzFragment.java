@@ -25,6 +25,9 @@ import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -98,21 +101,29 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x100:
-                        final List<List<String>>list= (List<List<String>>) msg.obj;
-                        final List<String>data_spinner=new ArrayList<>();
-                        for (int i=0;i<list.size();i++){
-                            data_spinner.add("\t"+list.get(i).get(1));
-                        }
-                        spinner_list=new PopupWindowSpinner(getContext(),data_spinner,R.layout.spinner_list_yyfx,R.id.lab_1,305);
-                        spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                AppUtils.sendCountdownReceiver(getContext());
-                                spinner.setText(data_spinner.get(position));
-                                lbdm=list.get(position).get(0);
-                                spinner_list.dismiss();
+                        try {
+                            final JSONArray list= (JSONArray) msg.obj;
+                            final List<String>data_spinner=new ArrayList<>();
+                            for (int i=0;i<list.length();i++){
+                                data_spinner.add("\t"+list.getJSONObject(i).getString("v_lbmc"));
                             }
-                        });
+                            spinner_list=new PopupWindowSpinner(getContext(),data_spinner,R.layout.spinner_list_yyfx,R.id.lab_1,305);
+                            spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    AppUtils.sendCountdownReceiver(getContext());
+                                    spinner.setText(data_spinner.get(position));
+                                    try {
+                                        lbdm=list.getJSONObject(position).getString("v_lbdm");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    spinner_list.dismiss();
+                                }
+                            });
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                         break;
                     case 0x102:
                         activity.getDutouListData(zzdh,mjqs);
@@ -152,15 +163,13 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeJtxsInf 'C','"+zzdh+"'");
+               JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MoeJtxsInf 'C','"+zzdh+"'");
                 if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>1){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x100;
-                            msg.obj=list;
-                            handler.sendMessage(msg);
-                        }
+                    if (list.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x100;
+                        msg.obj=list;
+                        handler.sendMessage(msg);
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoeJtxsInf 'C'",jtbh,sharedPreferences.getString("mac",""));
@@ -199,26 +208,26 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                int allNum=0;
-                int okNum=0;
-                for (int i=0;i<data.size();i++){
-                    if (data.get(i).get("isSelect").equals("2")){
-                        allNum=allNum+1;
-                        String wz=data.get(i).get("wz");
-                        String[] temp=wz.split("-");
-                        String row=temp[0];
-                        String col=temp[1];
-                        List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Upd_MoeJtXs  'B','"+zzdh+"'," +
-                                "'','','"+row+"','"+col+"','"+yydm+"','"+wkno+"'");
-                        if (list!=null){
-                            if (list.size()>0){
-                                if (list.get(0).size()>0){
-                                    if (list.get(0).get(0).equals("OK")){
+                try {
+                    int allNum=0;
+                    int okNum=0;
+                    for (int i=0;i<data.size();i++){
+                        if (data.get(i).get("isSelect").equals("2")){
+                            allNum=allNum+1;
+                            String wz=data.get(i).get("wz");
+                            String[] temp=wz.split("-");
+                            String row=temp[0];
+                            String col=temp[1];
+                            JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Upd_MoeJtXs  'B','"+zzdh+"'," +
+                                    "'','','"+row+"','"+col+"','"+yydm+"','"+wkno+"'");
+                            if (list!=null){
+                                if (list.length()>0){
+                                    if (list.getJSONObject(0).getString("Column1").equals("OK")){
                                         okNum=okNum+1;
                                     }else {
                                         Message msg=handler.obtainMessage();
                                         msg.what=0x103;
-                                        msg.obj=list.get(0).get(0);
+                                        msg.obj=list.getJSONObject(0).getString("Column1");
                                         handler.sendMessage(msg);
                                     }
                                 }else {
@@ -232,20 +241,17 @@ public class DtwzFragment extends Fragment implements View.OnClickListener{
                                 msg.what=0x103;
                                 msg.obj="提交失败";
                                 handler.sendMessage(msg);
+                                AppUtils.uploadNetworkError("Exec PAD_Upd_MoeJtXs  'B'",jtbh,sharedPreferences.getString("mac",""));
                             }
-                        }else {
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x103;
-                            msg.obj="提交失败";
-                            handler.sendMessage(msg);
-                            AppUtils.uploadNetworkError("Exec PAD_Upd_MoeJtXs  'B'",jtbh,sharedPreferences.getString("mac",""));
                         }
                     }
-                }
-                if (okNum==allNum){
-                    handler.sendEmptyMessage(0x102);
-                }
+                    if (okNum==allNum){
+                        handler.sendEmptyMessage(0x102);
+                    }
 
+                }catch (JSONException e){
+                    e.printStackTrace();
+                }
             }
         }).start();
     }

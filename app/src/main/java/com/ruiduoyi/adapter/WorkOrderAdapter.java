@@ -21,6 +21,9 @@ import com.ruiduoyi.activity.GdglActivity;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.List;
 import java.util.Map;
 
@@ -71,15 +74,17 @@ public class WorkOrderAdapter extends ArrayAdapter{
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<List<String>>list= NetHelper.getQuerysqlResult("Exec  PAD_Start_MoeInfo 'Start','"
+                        JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec  PAD_Start_MoeInfo 'Start','"
                                 +map.get("moeid")+"','"+wkno+"'");
                         if (list!=null){
-                            if (list.size()>0){
-                                if (list.get(0).size()>0){
+                            if (list.length()>0){
+                                try {
                                     Message msg=handler.obtainMessage();
                                     msg.what=0x101;
-                                    msg.obj=list.get(0).get(0);
+                                    msg.obj=list.getJSONObject(0).get("Column1");
                                     handler.sendMessage(msg);
+                                }catch (JSONException e){
+                                    e.printStackTrace();
                                 }
                             }
                         }
@@ -95,15 +100,17 @@ public class WorkOrderAdapter extends ArrayAdapter{
                 new Thread(new Runnable() {
                     @Override
                     public void run() {
-                        List<List<String>>list= NetHelper.getQuerysqlResult("Exec  PAD_Start_MoeInfo 'Stop','"
+                        JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec  PAD_Start_MoeInfo 'Stop','"
                                 +map.get("moeid")+"','"+wkno+"'");
                         if (list!=null){
-                            if (list.size()>0){
-                                if (list.get(0).size()>0){
+                            if (list.length()>0){
+                                try {
                                     Message msg=handler.obtainMessage();
                                     msg.what=0x101;
-                                    msg.obj=list.get(0).get(0);
+                                    msg.obj=list.getJSONObject(0).getString("Column1");
                                     handler.sendMessage(msg);
+                                }catch (JSONException e){
+                                    e.printStackTrace();
                                 }
                             }
                         }

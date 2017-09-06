@@ -27,10 +27,15 @@ import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+
+import static android.R.id.list;
 
 public class PgxjActivity extends BaseActivity implements View.OnClickListener{
     private Button save_btn,cancle_btn;
@@ -70,27 +75,39 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x100://初始化工单信息
-                        List<List<String>>list=(List<List<String>>)msg.obj;
-                        initGongDanList(list);
+                        JSONArray list= (JSONArray) msg.obj;
+                        try {
+                            initGongDanList(list);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case 0x101://从工单信息
-                        initCongDanList((List<List<String>>) msg.obj);
+                        try {
+                            initCongDanList((JSONArray) msg.obj);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case 0x102:
                         dialog.setMessage((String) msg.obj);
                         dialog.show();
                         break;
                     case 0x103://原因列表
-                        List<List<String>>list1= (List<List<String>>) msg.obj;
-                        List<Map<String,String>>data1=new ArrayList<>();
-                        for (int i=0;i<list1.size();i++){
-                            Map<String,String>map=new HashMap<>();
-                            map.put("lab_1",list1.get(i).get(0));
-                            map.put("lab_2",list1.get(i).get(1));
-                            data1.add(map);
+                        try {
+                            JSONArray list1= (JSONArray) msg.obj;
+                            List<Map<String,String>>data1=new ArrayList<>();
+                            for (int i=0;i<list1.length();i++){
+                                Map<String,String>map=new HashMap<>();
+                                map.put("lab_1",list1.getJSONObject(i).getString("bll_bldm"));
+                                map.put("lab_2",list1.getJSONObject(i).getString("bll_blmc"));
+                                data1.add(map);
+                            }
+                            adapter_yy=new YyfxAdapter(PgxjActivity.this,R.layout.list_item_pgxj_yy,data1);
+                            yuanYinLisView.setAdapter(adapter_yy);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        adapter_yy=new YyfxAdapter(PgxjActivity.this,R.layout.list_item_pgxj_yy,data1);
-                        yuanYinLisView.setAdapter(adapter_yy);
                         break;
                     case 0x104://工单信息选择发回来的信息
                         Map<String,String>map= (Map<String, String>) msg.obj;
@@ -160,7 +177,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void run() {
                 //工单信息表
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'C','"+jtbh+"'");
+                /*List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'C','"+jtbh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>15){
@@ -172,10 +189,21 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoeDet",jtbh,sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MoeDet 'C','"+jtbh+"'");
+                if (list!=null){
+                    if (list.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x100;
+                        msg.obj=list;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_MoeDet",jtbh,sharedPreferences.getString("mac",""));
                 }
 
                 //原因列表
-                List<List<String>>list_yy=NetHelper.getQuerysqlResult("Exec PAD_Get_XjlInf  'B',''");
+                /*List<List<String>>list_yy=NetHelper.getQuerysqlResult("Exec PAD_Get_XjlInf  'B',''");
                 if (list_yy!=null){
                     if (list_yy.size()>0){
                         if (list_yy.get(0).size()>1){
@@ -184,6 +212,17 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                             msg.obj=list_yy;
                             handler.sendMessage(msg);
                         }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_XjlInf  'B',''",jtbh,sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list_yy=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_XjlInf  'B',''");
+                if (list_yy!=null){
+                    if (list_yy.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x103;
+                        msg.obj=list_yy;
+                        handler.sendMessage(msg);
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_XjlInf  'B',''",jtbh,sharedPreferences.getString("mac",""));
@@ -200,7 +239,7 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
             @Override
             public void run() {
                 //从工单信息
-                List<List<String>>list6= NetHelper.getQuerysqlResult("Exec PAD_Get_XjlInf  'A','"+zzdh+"'");
+                /*List<List<String>>list6= NetHelper.getQuerysqlResult("Exec PAD_Get_XjlInf  'A','"+zzdh+"'");
                 if (list6!=null){
                     if (list6.size()>0){
                         if (list6.get(0).size()>8){
@@ -212,26 +251,36 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_XjlInf  'A'",jtbh,sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list6= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_XjlInf  'A','"+zzdh+"'");
+                if (list6!=null){
+                    if (list6.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x101;
+                        msg.obj=list6;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_XjlInf  'A'",jtbh,sharedPreferences.getString("mac",""));
                 }
 
             }
         }).start();
     }
 
-    private void  initGongDanList(List<List<String>>lists){
-        List<String>list=lists.get(0);
-        zzdh_text.setText(list.get(3));
-        gddh_text.setText(list.get(4));
-        scph_text.setText(list.get(5));
-        wgrq_text.setText(list.get(10));
-        cpbh_text.setText(list.get(8));
-        pmgg_text.setText(list.get(9));
-        jhsl_text.setText(list.get(11));
-        lpsl_text.setText(list.get(12));
-        mjbh_text.setText(list.get(6));
-        mjmc_text.setText(list.get(7));
-        cpxs_text.setText(list.get(14));
-        sjxs_text.setText(list.get(15));
+    private void  initGongDanList(JSONArray lists) throws JSONException {
+        zzdh_text.setText(lists.getJSONObject(0).getString("v_zzdh"));
+        gddh_text.setText(lists.getJSONObject(0).getString("v_sodh"));
+        scph_text.setText(lists.getJSONObject(0).getString("v_ph"));
+        wgrq_text.setText(lists.getJSONObject(0).getString("v_wgrq"));
+        cpbh_text.setText(lists.getJSONObject(0).getString("v_wldm"));
+        pmgg_text.setText(lists.getJSONObject(0).getString("v_pmgg"));
+        jhsl_text.setText(lists.getJSONObject(0).getString("v_scsl"));
+        lpsl_text.setText(lists.getJSONObject(0).getString("v_lpsl"));
+        mjbh_text.setText(lists.getJSONObject(0).getString("v_mjbh"));
+        mjmc_text.setText(lists.getJSONObject(0).getString("v_mjmc"));
+        cpxs_text.setText(lists.getJSONObject(0).getString("v_itdxs"));
+        sjxs_text.setText(lists.getJSONObject(0).getString("v_moexs"));
         tsqx_text.setText(sharedPreferences.getString("tszlqx",""));
         if (tsqx_text.getText().toString().equals("")){
             tsqx_text.setBackgroundColor(Color.WHITE);
@@ -241,20 +290,19 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
         getCongListData(zzdh_text.getText().toString());
     }
 
-    private void initCongDanList(List<List<String>>lists){
+    private void initCongDanList(JSONArray lists) throws JSONException {
         data_cong=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
-            List<String>item=lists.get(i);
+        for (int i=0;i<lists.length();i++){
             Map<String,String>map=new HashMap<>();
-            map.put("lab_1",item.get(1));
-            map.put("lab_2",item.get(2));
-            map.put("lab_3",item.get(3));
-            map.put("lab_4",item.get(4));
-            map.put("lab_5",item.get(5));
-            map.put("lab_6",item.get(6));
-            map.put("lab_7",item.get(7));
-            map.put("lab_8",item.get(8));
-            map.put("zzdh",item.get(0));
+            map.put("lab_1",lists.getJSONObject(i).getString("v_wldm"));
+            map.put("lab_2",lists.getJSONObject(i).getString("v_pmgg"));
+            map.put("lab_3",lists.getJSONObject(i).getString("v_bzjz"));
+            map.put("lab_4",lists.getJSONObject(i).getString("v_jz"));
+            map.put("lab_5",lists.getJSONObject(i).getString("v_bzskzl"));
+            map.put("lab_6",lists.getJSONObject(i).getString("v_skzl"));
+            map.put("lab_7",lists.getJSONObject(i).getString("v_moexs"));
+            map.put("lab_8",lists.getJSONObject(i).getString("v_xjxs"));
+            map.put("zzdh",lists.getJSONObject(i).getString("v_zzdh"));
             data_cong.add(map);
         }
         EasyArrayAdapter adapter=new EasyArrayAdapter(this,R.layout.list_item_pgxj_cong,data_cong) {
@@ -346,83 +394,81 @@ public class PgxjActivity extends BaseActivity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                if (radio_ok.isChecked()){//Ok情况下
-                    for (int i=0;i<data_cong.size();i++){
-                        Map<String,String>map=data_cong.get(i);
+                try {
+                    if (radio_ok.isChecked()){//Ok情况下
+                        for (int i=0;i<data_cong.size();i++){
+                            Map<String,String>map=data_cong.get(i);
 
-                        List<List<String>>list=NetHelper.getQuerysqlResult(
-                                "Exec PAD_Up_Xjllist   'A','"+jtbh+"','"+zzdh_text.getText().toString()+"','"+map.get("lab_7")+"'," +
-                                        "'"+map.get("lab_8")+"','OK','','"+wkno+"'");
-                        if (list!=null){
-                            if (list.size()>0){
-                                if (list.get(0).size()>0){
-                                    if (list.get(0).get(0).equals("OK")){
+                            JSONArray list=NetHelper.getQuerysqlResultJsonArray(
+                                    "Exec PAD_Up_Xjllist   'A','"+jtbh+"','"+zzdh_text.getText().toString()+"','"+map.get("lab_7")+"'," +
+                                            "'"+map.get("lab_8")+"','OK','','"+wkno+"'");
+                            if (list!=null){
+                                if (list.length()>0){
+                                    if (list.getJSONObject(0).getString("Column1").equals("OK")){
                                         finish();
                                     }else {
                                         Message msg=handler.obtainMessage();
                                         msg.what=0x102;
-                                        msg.obj="品质异常发出错误："+list.get(0).get(0);
+                                        msg.obj="品质异常发出错误："+list.getJSONObject(0).getString("Column1");
                                         handler.sendMessage(msg);
                                     }
                                 }
+                            }else {
+                                AppUtils.uploadNetworkError("Exec PAD_Up_Xjllist",jtbh,sharedPreferences.getString("mac",""));
                             }
-                        }else {
-                            AppUtils.uploadNetworkError("Exec PAD_Up_Xjllist",jtbh,sharedPreferences.getString("mac",""));
                         }
-                    }
-                }else if (radio_ng.isChecked()){//NG情况下
-                    String yydms="";
-                    for (int i=0;i<adapter_yy.getSelectData().size();i++){
-                        yydms=yydms+adapter_yy.getSelectData().get(i).get("lab_1")+";";
-                    }
-                    List<String>result=new ArrayList<String>();
-                    for (int i=0;i<data_cong.size();i++){
-                        Map<String,String>map=data_cong.get(i);
+                    }else if (radio_ng.isChecked()){//NG情况下
+                        String yydms="";
+                        for (int i=0;i<adapter_yy.getSelectData().size();i++){
+                            yydms=yydms+adapter_yy.getSelectData().get(i).get("lab_1")+";";
+                        }
+                        List<String>result=new ArrayList<String>();
+                        for (int i=0;i<data_cong.size();i++){
+                            Map<String,String>map=data_cong.get(i);
 
-                        List<List<String>>list=NetHelper.getQuerysqlResult(
-                                "Exec PAD_Up_Xjllist  'A','"+jtbh+"','"+zzdh_text.getText().toString()+"','"+map.get("lab_7")+"'," +
-                                        "'"+map.get("lab_8")+"','NG','"+yydms+"','"+wkno+"'");
-                        if (list!=null){
-                            if (list.size()>0){
-                                if (list.get(0).size()>0){
-                                    if (list.get(0).get(0).equals("OK")){
+                            JSONArray list=NetHelper.getQuerysqlResultJsonArray(
+                                    "Exec PAD_Up_Xjllist  'A','"+jtbh+"','"+zzdh_text.getText().toString()+"','"+map.get("lab_7")+"'," +
+                                            "'"+map.get("lab_8")+"','NG','"+yydms+"','"+wkno+"'");
+                            if (list!=null){
+                                if (list.length()>0){
+                                    if (list.getJSONObject(0).getString("Column1").equals("OK")){
                                         result.add("OK");
                                     }else {
                                         Message msg=handler.obtainMessage();
                                         msg.what=0x102;
-                                        msg.obj="品质异常发出错误："+list.get(0).get(0);
+                                        msg.obj="品质异常发出错误："+list.getJSONObject(0).getString("Column1");
                                         handler.sendMessage(msg);
                                     }
                                 }
+                            }else {
+                                AppUtils.uploadNetworkError("Exec PAD_Up_Xjllist",jtbh,sharedPreferences.getString("mac",""));
                             }
-                        }else {
-                            AppUtils.uploadNetworkError("Exec PAD_Up_Xjllist",jtbh,sharedPreferences.getString("mac",""));
+
+
                         }
-
-
-                    }
-                    //如果所有都上传成功则发出品质异常
-                    if (AppUtils.calculate(result.toString(),"OK")==data_cong.size()){
-                        List<List<String>>list2=NetHelper.getQuerysqlResult(
-                                "Exec PAD_Up_Xjllist  'B','"+jtbh+"','',''," +
-                                        "'','','','"+wkno+"'");
-                        if (list2!=null){
-                            if (list2.size()>0){
-                                if (list2.get(0).size()>0){
-                                    if (list2.get(0).get(0).equals("OK")){
+                        //如果所有都上传成功则发出品质异常
+                        if (AppUtils.calculate(result.toString(),"OK")==data_cong.size()){
+                            JSONArray list2=NetHelper.getQuerysqlResultJsonArray(
+                                    "Exec PAD_Up_Xjllist  'B','"+jtbh+"','',''," +
+                                            "'','','','"+wkno+"'");
+                            if (list2!=null){
+                                if (list2.length()>0){
+                                    if (list2.getJSONObject(0).getString("Column1").equals("OK")){
                                         AppUtils.sendUpdateInfoFragmentReceiver(PgxjActivity.this);
                                         AppUtils.sendReturnToInfoReceiver(PgxjActivity.this);
                                         finish();
                                     }else {
                                         Message msg=handler.obtainMessage();
                                         msg.what=0x102;
-                                        msg.obj="品质异常发出错误："+list2.get(0).get(0);
+                                        msg.obj="品质异常发出错误："+list2.getJSONObject(0).getString("Column1");
                                         handler.sendMessage(msg);
                                     }
                                 }
                             }
                         }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();

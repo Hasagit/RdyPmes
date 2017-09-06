@@ -32,6 +32,9 @@ import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -97,47 +100,59 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x100:
-                        final List<List<String>>list= (List<List<String>>) msg.obj;
-                        final List<String>data=new ArrayList<>();
-                        String pmgg=sharedPreferences.getString("pmgg","");
-                        for (int i=0;i<list.size();i++){
-                            if (list.get(i).get(2).equals(pmgg)){
-                                spinner.setText(list.get(i).get(1)+"\t\t"+list.get(i).get(2));
-                                zzdh=list.get(i).get(0);
+                        try {
+                            final JSONArray list= (JSONArray) msg.obj;
+                            final List<String>data=new ArrayList<>();
+                            String pmgg=sharedPreferences.getString("pmgg","");
+                            for (int i=0;i<list.length();i++){
+                                if (list.getJSONObject(i).getString("v_pmgg").equals(pmgg)){
+                                    spinner.setText(list.getJSONObject(i).getString("v_wldm")+"\t\t"+list.getJSONObject(i).getString("v_pmgg"));
+                                    zzdh=list.getJSONObject(i).getString("v_zzdh");
+                                }
+                                data.add(list.getJSONObject(i).getString("v_wldm")+"\t\t"+list.getJSONObject(i).getString("v_pmgg"));
                             }
-                            data.add(list.get(i).get(1)+"\t\t"+list.get(i).get(2));
+                            spinner_list=new PopupWindowSpinner(getContext(),data,R.layout.spinner_list_yyfx,R.id.lab_1,450);
+                            spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                @Override
+                                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                    AppUtils.sendCountdownReceiver(getContext());
+                                    spinner.setText(data.get(position));
+                                    try {
+                                        zzdh=list.getJSONObject(position).getString("v_zzdh");
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+                                    Log.w("zzdh",zzdh);
+                                    spinner_list.dismiss();
+                                }
+                            });
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        spinner_list=new PopupWindowSpinner(getContext(),data,R.layout.spinner_list_yyfx,R.id.lab_1,450);
-                        spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                            @Override
-                            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                AppUtils.sendCountdownReceiver(getContext());
-                                spinner.setText(data.get(position));
-                                zzdh=list.get(position).get(0);
-                                Log.w("zzdh",zzdh);
-                                spinner_list.dismiss();
-                            }
-                        });
                         break;
                     case 0x101:
-                        List<List<String>>list1= (List<List<String>>) msg.obj;
-                        data1=new ArrayList<>();
-                        for (int i=0;i<list1.size();i++){
-                            Map<String,String>map=new HashMap<>();
-                            map.put("lab_1",list1.get(i).get(0));
-                            map.put("lab_2",list1.get(i).get(1));
-                            map.put("lab_3","0");
-                            data1.add(map);
-                        }
-                        adapter2= new SigleSelectAdapter2(getContext(), R.layout.blfx_sigle_select_item, data1) {
-                            @Override
-                            public void onRadioSelectListener(int position, Map<String, String> map) {
-                                select_position=position;
-                                bldm_text.setText(map.get("lab_1"));
-                                blms_text.setText(map.get("lab_2"));
+                        try {
+                            JSONArray list1= (JSONArray) msg.obj;
+                            data1=new ArrayList<>();
+                            for (int i=0;i<list1.length();i++){
+                                Map<String,String>map=new HashMap<>();
+                                map.put("lab_1",list1.getJSONObject(i).getString("bll_bldm"));
+                                map.put("lab_2",list1.getJSONObject(i).getString("bll_blmc"));
+                                map.put("lab_3","0");
+                                data1.add(map);
                             }
-                        };
-                        listView.setAdapter(adapter2);
+                            adapter2= new SigleSelectAdapter2(getContext(), R.layout.blfx_sigle_select_item, data1) {
+                                @Override
+                                public void onRadioSelectListener(int position, Map<String, String> map) {
+                                    select_position=position;
+                                    bldm_text.setText(map.get("lab_1"));
+                                    blms_text.setText(map.get("lab_2"));
+                                }
+                            };
+                            listView.setAdapter(adapter2);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                 }
             }
@@ -237,7 +252,7 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'D','"+jtbh+"','"+zzdh+"'");
+                /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'D','"+jtbh+"','"+zzdh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>2){
@@ -250,10 +265,22 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_ZlmYywh 'D'",sharedPreferences.getString("jtnh",""),
                             sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_ZlmYywh 'D','"+jtbh+"','"+zzdh+"'");
+                if (list!=null){
+                    if (list.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x100;
+                        msg.obj=list;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_ZlmYywh 'D'",sharedPreferences.getString("jtnh",""),
+                            sharedPreferences.getString("mac",""));
                 }
 
 
-                List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_Blllist");
+                /*List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_Blllist");
                 if (list1!=null){
                     if (list1.size()>0){
                         if (list1.get(0).size()>1){
@@ -262,6 +289,18 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
                             msg.obj=list1;
                             handler.sendMessage(msg);
                         }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_Blllist",sharedPreferences.getString("jtbh",""),
+                            sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list1=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_Blllist");
+                if (list1!=null){
+                    if (list1.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x101;
+                        msg.obj=list1;
+                        handler.sendMessage(msg);
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_Blllist",sharedPreferences.getString("jtbh",""),
@@ -288,7 +327,7 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
     }
 
     private void upLoadOneData(Map<String,String>map,String wkno){
-        List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Add_BlmInfo " +
+        /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Add_BlmInfo " +
                 "'A','"+zzdh+"','','','"+jtbh+"','"+zldm+"','"+map.get("lab_1")+"'," +
                 "'"+map.get("lab_3")+"','"+wkno+"'");
         if (list!=null){
@@ -301,6 +340,22 @@ public class BlfxFragment extends Fragment implements View.OnClickListener{
             }
         }else {
             upLoadOneData(map,wkno);
+        }*/
+        try {
+            JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Add_BlmInfo " +
+                    "'A','"+zzdh+"','','','"+jtbh+"','"+zldm+"','"+map.get("lab_1")+"'," +
+                    "'"+map.get("lab_3")+"','"+wkno+"'");
+            if (list!=null){
+                if (list.length()>0){
+                    if (list.getJSONObject(0).getString("Column1").equals("OK")){
+                        return ;
+                    }
+                }
+            }else {
+                upLoadOneData(map,wkno);
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 

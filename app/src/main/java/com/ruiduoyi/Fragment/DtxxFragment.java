@@ -23,6 +23,9 @@ import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -114,21 +117,25 @@ public class DtxxFragment extends Fragment {
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x104:
-                        List<List<String>>list_dt= (List<List<String>>) msg.obj;
-                        data_dt=new ArrayList<>();
-                        for (int i=0;i<list_dt.size();i++){
-                            Map<String,String>map=new HashMap<>();
-                            map.put("lab_1",list_dt.get(i).get(0));
-                            map.put("lab_2",list_dt.get(i).get(1));
-                            map.put("lab_3",list_dt.get(i).get(2));
-                            map.put("lab_4",list_dt.get(i).get(3));
-                            map.put("lab_5",list_dt.get(i).get(4));
-                            map.put("lab_6",list_dt.get(i).get(5));
-                            map.put("lab_0",list_dt.get(i).get(6));
-                            data_dt.add(map);
+                        try {
+                            JSONArray list_dt= (JSONArray) msg.obj;
+                            data_dt=new ArrayList<>();
+                            for (int i=0;i<list_dt.length();i++){
+                                Map<String,String>map=new HashMap<>();
+                                map.put("lab_1",list_dt.getJSONObject(i).getString("dxd_dxwz"));
+                                map.put("lab_2",list_dt.getJSONObject(i).getString("dxd_yyms"));
+                                map.put("lab_3",list_dt.getJSONObject(i).getString("dxd_jlrymc"));
+                                map.put("lab_4",list_dt.getJSONObject(i).getString("dxd_jlrq"));
+                                map.put("lab_5",list_dt.getJSONObject(i).getString("dxd_qrrymc"));
+                                map.put("lab_6",list_dt.getJSONObject(i).getString("dxd_qrrq"));
+                                map.put("lab_0",list_dt.getJSONObject(i).getString("dxd_sn"));
+                                data_dt.add(map);
+                            }
+                            initDutouList(data_dt);
+                            getGongdanData();
+                        }catch (JSONException e){
+                            e.printStackTrace();
                         }
-                        initDutouList(data_dt);
-                        getGongdanData();
                         break;
                     case 0x105:
                         getGongdanData();
@@ -145,16 +152,20 @@ public class DtxxFragment extends Fragment {
                         dialog.show();
                         break;
                     case 0x109:
-                        List<List<String>>list_gongdan= (List<List<String>>) msg.obj;
-                        for (int i=0;i<list_gongdan.size();i++){
-                            if (list_gongdan.get(i).get(3).equals(zzdh)){
-                                cpxs_text.setText(list_gongdan.get(i).get(15));
+                        try {
+                            JSONArray list_gongdan= (JSONArray) msg.obj;
+                            for (int i=0;i<list_gongdan.length();i++){
+                                if (list_gongdan.getJSONObject(i).getString("v_zzdh").equals(zzdh)){
+                                    cpxs_text.setText(list_gongdan.getJSONObject(i).getString("v_moexs"));
+                                }
                             }
-                        }
-                        if (!mjxs_text.getText().equals(cpxs_text.getText().toString())){
-                            cpxs_text.setBackgroundColor(getResources().getColor(R.color.small));
-                        }else {
-                            cpxs_text.setBackgroundColor(Color.WHITE);
+                            if (!mjxs_text.getText().equals(cpxs_text.getText().toString())){
+                                cpxs_text.setBackgroundColor(getResources().getColor(R.color.small));
+                            }else {
+                                cpxs_text.setBackgroundColor(Color.WHITE);
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
                         }
                 }
             }
@@ -206,12 +217,12 @@ public class DtxxFragment extends Fragment {
                         new Thread(new Runnable() {
                             @Override
                             public void run() {
-                                List<List<String>> list = NetHelper.getQuerysqlResult("Exec PAD_Upd_MoeJtXs  'C','" + zzdh + "',''," +
-                                        "'" + map.get("lab_1") + "',0,0,'','" + wkno + "'");
-                                if (list != null) {
-                                    if (list.size() > 0) {
-                                        if (list.get(0).size() > 0) {
-                                            if (list.get(0).get(0).equals("OK")) {
+                                try {
+                                    JSONArray list = NetHelper.getQuerysqlResultJsonArray("Exec PAD_Upd_MoeJtXs  'C','" + zzdh + "',''," +
+                                            "'" + map.get("lab_1") + "',0,0,'','" + wkno + "'");
+                                    if (list != null) {
+                                        if (list.length() > 0) {
+                                            if (list.getJSONObject(0).getString("Column1").equals("OK")) {
                                                 Message msg = handler.obtainMessage();
                                                 msg.what = 0x105;
                                                 msg.arg1 = position;
@@ -221,13 +232,15 @@ public class DtxxFragment extends Fragment {
                                                 Message msg = handler.obtainMessage();
                                                 msg.what = 0x106;
                                                 msg.arg1 = position;
-                                                msg.obj = list.get(0).get(0);
+                                                msg.obj = list.getJSONObject(0).getString("Column1");
                                                 handler.sendMessage(msg);
                                             }
                                         }
+                                    } else {
+                                        AppUtils.uploadNetworkError("Exec PAD_Upd_MoeJtXs  'C'", jtbh, sharedPreferences.getString("mac", ""));
                                     }
-                                } else {
-                                    AppUtils.uploadNetworkError("Exec PAD_Upd_MoeJtXs  'C'", jtbh, sharedPreferences.getString("mac", ""));
+                                }catch (JSONException e){
+                                    e.printStackTrace();
                                 }
                             }
                         }).start();
@@ -249,15 +262,13 @@ public class DtxxFragment extends Fragment {
             @Override
             public void run() {
                 //工单信息表
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'A','"+jtbh+"'");
+                JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MoeDet 'A','"+jtbh+"'");
                 if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>15){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x109;
-                            msg.obj=list;
-                            handler.sendMessage(msg);
-                        }
+                    if (list.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x109;
+                        msg.obj=list;
+                        handler.sendMessage(msg);
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoeDet",jtbh,sharedPreferences.getString("mac",""));

@@ -18,6 +18,9 @@ import com.ruiduoyi.adapter.EasyArrayAdapter;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -58,113 +61,145 @@ public class GycsActivity extends BaseActivity {
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x100:
-                        initListView((List<List<String>>) msg.obj);
+                        try {
+                            initListView((JSONArray) msg.obj);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case 0x101:
-                        List<List<String>>list1= (List<List<String>>) msg.obj;
-                        jtbh_text.setText(list1.get(0).get(2));
-                        cpbh_text.setText(list1.get(0).get(3));
-                        pmgg_text.setText(list1.get(0).get(4));
-                        mjbh_text.setText(list1.get(0).get(5));
-                        mjmc_text.setText(list1.get(0).get(6));
-                        cpqs_text.setText(list1.get(0).get(7));
-                        cxzq_text.setText(list1.get(0).get(8));
-                        lqsj_text.setText(list1.get(0).get(13));
-                        sjsj_text.setText(list1.get(0).get(14));
-                        sml_text.setText(list1.get(0).get(15));
-                        sdry_text.setText(list1.get(0).get(16));
-                        bzms_text.setText(list1.get(0).get(18));
-                        bzxx_text.setText(list1.get(0).get(17));
+                       try {
+                           JSONArray list1= (JSONArray) msg.obj;
+                           jtbh_text.setText(list1.getJSONObject(0).getString("csm_jtbh"));
+                           cpbh_text.setText(list1.getJSONObject(0).getString("csm_wldm"));
+                           pmgg_text.setText(list1.getJSONObject(0).getString("csm_pmgg"));
+                           mjbh_text.setText(list1.getJSONObject(0).getString("csm_mjbh"));
+                           mjmc_text.setText(list1.getJSONObject(0).getString("csm_mjmc"));
+                           cpqs_text.setText(list1.getJSONObject(0).getString("csm_cpxs"));
+                           cxzq_text.setText(list1.getJSONObject(0).getString("csm_cxsj"));
+                           lqsj_text.setText(list1.getJSONObject(0).getString("csm_lqsj"));
+                           sjsj_text.setText(list1.getJSONObject(0).getString("csm_sjsj"));
+                           sml_text.setText(list1.getJSONObject(0).getString("csm_sml"));
+                           sdry_text.setText(list1.getJSONObject(0).getString("csm_sdry"));
+                           bzms_text.setText(list1.getJSONObject(0).getString("csm_bzms"));
+                           bzxx_text.setText(list1.getJSONObject(0).getString("csm_desc"));
+                       }catch (JSONException e){
+                           e.printStackTrace();
+                       }
                         break;
                     case 0x102:
-                        List<List<String>>list2= (List<List<String>>) msg.obj;
-                        sdz_1.setText(list2.get(0).get(0));
-                        sdz_2.setText(list2.get(0).get(1));
-                        sdz_3.setText(list2.get(0).get(2));
-                        sdz_4.setText(list2.get(0).get(3));
-                        sdz_5.setText(list2.get(0).get(4));
+                        try {
+                            JSONArray list2= (JSONArray) msg.obj;
+                            sdz_1.setText(list2.getJSONObject(0).getString("csd_val1"));
+                            sdz_2.setText(list2.getJSONObject(0).getString("csd_val2"));
+                            sdz_3.setText(list2.getJSONObject(0).getString("csd_val3"));
+                            sdz_4.setText(list2.getJSONObject(0).getString("csd_val4"));
+                            sdz_5.setText(list2.getJSONObject(0).getString("csd_val5"));
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                         break;
                     case 0x103:
-                        List<List<String>>list3= (List<List<String>>) msg.obj;
-                        sjz_1.setText(list3.get(0).get(0));
-                        sjz_2.setText(list3.get(0).get(1));
-                        sjz_3.setText(list3.get(0).get(2));
-                        sjz_4.setText(list3.get(0).get(3));
-                        sjz_5.setText(list3.get(0).get(4));
+                       try {
+                           JSONArray list3= (JSONArray) msg.obj;
+                           sjz_1.setText(list3.getJSONObject(0).getString("csd_val1"));
+                           sjz_2.setText(list3.getJSONObject(0).getString("csd_val2"));
+                           sjz_3.setText(list3.getJSONObject(0).getString("csd_val3"));
+                           sjz_4.setText(list3.getJSONObject(0).getString("csd_val4"));
+                           sjz_5.setText(list3.getJSONObject(0).getString("csd_val5"));
+                       }catch (JSONException e){
+                           e.printStackTrace();
+                       }
                         break;
                     case 0x104:
-                        List<List<String>>list4= (List<List<String>>) msg.obj;
-                        flb_1.setText(list4.get(0).get(0));
-                        flb_2.setText(list4.get(0).get(1));
+                       try {
+                           JSONArray list4= (JSONArray) msg.obj;
+                           flb_1.setText(list4.getJSONObject(0).getString("csd_val1"));
+                           flb_2.setText(list4.getJSONObject(0).getString("csd_val2"));
+                       }catch (JSONException e){
+                           e.printStackTrace();
+                       }
                         break;
                     case 0x105:
-                        List<List<String>>list5= (List<List<String>>) msg.obj;
-                        sd_1.setText(list5.get(0).get(0));
-                        sd_2.setText(list5.get(0).get(1));
-                        sd_3.setText(list5.get(0).get(2));
-                        sd_4.setText(list5.get(0).get(3));
-                        sd_5.setText(list5.get(0).get(4));
-                        sd_6.setText(list5.get(0).get(5));
-                        sd_7.setText(list5.get(0).get(6));
-                        sd_8.setText(list5.get(0).get(7));
-                        sd_9.setText(list5.get(0).get(8));
-                        sd_10.setText(list5.get(0).get(9));
-                        sd_11.setText(list5.get(0).get(10));
-                        sd_12.setText(list5.get(0).get(11));
+                        try {
+                            JSONArray list5= (JSONArray) msg.obj;
+                            sd_1.setText(list5.getJSONObject(0).getString("csd_val1"));
+                            sd_2.setText(list5.getJSONObject(0).getString("csd_val2"));
+                            sd_3.setText(list5.getJSONObject(0).getString("csd_val3"));
+                            sd_4.setText(list5.getJSONObject(0).getString("csd_val4"));
+                            sd_5.setText(list5.getJSONObject(0).getString("csd_val5"));
+                            sd_6.setText(list5.getJSONObject(0).getString("csd_val6"));
+                            sd_7.setText(list5.getJSONObject(0).getString("csd_val7"));
+                            sd_8.setText(list5.getJSONObject(0).getString("csd_val8"));
+                            sd_9.setText(list5.getJSONObject(0).getString("csd_val9"));
+                            sd_10.setText(list5.getJSONObject(0).getString("csd_val10"));
+                            sd_11.setText(list5.getJSONObject(0).getString("csd_val11"));
+                            sd_12.setText(list5.getJSONObject(0).getString("csd_val12"));
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                         break;
                     case 0x106:
-                        List<List<String>>list6= (List<List<String>>) msg.obj;
-                        yl_1.setText(list6.get(0).get(0));
-                        yl_2.setText(list6.get(0).get(1));
-                        yl_3.setText(list6.get(0).get(2));
-                        yl_4.setText(list6.get(0).get(3));
-                        yl_5.setText(list6.get(0).get(4));
-                        yl_6.setText(list6.get(0).get(5));
-                        yl_7.setText(list6.get(0).get(6));
-                        yl_8.setText(list6.get(0).get(7));
-                        yl_9.setText(list6.get(0).get(8));
-                        yl_10.setText(list6.get(0).get(9));
-                        yl_11.setText(list6.get(0).get(10));
-                        yl_12.setText(list6.get(0).get(11));
+                        try {
+                            JSONArray list6= (JSONArray) msg.obj;
+                            yl_1.setText(list6.getJSONObject(0).getString("csd_val1"));
+                            yl_2.setText(list6.getJSONObject(0).getString("csd_val2"));
+                            yl_3.setText(list6.getJSONObject(0).getString("csd_val3"));
+                            yl_4.setText(list6.getJSONObject(0).getString("csd_val4"));
+                            yl_5.setText(list6.getJSONObject(0).getString("csd_val5"));
+                            yl_6.setText(list6.getJSONObject(0).getString("csd_val6"));
+                            yl_7.setText(list6.getJSONObject(0).getString("csd_val7"));
+                            yl_8.setText(list6.getJSONObject(0).getString("csd_val8"));
+                            yl_9.setText(list6.getJSONObject(0).getString("csd_val9"));
+                            yl_10.setText(list6.getJSONObject(0).getString("csd_val10"));
+                            yl_11.setText(list6.getJSONObject(0).getString("csd_val11"));
+                            yl_12.setText(list6.getJSONObject(0).getString("csd_val12"));
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                         break;
                     case 0x107:
-                        List<List<String>>list7= (List<List<String>>) msg.obj;
-                        pz_1.setText(list7.get(0).get(0));
-                        pz_2.setText(list7.get(0).get(1));
-                        pz_3.setText(list7.get(0).get(2));
-                        pz_4.setText(list7.get(0).get(3));
-                        pz_5.setText(list7.get(0).get(4));
-                        pz_6.setText(list7.get(0).get(5));
-                        pz_7.setText(list7.get(0).get(6));
-                        pz_8.setText(list7.get(0).get(7));
-                        pz_9.setText(list7.get(0).get(8));
-                        pz_10.setText(list7.get(0).get(9));
-                        pz_11.setText(list7.get(0).get(10));
-                        pz_12.setText(list7.get(0).get(11));
-                        pz_13.setText(list7.get(0).get(12));
-                        pz_14.setText(list7.get(0).get(13));
-                        pz_15.setText(list7.get(0).get(14));
-                        pz_16.setText(list7.get(0).get(15));
-                        pz_17.setText(list7.get(0).get(16));
-                        pz_18.setText(list7.get(0).get(17));
-                        pz_19.setText(list7.get(0).get(18));
-                        pz_20.setText(list7.get(0).get(19));
-                        pz_21.setText(list7.get(0).get(20));
-                        pz_22.setText(list7.get(0).get(21));
-                        pz_23.setText(list7.get(0).get(22));
-                        pz_24.setText(list7.get(0).get(23));
-                        pz_25.setText(list7.get(0).get(24));
-                        pz_26.setText(list7.get(0).get(25));
-                        pz_27.setText(list7.get(0).get(26));
-                        pz_28.setText(list7.get(0).get(27));
-                        pz_29.setText(list7.get(0).get(28));
-                        pz_30.setText(list7.get(0).get(29));
-                        pz_31.setText(list7.get(0).get(30));
-                        pz_32.setText(list7.get(0).get(31));
-                        pz_33.setText(list7.get(0).get(32));
-                        pz_34.setText(list7.get(0).get(33));
-                        pz_35.setText(list7.get(0).get(34));
-                        pz_36.setText(list7.get(0).get(35));
+                        try {
+                            JSONArray list7= (JSONArray) msg.obj;
+                            pz_1.setText(list7.getJSONObject(0).getString("csd_val1"));
+                            pz_2.setText(list7.getJSONObject(0).getString("csd_val2"));
+                            pz_3.setText(list7.getJSONObject(0).getString("csd_val3"));
+                            pz_4.setText(list7.getJSONObject(0).getString("csd_val4"));
+                            pz_5.setText(list7.getJSONObject(0).getString("csd_val5"));
+                            pz_6.setText(list7.getJSONObject(0).getString("csd_val6"));
+                            pz_7.setText(list7.getJSONObject(0).getString("csd_val7"));
+                            pz_8.setText(list7.getJSONObject(0).getString("csd_val8"));
+                            pz_9.setText(list7.getJSONObject(0).getString("csd_val9"));
+                            pz_10.setText(list7.getJSONObject(0).getString("csd_val10"));
+                            pz_11.setText(list7.getJSONObject(0).getString("csd_val11"));
+                            pz_12.setText(list7.getJSONObject(0).getString("csd_val12"));
+                            pz_13.setText(list7.getJSONObject(0).getString("csd_val13"));
+                            pz_14.setText(list7.getJSONObject(0).getString("csd_val14"));
+                            pz_15.setText(list7.getJSONObject(0).getString("csd_val15"));
+                            pz_16.setText(list7.getJSONObject(0).getString("csd_val16"));
+                            pz_17.setText(list7.getJSONObject(0).getString("csd_val17"));
+                            pz_18.setText(list7.getJSONObject(0).getString("csd_val18"));
+                            pz_19.setText(list7.getJSONObject(0).getString("csd_val19"));
+                            pz_20.setText(list7.getJSONObject(0).getString("csd_val20"));
+                            pz_21.setText(list7.getJSONObject(0).getString("csd_val21"));
+                            pz_22.setText(list7.getJSONObject(0).getString("csd_val22"));
+                            pz_23.setText(list7.getJSONObject(0).getString("csd_val23"));
+                            pz_24.setText(list7.getJSONObject(0).getString("csd_val24"));
+                            pz_25.setText(list7.getJSONObject(0).getString("csd_val25"));
+                            pz_26.setText(list7.getJSONObject(0).getString("csd_val26"));
+                            pz_27.setText(list7.getJSONObject(0).getString("csd_val27"));
+                            pz_28.setText(list7.getJSONObject(0).getString("csd_val28"));
+                            pz_29.setText(list7.getJSONObject(0).getString("csd_val29"));
+                            pz_30.setText(list7.getJSONObject(0).getString("csd_val30"));
+                            pz_31.setText(list7.getJSONObject(0).getString("csd_val31"));
+                            pz_32.setText(list7.getJSONObject(0).getString("csd_val32"));
+                            pz_33.setText(list7.getJSONObject(0).getString("csd_val33"));
+                            pz_34.setText(list7.getJSONObject(0).getString("csd_val34"));
+                            pz_35.setText(list7.getJSONObject(0).getString("csd_val35"));
+                            pz_36.setText(list7.getJSONObject(0).getString("csd_val36"));
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                         break;
 
                 }
@@ -284,7 +319,7 @@ public class GycsActivity extends BaseActivity {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'A','"+jtbh+"',''");
+                /*List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'A','"+jtbh+"',''");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>3){
@@ -296,18 +331,29 @@ public class GycsActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'A'",jtbh,"");
+                }*/
+                JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_CsmInf 'A','"+jtbh+"',''");
+                if (list!=null){
+                    if (list.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x100;
+                        msg.obj=list;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'A'",jtbh,"");
                 }
             }
         }).start();
     }
 
-    private void initListView(List<List<String>>lists){
+    private void initListView(JSONArray lists) throws JSONException {
         final List<Map<String,String>>data=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
+        for (int i=0;i<lists.length();i++){
             Map<String,String>map=new HashMap<>();
-            map.put("lab_1",lists.get(i).get(0));
-            map.put("lab_2",lists.get(i).get(1));
-            map.put("lab_3",lists.get(i).get(2));
+            map.put("lab_1",lists.getJSONObject(i).getString("v_djbh"));
+            map.put("lab_2",lists.getJSONObject(i).getString("v_jtbh"));
+            map.put("lab_3",lists.getJSONObject(i).getString("v_ver"));
             map.put("isSelect","0");
             data.add(map);
         }
@@ -453,7 +499,7 @@ public class GycsActivity extends BaseActivity {
             @Override
             public void run() {
                 //第一栏基础信息
-                List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'B','','"+wjbh+"'");
+                /*List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'B','','"+wjbh+"'");
                 if (list1!=null){
                     if (list1.size()>0){
                         if (list1.get(0).size()>19){
@@ -465,11 +511,22 @@ public class GycsActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'B'",jtbh,"");
+                }*/
+                JSONArray list1=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_CsmInf 'B','','"+wjbh+"'");
+                if (list1!=null){
+                    if (list1.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x101;
+                        msg.obj=list1;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'B'",jtbh,"");
                 }
 
 
                 //设定值
-                List<List<String>>list2=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'RJSD','','"+wjbh+"'");
+               /* List<List<String>>list2=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'RJSD','','"+wjbh+"'");
                 if (list2!=null){
                     if (list2.size()>0){
                         if (list2.get(0).size()>4){
@@ -481,11 +538,23 @@ public class GycsActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'RJSD'",jtbh,"");
+                }*/
+                JSONArray list2=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_CsmInf 'RJSD','','"+wjbh+"'");
+                if (list2!=null){
+                    if (list2.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x102;
+                        msg.obj=list2;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'RJSD'",jtbh,"");
                 }
 
 
+
                 //实际值
-                List<List<String>>list3=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'RJSJ','','"+wjbh+"'");
+                /*List<List<String>>list3=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'RJSJ','','"+wjbh+"'");
                 if (list3!=null){
                     if (list3.size()>0){
                         if (list3.get(0).size()>4){
@@ -497,11 +566,22 @@ public class GycsActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'RJSD'",jtbh,"");
+                }*/
+                JSONArray list3=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_CsmInf 'RJSJ','','"+wjbh+"'");
+                if (list3!=null){
+                    if (list3.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x103;
+                        msg.obj=list3;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'RJSD'",jtbh,"");
                 }
 
 
                 //分流板
-                List<List<String>>list4=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'FLB','','"+wjbh+"'");
+               /* List<List<String>>list4=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'FLB','','"+wjbh+"'");
                 if (list4!=null){
                     if (list4.size()>0){
                         if (list4.get(0).size()>1){
@@ -513,11 +593,22 @@ public class GycsActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'FLB'",jtbh,"");
+                }*/
+                JSONArray list4=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_CsmInf 'FLB','','"+wjbh+"'");
+                if (list4!=null){
+                    if (list4.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x104;
+                        msg.obj=list4;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'FLB'",jtbh,"");
                 }
 
 
                 //速度
-                List<List<String>>list5=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'SD','','"+wjbh+"'");
+               /* List<List<String>>list5=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'SD','','"+wjbh+"'");
                 if (list5!=null){
                     if (list5.size()>0){
                         if (list5.get(0).size()>11){
@@ -529,12 +620,23 @@ public class GycsActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'SD'",jtbh,"");
+                }*/
+                JSONArray list5=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_CsmInf 'SD','','"+wjbh+"'");
+                if (list5!=null){
+                    if (list5.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x105;
+                        msg.obj=list5;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'SD'",jtbh,"");
                 }
 
 
 
                 //压力
-                List<List<String>>list6=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'YL','','"+wjbh+"'");
+               /* List<List<String>>list6=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'YL','','"+wjbh+"'");
                 if (list6!=null){
                     if (list6.size()>0){
                         if (list6.get(0).size()>11){
@@ -546,11 +648,22 @@ public class GycsActivity extends BaseActivity {
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'YL'",jtbh,"");
+                }*/
+                JSONArray list6=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_CsmInf 'YL','','"+wjbh+"'");
+                if (list6!=null){
+                    if (list6.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x106;
+                        msg.obj=list6;
+                        handler.sendMessage(msg);
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'YL'",jtbh,"");
                 }
 
 
                 //喷嘴
-                List<List<String>>list7=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'PZ','','"+wjbh+"'");
+                /*List<List<String>>list7=NetHelper.getQuerysqlResult("Exec PAD_Get_CsmInf 'PZ','','"+wjbh+"'");
                 if (list7!=null){
                     if (list7.size()>0){
                         if (list7.get(0).size()>35){
@@ -559,6 +672,17 @@ public class GycsActivity extends BaseActivity {
                             msg.obj=list7;
                             handler.sendMessage(msg);
                         }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'PZ'",jtbh,"");
+                }*/
+                JSONArray list7=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_CsmInf 'PZ','','"+wjbh+"'");
+                if (list7!=null){
+                    if (list7.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x107;
+                        msg.obj=list7;
+                        handler.sendMessage(msg);
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_CsmInf 'PZ'",jtbh,"");

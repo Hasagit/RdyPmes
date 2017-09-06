@@ -31,12 +31,15 @@ import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
 import org.json.JSONArray;
+import org.json.JSONException;
 
 import java.io.DataOutputStream;
 import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.R.id.list;
 
 public class FirstActivity extends BaseActivity{
     private boolean isServiceOpen=false;
@@ -226,11 +229,11 @@ public class FirstActivity extends BaseActivity{
                         new Thread(new Runnable() {//获取机台编号列表
                             @Override
                             public void run() {
-                                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_JtmMstr ''");
-                                if (list!=null){
+                                JSONArray array=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_JtmMstr ''");
+                                if (array!=null){
                                     Message msg=handler.obtainMessage();
                                     msg.what=0x105;
-                                    msg.obj=list;
+                                    msg.obj=array;
                                     handler.sendMessage(msg);
                                 }else {
                                     AppUtils.uploadNetworkError("Exec PAD_Get_WebAddr NetWordError",
@@ -242,53 +245,65 @@ public class FirstActivity extends BaseActivity{
                     }
                     break;
                 case 0x103:
-                    List<List<String>>list=(List<List<String>>)msg.obj;
-                    if (list.size()>0){
-                        jtbh=list.get(0).get(0);
-                        SharedPreferences.Editor editor=sharedPreferences.edit();
-                        editor.putString("jtbh",jtbh);
-                        editor.commit();
-                        isJtbh=true;
-                    }
-                    break;
-                case 0x105:
-                    List<List<String>>list1=(List<List<String>>)msg.obj;
-                    if (list1.size()>0){
-                        final List<String>data=new ArrayList<>();
-                        for (int i=0;i<list1.size();i++){
-                            data.add(list1.get(i).get(0));
+                    try {
+                        JSONArray array= (JSONArray) msg.obj;
+                        if (array.length()>0){
+                            jtbh=array.getJSONObject(0).getString("jtm_jtbh");
+                            SharedPreferences.Editor editor=sharedPreferences.edit();
+                            editor.putString("jtbh",jtbh);
+                            editor.commit();
+                            isJtbh=true;
                         }
-                        spiner_btn.setVisibility(View.VISIBLE);
-                        jtbh_tip.setVisibility(View.VISIBLE);
-                        spiner_btn.setText("选择机台号");
-                        spiner_btn.setOnClickListener(new View.OnClickListener() {
-                            @Override
-                            public void onClick(View v) {
-                                int width=((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200, getResources().getDisplayMetrics()));
-                                final PopupWindowSpinner spinner=new PopupWindowSpinner(FirstActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,width);
-                                spinner.showUpOn(spiner_btn);
-                                spinner.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                                    @Override
-                                    public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                                        spiner_btn.setText(data.get(position));
-                                        spinner.dismiss();
-                                        //dialog2.dismiss();
-                                    }
-                                });
-                            }
-                        });
+                    }catch (JSONException e){
 
                     }
                     break;
+                case 0x105:
+                   try {
+                       JSONArray array= (JSONArray) msg.obj;
+                       if (array.length()>0){
+                           final List<String>data=new ArrayList<>();
+                           for (int i=0;i<array.length();i++){
+                               data.add(array.getJSONObject(i).getString("v_jtbh"));
+                           }
+                           spiner_btn.setVisibility(View.VISIBLE);
+                           jtbh_tip.setVisibility(View.VISIBLE);
+                           spiner_btn.setText("选择机台号");
+                           spiner_btn.setOnClickListener(new View.OnClickListener() {
+                               @Override
+                               public void onClick(View v) {
+                                   int width=((int) TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,200, getResources().getDisplayMetrics()));
+                                   final PopupWindowSpinner spinner=new PopupWindowSpinner(FirstActivity.this,data,R.layout.spinner_list_b7,R.id.lab_1,width);
+                                   spinner.showUpOn(spiner_btn);
+                                   spinner.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                                       @Override
+                                       public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                                           spiner_btn.setText(data.get(position));
+                                           spinner.dismiss();
+                                           //dialog2.dismiss();
+                                       }
+                                   });
+                               }
+                           });
+
+                       }
+                   }catch (JSONException e){
+
+                   }
+                    break;
                 case 0x106://服务器时间
-                    List<List<String>>list2=(List<List<String>>)msg.obj;
-                    if(list2.size()>0){
-                        String time=list2.get(0).get(0);
-                        String ymd_hm=time.substring(0,4)+time.substring(5,7)+time.substring(8,10)
-                                +"."+time.substring(11,13)+time.substring(14,16)+time.substring(17,19);
-                        AppUtils.setSystemTime(FirstActivity.this,ymd_hm);
-                    }else {
-                        //Toast.makeText(MainActivity.this,"获取服务器时间失败",Toast.LENGTH_SHORT).show();
+                    try {
+                        JSONArray array= (JSONArray) msg.obj;
+                        if(array.length()>0){
+                            String time=array.getJSONObject(0).getString("Column1");
+                            String ymd_hm=time.substring(0,4)+time.substring(5,7)+time.substring(8,10)
+                                    +"."+time.substring(11,13)+time.substring(14,16)+time.substring(17,19);
+                            AppUtils.setSystemTime(FirstActivity.this,ymd_hm);
+                        }else {
+                            //Toast.makeText(MainActivity.this,"获取服务器时间失败",Toast.LENGTH_SHORT).show();
+                        }
+                    }catch (JSONException e){
+                        e.printStackTrace();
                     }
                     break;
                 case 0x107:
@@ -332,7 +347,7 @@ public class FirstActivity extends BaseActivity{
 
 
                 }*/
-                    List<List<String>>list=NetHelper.getQuerysqlResult("select * from PAD_LogInfo where log_code='6'");
+                    //List<List<String>>list=NetHelper.getQuerysqlResult("select * from PAD_LogInfo where log_code='6'");
                     int i=0;
                     while (!NetHelper.isServerConnected(NetHelper.URL)){
                         Message msg=handler.obtainMessage();
@@ -363,7 +378,7 @@ public class FirstActivity extends BaseActivity{
                 String mac = "";
                 WifiManager wifiManager=((WifiManager)getApplicationContext().getSystemService(WIFI_SERVICE));
                 String mac_temp=wifiManager.getConnectionInfo().getMacAddress();
-                //mac_temp="c0:21:0d:94:26:f5";
+                //mac_temp="c0:21:0d:94:26:d3";
                 if(mac_temp==null&&sharedPreferences.getString("mac","").equals("")) {
                    // Toast.makeText(FirstActivity.this,"获取网卡物理地址失败，请连接wifi",Toast.LENGTH_LONG).show();
                 }else {
@@ -374,16 +389,16 @@ public class FirstActivity extends BaseActivity{
                     SharedPreferences.Editor editor=sharedPreferences.edit();
                     editor.putString("mac",mac);
                     editor.commit();
-                    List<List<String>>list=NetHelper.getQuerysqlResult("Select * from jtm_mstr where jtm_flag=1 and jtm_wgip='"+mac+"'");
+                    JSONArray array=NetHelper.getQuerysqlResultJsonArray("Select * from jtm_mstr where jtm_flag=1 and jtm_wgip='"+mac+"'");
                     Message msg=handler.obtainMessage();
-                    if(list!=null){
-                      if (list.size()>0){
-                          msg.what=0x103;
-                          msg.obj=list;
-                          handler.sendMessage(msg);
-                      }else {
+                    if(array!=null){
+                        if (array.length()>0){
+                            msg.what=0x103;
+                            msg.obj=array;
+                            handler.sendMessage(msg);
+                        }else {
 
-                      }
+                        }
                     }else {
                         AppUtils.uploadNetworkError("获取机台编号 NetWordError",
                                 jtbh,sharedPreferences.getString("mac",""));
@@ -399,10 +414,10 @@ public class FirstActivity extends BaseActivity{
         new Thread(new Runnable() {//获取系统时间
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("select GETDATE()");
+                JSONArray array= NetHelper.getQuerysqlResultJsonArray("select GETDATE()");
                 Message msg=handler.obtainMessage();
-                if(list!=null){
-                    msg.obj=list;
+                if(array!=null){
+                    msg.obj=array;
                     msg.what=0x106;
                     handler.sendMessage(msg);
                 }else {
@@ -410,6 +425,7 @@ public class FirstActivity extends BaseActivity{
                             jtbh,sharedPreferences.getString("mac",""));
                     //msg.what=0x104;
                 }
+
             }
         }).start();
 
@@ -417,31 +433,31 @@ public class FirstActivity extends BaseActivity{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_WebAddr");
-                //JSONArray array=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_WebAddr");
-                if (list!=null){
-                    if (list.size()>0){
-                       if (list.get(0).size()>4){
-                           Message msg=handler.obtainMessage();
-                           String oldVersionName= AppUtils.getAppVersionName(FirstActivity.this);
-                           String newVersionName=list.get(0).get(3);
-                           SharedPreferences.Editor editor=sharedPreferences.edit();
-                           editor.putString("countdownNum",list.get(0).get(4));
-                           editor.commit();
-                           if (!oldVersionName.equals(newVersionName)){
-                               handler.sendEmptyMessage(0x107);
-                               NetHelper.DownLoadFileByUrl(list.get(0).get(2),
-                                       Environment.getExternalStorageDirectory().getPath(),"RdyPmes.apk");
-                               Intent intent = new Intent(Intent.ACTION_VIEW);
-                               intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/RdyPmes.apk")),
-                                       "application/vnd.android.package-archive");
-                               startActivity(intent);
-                               handler.sendEmptyMessage(0x109);
-                           }else {
-                               handler.sendEmptyMessage(0x108);
-                           }
-                       }
-
+                JSONArray array=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_WebAddr");
+                if (array!=null){
+                    if (array.length()>0){
+                        try {
+                            Message msg=handler.obtainMessage();
+                            String oldVersionName= AppUtils.getAppVersionName(FirstActivity.this);
+                            String newVersionName=array.getJSONObject(0).getString("v_WebAppVer");
+                            SharedPreferences.Editor editor=sharedPreferences.edit();
+                            editor.putString("countdownNum",array.getJSONObject(0).getString("v_WebAppMin"));
+                            editor.commit();
+                            if (!oldVersionName.equals(newVersionName)){
+                                handler.sendEmptyMessage(0x107);
+                                NetHelper.DownLoadFileByUrl(array.getJSONObject(0).getString("v_WebAppPath"),
+                                        Environment.getExternalStorageDirectory().getPath(),"RdyPmes.apk");
+                                Intent intent = new Intent(Intent.ACTION_VIEW);
+                                intent.setDataAndType(Uri.fromFile(new File(Environment.getExternalStorageDirectory().getPath()+"/RdyPmes.apk")),
+                                        "application/vnd.android.package-archive");
+                                startActivity(intent);
+                                handler.sendEmptyMessage(0x109);
+                            }else {
+                                handler.sendEmptyMessage(0x108);
+                            }
+                        }catch (JSONException e){
+                            e.printStackTrace();
+                        }
                        /*Message msg=handler.obtainMessage();
                         msg.what=0x107;
                         msg.obj=list;

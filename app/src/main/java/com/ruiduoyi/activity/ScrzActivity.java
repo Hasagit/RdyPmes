@@ -12,6 +12,9 @@ import com.ruiduoyi.R;
 import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -36,7 +39,7 @@ public class ScrzActivity extends BaseActivity implements View.OnClickListener{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0x100:
-                    List<List<String>>list=(List<List<String>>)msg.obj;
+                    JSONArray list= (JSONArray) msg.obj;
                     initListView(list);
                     break;
                 default:
@@ -53,39 +56,42 @@ public class ScrzActivity extends BaseActivity implements View.OnClickListener{
         ok_btn.setOnClickListener(this);
         cancle_btn.setOnClickListener(this);
     }
-    private void initListView(List<List<String>>lists){
-        List<Map<String,String>>data=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
-            List<String>item=lists.get(i);
-            Map<String,String>map=new HashMap<>();
-            map.put("lab_1",item.get(0));//v_jtbh
-            map.put("lab_2",item.get(1));//v_scrq
-            map.put("lab_3",item.get(2));//v_scxh
-            map.put("lab_4",item.get(3));//v_zlmc
-            map.put("lab_5",item.get(4));//ksrq
-            map.put("lab_6",item.get(5));//jsrq
-            map.put("lab_7",item.get(6));//v_min
-            map.put("lab_8",item.get(7));//v_lpsl
-            map.put("lab_9",item.get(8));//v_blsl
-            map.put("lab_10",item.get(9));// v_ccsl
-            map.put("lab_11",item.get(10));//v_cxsj
-            map.put("lab_12",item.get(11));//v_ksname
-            map.put("lab_13",item.get(12));//v_jsname
-            map.put("lab_14",item.get(13));//v_zzdh
-            map.put("lab_15",item.get(14));//v_sodh
-            map.put("lab_16",item.get(15));//v_ph
-            map.put("lab_17",item.get(16));//v_wldm
-            map.put("lab_18",item.get(17));//v_pmgg
-            map.put("lab_19",item.get(18));//v_mjbh
-            map.put("lab_20",item.get(19));//v_mjmc
-            data.add(map);
+    private void initListView(JSONArray lists){
+        try {
+            List<Map<String,String>>data=new ArrayList<>();
+            for (int i=0;i<lists.length();i++){
+                Map<String,String>map=new HashMap<>();
+                map.put("lab_1",lists.getJSONObject(i).getString("v_jtbh"));//v_jtbh
+                map.put("lab_2",lists.getJSONObject(i).getString("v_scrq"));//v_scrq
+                map.put("lab_3",lists.getJSONObject(i).getString("v_scxh"));//v_scxh
+                map.put("lab_4",lists.getJSONObject(i).getString("v_zlmc"));//v_zlmc
+                map.put("lab_5",lists.getJSONObject(i).getString("v_ksrq"));//ksrq
+                map.put("lab_6",lists.getJSONObject(i).getString("v_jsrq"));//jsrq
+                map.put("lab_7",lists.getJSONObject(i).getString("v_min"));//v_min
+                map.put("lab_8",lists.getJSONObject(i).getString("v_lpsl"));//v_lpsl
+                map.put("lab_9",lists.getJSONObject(i).getString("v_blsl"));//v_blsl
+                map.put("lab_10",lists.getJSONObject(i).getString("v_ccsl"));// v_ccsl
+                map.put("lab_11",lists.getJSONObject(i).getString("v_cxsj"));//v_cxsj
+                map.put("lab_12",lists.getJSONObject(i).getString("v_ksname"));//v_ksname
+                map.put("lab_13",lists.getJSONObject(i).getString("v_jsname"));//v_jsname
+                map.put("lab_14",lists.getJSONObject(i).getString("v_zzdh"));//v_zzdh
+                map.put("lab_15",lists.getJSONObject(i).getString("v_sodh"));//v_sodh
+                map.put("lab_16",lists.getJSONObject(i).getString("v_ph"));//v_ph
+                map.put("lab_17",lists.getJSONObject(i).getString("v_wldm"));//v_wldm
+                map.put("lab_18",lists.getJSONObject(i).getString("v_pmgg"));//v_pmgg
+                map.put("lab_19",lists.getJSONObject(i).getString("v_mjbh"));//v_mjbh
+                map.put("lab_20",lists.getJSONObject(i).getString("v_mjmc"));//v_mjmc
+                data.add(map);
+            }
+            adapter=new SimpleAdapter(this,data,R.layout.list_item_b6,new String[]{"lab_1","lab_2",
+                    "lab_3","lab_4","lab_5","lab_6","lab_7","lab_8","lab_9","lab_10","lab_11","lab_12",
+                    "lab_13","lab_14","lab_15","lab_16","lab_17","lab_18","lab_19","lab_20",},new int[]{R.id.lable_1,R.id.lable_2,R.id.lable_3,
+                    R.id.lable_4,R.id.lable_5,R.id.lable_6,R.id.lable_7,R.id.lable_8,R.id.lable_9,
+                    R.id.lable_10,R.id.lable_11,R.id.lable_12,R.id.lable_13,R.id.lable_14,R.id.lable_15,R.id.lable_16,R.id.lable_17,R.id.lable_18,R.id.lable_19,R.id.lable_20});
+            listView.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        adapter=new SimpleAdapter(this,data,R.layout.list_item_b6,new String[]{"lab_1","lab_2",
-                "lab_3","lab_4","lab_5","lab_6","lab_7","lab_8","lab_9","lab_10","lab_11","lab_12",
-                "lab_13","lab_14","lab_15","lab_16","lab_17","lab_18","lab_19","lab_20",},new int[]{R.id.lable_1,R.id.lable_2,R.id.lable_3,
-                R.id.lable_4,R.id.lable_5,R.id.lable_6,R.id.lable_7,R.id.lable_8,R.id.lable_9,
-                R.id.lable_10,R.id.lable_11,R.id.lable_12,R.id.lable_13,R.id.lable_14,R.id.lable_15,R.id.lable_16,R.id.lable_17,R.id.lable_18,R.id.lable_19,R.id.lable_20});
-        listView.setAdapter(adapter);
     }
 
     private void initData(){
@@ -114,7 +120,7 @@ public class ScrzActivity extends BaseActivity implements View.OnClickListener{
        new Thread(new Runnable() {
            @Override
            public void run() {
-               List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_SdmMstr '"+jtbh+"'");
+               /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_SdmMstr '"+jtbh+"'");
                if (list!=null){
                    if (list.size()>0){
                        if (list.get(0).size()>21){
@@ -123,6 +129,17 @@ public class ScrzActivity extends BaseActivity implements View.OnClickListener{
                            msg.obj=list;
                            handler.sendMessage(msg);
                        }
+                   }
+               }else {
+                   AppUtils.uploadNetworkError("Exec PAD_Get_SdmMstr",jtbh,sharedPreferences.getString("mac",""));
+               }*/
+               JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_SdmMstr '"+jtbh+"'");
+               if (list!=null){
+                   if (list.length()>0){
+                       Message msg=handler.obtainMessage();
+                       msg.what=0x100;
+                       msg.obj=list;
+                       handler.sendMessage(msg);
                    }
                }else {
                    AppUtils.uploadNetworkError("Exec PAD_Get_SdmMstr",jtbh,sharedPreferences.getString("mac",""));

@@ -16,6 +16,7 @@ import android.widget.LinearLayout;
 import android.widget.ListView;
 import android.widget.RadioButton;
 import android.widget.RadioGroup;
+import android.widget.SimpleAdapter;
 import android.widget.TextView;
 
 import com.ruiduoyi.R;
@@ -25,6 +26,9 @@ import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -32,7 +36,7 @@ import java.util.Map;
 
 public class SbdjActivity extends BaseActivity implements View.OnClickListener{
     private Button spinner_btn,cancle_btn,add_btn,save_btn;
-    private ListView listView_sb,listView_dj;
+    private ListView listView_sb,listView_dj,listView_unfinish;
     private RadioGroup radioGroup;
     private RadioButton radio_jt,radio_gy;
     private TextView djbh_text,sbbh_text,sbmc_text;
@@ -71,7 +75,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x100:
-                        initSbList((List<List<String>>) msg.obj);
+                        initSbList((JSONArray) msg.obj);
                         break;
                     case 0x101:
                         djbh_text.setText((String) msg.obj);
@@ -79,22 +83,26 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                         //getDjListData((String) msg.obj);
                         break;
                     case 0x102:
-                        initSpinnerList((List<List<String>>) msg.obj);
+                        initSpinnerList((JSONArray) msg.obj);
                         break;
                     case 0x103:
-                        List<List<String>>lists= (List<List<String>>) msg.obj;
-                        allDjData=new ArrayList<>();
-                        for (int i=0;i<lists.size();i++){
-                            Map<String,String>map=new HashMap<>();
-                            map.put("lab_1",lists.get(i).get(0));
-                            map.put("lab_2",lists.get(i).get(1));
-                            map.put("lab_3",lists.get(i).get(2));
-                            map.put("lab_4",lists.get(i).get(3));
-                            map.put("djbh",lists.get(i).get(4));
-                            map.put("bnlid",lists.get(i).get(5));
-                            allDjData.add(map);
+                        try {
+                            JSONArray lists= (JSONArray) msg.obj;
+                            allDjData=new ArrayList<>();
+                            for (int i=0;i<lists.length();i++){
+                                Map<String,String>map=new HashMap<>();
+                                map.put("lab_1",lists.getJSONObject(i).getString("v_nrlbms"));
+                                map.put("lab_2",lists.getJSONObject(i).getString("v_nrms"));
+                                map.put("lab_3",lists.getJSONObject(i).getString("v_yqms"));
+                                map.put("lab_4",lists.getJSONObject(i).getString("v_djjg"));
+                                map.put("djbh",lists.getJSONObject(i).getString("v_djbh"));
+                                map.put("bnlid",lists.getJSONObject(i).getString("v_bnlid"));
+                                allDjData.add(map);
+                            }
+                            initDjListView(allDjData);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
                         }
-                        initDjListView(allDjData);
                         break;
                     case 0x104:
                         djbh_text.setText((String)msg.obj);
@@ -114,6 +122,9 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                         dialog.setMessageTextColor(Color.RED);
                         dialog.show();
                        break;
+                    case 0x108:
+                        initUnFinishList((JSONArray) msg.obj);
+                        break;
                     default:
                         break;
                 }
@@ -121,6 +132,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
         };
 
         getSbListData(jtbh);
+        getUnFinishListData();
     }
 
     private void initView(){
@@ -129,6 +141,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
         radioGroup=(RadioGroup)findViewById(R.id.radioGroup);
         listView_sb=(ListView)findViewById(R.id.list_1);
         listView_dj=(ListView)findViewById(R.id.list_2);
+        listView_unfinish=(ListView)findViewById(R.id.list_unfinish);
         djbh_text=(TextView)findViewById(R.id.djbh);
         sbbh_text=(TextView)findViewById(R.id.sbbh);
         sbmc_text=(TextView)findViewById(R.id.sbmc);
@@ -167,11 +180,56 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
 
     }
 
+    private void getUnFinishListData(){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                JSONArray array=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_DjmInf 'E','','"+jtbh+"','',''");
+                if (array!=null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x108;
+                    msg.obj=array;
+                    handler.sendMessage(msg);
+                }
+            }
+        }).start();
+    }
+
+
+    private void initUnFinishList(JSONArray array){
+        try {
+            List<Map<String,String>>data=new ArrayList<>();
+            for (int i=0;i<array.length();i++){
+                Map<String,String>map=new HashMap<>();
+                map.put("lab_1",array.getJSONObject(i).getString("djm_djrq"));
+                map.put("lab_2",array.getJSONObject(i).getString("djm_sbname"));
+                map.put("lab_3",array.getJSONObject(i).getString("djm_djlbms"));
+                data.add(map);
+            }
+            SimpleAdapter adapter=new SimpleAdapter(this,data,R.layout.list_item_sbdj_unfinish,
+                    new String[]{"lab_1","lab_2","lab_3","lab_4"},new int[]{R.id.lab_1,R.id.lab_2,
+            R.id.lab_3,R.id.lab_4});
+            listView_unfinish.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
+    }
+
+
     private void getSbListData(final String sbbh){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'A','','"+sbbh+"','',''");
+               /* List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'A','','"+sbbh+"','',''");
+                if (list!=null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x100;
+                    msg.obj=list;
+                    handler.sendMessage(msg);
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_DjmInf 'A'",jtbh,sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_DjmInf 'A','','"+sbbh+"','',''");
                 if (list!=null){
                     Message msg=handler.obtainMessage();
                     msg.what=0x100;
@@ -185,69 +243,70 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
 
     }
 
-    private void initSbList(List<List<String>>lists){
-        final List<Map<String,String>>data=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
-            if (lists.get(0).size()<3){
-                break;
+    private void initSbList(JSONArray lists){
+        try {
+            final List<Map<String,String>>data=new ArrayList<>();
+            for (int i=0;i<lists.length();i++){
+                Map<String,String>map=new HashMap<>();
+                map.put("lab_1",lists.getJSONObject(i).getString("sbm_code"));
+                map.put("lab_2",lists.getJSONObject(i).getString("sbm_name"));
+                map.put("lab_3",lists.getJSONObject(i).getString("sbm_type"));
+                map.put("isSelect","0");
+                data.add(map);
             }
-            Map<String,String>map=new HashMap<>();
-            map.put("lab_1",lists.get(i).get(0));
-            map.put("lab_2",lists.get(i).get(1));
-            map.put("lab_3",lists.get(i).get(2));
-            map.put("isSelect","0");
-            data.add(map);
-        }
 
-        EasyArrayAdapter adapter=new EasyArrayAdapter(this,R.layout.list_item_sbdj_sb,data) {
-            @Override
-            public View getEasyView(final int position, View convertView, ViewGroup parent) {
-                View view;
-                if (convertView!=null){
-                    view=convertView;
-                }else {
-                    view= LayoutInflater.from(SbdjActivity.this).inflate(R.layout.list_item_sbdj_sb,null);
-                }
-                final Map<String,String>map=data.get(position);
-                TextView lab_1=(TextView)view.findViewById(R.id.lab_1);
-                TextView lab_2=(TextView)view.findViewById(R.id.lab_2);
-                LinearLayout bg=(LinearLayout)view.findViewById(R.id.bg);
-                lab_1.setText(map.get("lab_1"));
-                lab_2.setText(map.get("lab_2"));
-                if (map.get("isSelect").equals("0")){
-                    bg.setBackgroundColor(Color.WHITE);
-                }else {
-                    bg.setBackgroundColor(getResources().getColor(R.color.small));
-                }
-                bg.setOnClickListener(new View.OnClickListener() {
-                    @Override
-                    public void onClick(View v) {
-                        AppUtils.sendCountdownReceiver(SbdjActivity.this);
-                        djbh_text.setText("");
-                        initDjListView(new ArrayList<Map<String, String>>());
-                        map.put("isSelect","1");
-                        sbbh_text.setText(map.get("lab_1"));
-                        sbmc_text.setText(map.get("lab_2"));
-                        getSpinnerData(map.get("lab_1"),map.get("lab_3"));
-                        for (int i=0;i<data.size();i++){
-                            if (i!=position){
-                                data.get(i).put("isSelect","0");
-                            }
-                        }
-                        notifyDataSetChanged();
+            EasyArrayAdapter adapter=new EasyArrayAdapter(this,R.layout.list_item_sbdj_sb,data) {
+                @Override
+                public View getEasyView(final int position, View convertView, ViewGroup parent) {
+                    View view;
+                    if (convertView!=null){
+                        view=convertView;
+                    }else {
+                        view= LayoutInflater.from(SbdjActivity.this).inflate(R.layout.list_item_sbdj_sb,null);
                     }
-                });
-                return view;
-            }
-        };
-        listView_sb.setAdapter(adapter);
+                    final Map<String,String>map=data.get(position);
+                    TextView lab_1=(TextView)view.findViewById(R.id.lab_1);
+                    TextView lab_2=(TextView)view.findViewById(R.id.lab_2);
+                    LinearLayout bg=(LinearLayout)view.findViewById(R.id.bg);
+                    lab_1.setText(map.get("lab_1"));
+                    lab_2.setText(map.get("lab_2"));
+                    if (map.get("isSelect").equals("0")){
+                        bg.setBackgroundColor(Color.WHITE);
+                    }else {
+                        bg.setBackgroundColor(getResources().getColor(R.color.small));
+                    }
+                    bg.setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AppUtils.sendCountdownReceiver(SbdjActivity.this);
+                            djbh_text.setText("");
+                            initDjListView(new ArrayList<Map<String, String>>());
+                            map.put("isSelect","1");
+                            sbbh_text.setText(map.get("lab_1"));
+                            sbmc_text.setText(map.get("lab_2"));
+                            getSpinnerData(map.get("lab_1"),map.get("lab_3"));
+                            for (int i=0;i<data.size();i++){
+                                if (i!=position){
+                                    data.get(i).put("isSelect","0");
+                                }
+                            }
+                            notifyDataSetChanged();
+                        }
+                    });
+                    return view;
+                }
+            };
+            listView_sb.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
+        }
     }
 
     private void getSpinnerData(final String sbbh, final String sbtype){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'B','','','"+sbbh+"','"+sbtype+"'");
+                /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'B','','','"+sbbh+"','"+sbtype+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>1){
@@ -262,39 +321,54 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                         msg.obj=list;
                         handler.sendMessage(msg);
                     }
+                }*/
+                JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_DjmInf 'B','','','"+sbbh+"','"+sbtype+"'");
+                if (list!=null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x102;
+                    msg.obj=list;
+                    handler.sendMessage(msg);
                 }
             }
         }).start();
     }
 
 
-    private void initSpinnerList(final List<List<String>>lists){
-        spinner_select_lb=null;
-        final List<String>data=new ArrayList<>();
-        final List<String>list_spinner_dm=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
-            data.add(lists.get(i).get(1));
-            list_spinner_dm.add(lists.get(i).get(0));
-        }
-        spinner_list=new PopupWindowSpinner(this,data,R.layout.spinner_list_b7,R.id.lab_1,410);
-        spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-            @Override
-            public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
-                AppUtils.sendCountdownReceiver(SbdjActivity.this);
-                initDjListView(new ArrayList<Map<String, String>>());
-                spinner_btn.setText(data.get(position));
-                spinner_select_lb=list_spinner_dm.get(position);
-                spinner_list.dismiss();
-                getDjDh(lists.get(0).get(0),sbbh_text.getText().toString());
+    private void initSpinnerList(final JSONArray lists){
+        try {
+            spinner_select_lb=null;
+            final List<String>data=new ArrayList<>();
+            final List<String>list_spinner_dm=new ArrayList<>();
+            for (int i=0;i<lists.length();i++){
+                data.add(lists.getJSONObject(i).getString("v_nrlbms"));
+                list_spinner_dm.add(lists.getJSONObject(i).getString("v_nrlb"));
             }
-        });
-       //默认选中第一个
-        if (lists.size()>0){
-            spinner_btn.setText(data.get(0));
-            spinner_select_lb=list_spinner_dm.get(0);
-            spinner_list.dismiss();
-            //selectByDjlb(lists.get(0).get(0));
-            getDjDh(lists.get(0).get(0),sbbh_text.getText().toString());
+            spinner_list=new PopupWindowSpinner(this,data,R.layout.spinner_list_b7,R.id.lab_1,410);
+            spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                @Override
+                public void onItemClick(AdapterView<?> parent, View view, int position, long id) {
+                   try {
+                       AppUtils.sendCountdownReceiver(SbdjActivity.this);
+                       initDjListView(new ArrayList<Map<String, String>>());
+                       spinner_btn.setText(data.get(position));
+                       spinner_select_lb=list_spinner_dm.get(position);
+                       spinner_list.dismiss();
+                       getDjDh(lists.getJSONObject(0).getString("v_nrlb"),sbbh_text.getText().toString());
+                   } catch (JSONException e) {
+                       e.printStackTrace();
+                   }
+                }
+            });
+            //默认选中第一个
+            if (lists.length()>0){
+                spinner_btn.setText(data.get(0));
+                spinner_select_lb=list_spinner_dm.get(0);
+                spinner_list.dismiss();
+                //selectByDjlb(lists.get(0).get(0));
+                getDjDh(lists.getJSONObject(0).getString("v_nrlb"),sbbh_text.getText().toString());
+            }
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
 
@@ -310,7 +384,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     handler.sendMessage(msg);*/
                     return;
                 }
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'C','','','"+djlb+"','"+sbdm+"'");
+                /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf 'C','','','"+djlb+"','"+sbdm+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>2){
@@ -329,6 +403,28 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                            }
                         }
                     }
+                }*/
+                try {
+                    JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_DjmInf 'C','','','"+djlb+"','"+sbdm+"'");
+                    if (list!=null){
+                        if (list.length()>0){
+                            if (list.getJSONObject(0).getString("v_djbh").trim().equals("")){
+                                Message msg=handler.obtainMessage();
+                                msg.what=0x103;
+                                msg.obj=new JSONArray();
+                                handler.sendMessage(msg);
+                            }else {
+                                Message msg=handler.obtainMessage();
+                                msg.what=0x104;
+                                msg.obj=list.getJSONObject(0).getString("v_djbh");
+                                handler.sendMessage(msg);
+                                getDjListData(list.getJSONObject(0).getString("v_djbh"),spinner_select_lb);
+
+                            }
+                        }
+                    }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -336,7 +432,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
 
 
     private void getDjListData(String djbh,String djlb){
-        List<List<String>>list_dj=NetHelper.getQuerysqlResult("Exec PAD_Get_DjmInf  'D',"+djbh+",'','"+djlb+"',''");
+        JSONArray list_dj=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_DjmInf  'D',"+djbh+",'','"+djlb+"',''");
         Message msg2=handler.obtainMessage();
         msg2.what=0x103;
         msg2.obj=list_dj;
@@ -427,22 +523,25 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     handler.sendMessage(msg);*/
                     return;
                 }
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Up_DjmMstr" +
-                        " 'A','"+djbh+"','"+sbdm+"','"+spinner_select_lb+"','','','"+wkno+"'");
-                if (list!=null){
-                    if (list.size()>0){
-                        if (list.get(0).size()>0){
-                            if (list.get(0).get(0).equals("OK")){
+                try {
+                    JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Up_DjmMstr" +
+                            " 'A','"+djbh+"','"+sbdm+"','"+spinner_select_lb+"','','','"+wkno+"'");
+                    if (list!=null){
+                        if (list.length()>0){
+                            if (list.getJSONObject(0).getString("Column1").equals("OK")){
                                 handler.sendEmptyMessage(0x104);
                                 getDjDh(spinner_select_lb,sbdm);
+                                getUnFinishListData();
                             }else {
                                 Message msg=handler.obtainMessage();
                                 msg.what=0x105;
-                                msg.obj=list.get(0).get(0);
+                                msg.obj=list.getJSONObject(0).getString("Column1");
                                 handler.sendMessage(msg);
                             }
                         }
                     }
+                } catch (JSONException e) {
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -472,19 +571,16 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                 List<String>result=new ArrayList<String>();
                 for (int i=0;i<allDjData.size();i++){
                     Map<String,String>map=allDjData.get(i);
-                    List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Up_DjmMstr 'B','"+djbh_text.getText().toString()+
+                    JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Up_DjmMstr 'B','"+djbh_text.getText().toString()+
                             "','"+sbbh_text.getText().toString()+"','"+spinner_select_lb+"','"+map.get("bnlid")+"','"+map.get("lab_4")+"','"+wkno+"'");
                     if (list!=null){
-                        if (list.size()>0){
-                            if (list.get(0).size()>0){
-                                if (!list.get(0).get(0).equals("OK")){
-                                    result.add(list.get(0).get(0));
+                        if (list.length()>0){
+                            try {
+                                if (!list.getJSONObject(0).getString("Column1").equals("OK")){
+                                    result.add(list.getJSONObject(0).getString("Column1"));
                                 }
-                            }else {
-                                Message msg=handler.obtainMessage();
-                                msg.what=0x106;
-                                msg.obj="提交失败";
-                                handler.sendMessage(msg);
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }else {
                             Message msg=handler.obtainMessage();
@@ -512,6 +608,7 @@ public class SbdjActivity extends BaseActivity implements View.OnClickListener{
                     Message msg=handler.obtainMessage();
                     msg.what=0x106;
                     msg.obj="保存成功";
+                    getUnFinishListData();
                     handler.sendMessage(msg);
                     getDjDh(spinner_select_lb,sbbh_text.getText().toString());
                 }

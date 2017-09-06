@@ -158,7 +158,7 @@ public class NetHelper {
 
     //判断服务器是否开启
     public static boolean isServerConnected(String cHttpAddress){
-        List<List<String>>list=getQuerysqlResult("select getDate()");
+        JSONArray list=getQuerysqlResultJsonArray("select getDate()");
         if (list!=null){
             return true;
         }else {

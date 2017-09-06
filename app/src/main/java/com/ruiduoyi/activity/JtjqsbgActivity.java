@@ -31,6 +31,10 @@ import com.ruiduoyi.model.NetHelper;
 import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+import org.json.JSONObject;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -104,7 +108,7 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x100:
-                        List<List<String>>list=(List<List<String>>)msg.obj;
+                        JSONArray list= (JSONArray) msg.obj;
                         initListView(list);
                         break;
                     case 0x101:
@@ -163,28 +167,32 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
 
 
 
-    private void  initListView(List<List<String>>lists){
+    private void  initListView(JSONArray lists){
         List<Map<String,String>>data=new ArrayList<>();
-        for (int i=0;i<lists.size();i++){
-            List<String>item=lists.get(i);
-            Map<String,String>map=new HashMap<>();
-            map.put("moeid",item.get(0));
-            map.put("scrq",item.get(1));
-            map.put("scxh",item.get(2));
-            map.put("zzdh",item.get(3));
-            map.put("sodh",item.get(4));
-            map.put("ph",item.get(5));
-            map.put("mjbh",item.get(6));
-            map.put("mjmc",item.get(7));
-            map.put("wldm",item.get(8));
-            map.put("pmgg",item.get(9));
-            map.put("wgrq",item.get(10));
-            map.put("scsl",item.get(11));
-            map.put("lpsl",item.get(12));
-            map.put("ztbz",item.get(13));
-            map.put("mjqs",item.get(14));
-            map.put("cpqs",item.get(15));
-            data.add(map);
+        try {
+            for (int i=0;i<lists.length();i++){
+                JSONObject item=lists.getJSONObject(i);
+                Map<String,String>map=new HashMap<>();
+                map.put("moeid",item.getString("v_moeid"));
+                map.put("scrq",item.getString("v_scrq"));
+                map.put("scxh",item.getString("v_scxh"));
+                map.put("zzdh",item.getString("v_zzdh"));
+                map.put("sodh",item.getString("v_sodh"));
+                map.put("ph",item.getString("v_ph"));
+                map.put("mjbh",item.getString("v_mjbh"));
+                map.put("mjmc",item.getString("v_mjmc"));
+                map.put("wldm",item.getString("v_wldm"));
+                map.put("pmgg",item.getString("v_pmgg"));
+                map.put("wgrq",item.getString("v_wgrq"));
+                map.put("scsl",item.getString("v_scsl"));
+                map.put("lpsl",item.getString("v_lpsl"));
+                map.put("ztbz",item.getString("v_ztbz"));
+                map.put("mjqs",item.getString("v_itdxs"));
+                map.put("cpqs",item.getString("v_moexs"));
+                data.add(map);
+            }
+        }catch (JSONException e){
+            e.printStackTrace();
         }
         Jtqsbg1Adapter adapter_1;
         adapter_1=new Jtqsbg1Adapter(JtjqsbgActivity.this,R.layout.list_item_jtjqsbg1,data,handler);
@@ -197,7 +205,7 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
             @Override
             public void run() {
                 //工单信息表
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'B','"+jtbh+"'");
+               /* List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeDet 'B','"+jtbh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>15){
@@ -209,42 +217,22 @@ public class JtjqsbgActivity extends BaseActivity implements View.OnClickListene
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoeDet",jtbh,sharedPreferences.getString("mac",""));
-                }
-
-            }
-        }).start();
-    }
-
-
-    private void getDutouListData(final String zzdh){
-        //堵头信息表
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                List<List<String>>list_dt=NetHelper.getQuerysqlResult("Exec PAD_Get_MoeJtxsInf 'A','"+zzdh+"'");
-                if (list_dt!=null){
-                    if (list_dt.size()>0){
-                        if (list_dt.get(0).size()>5){
-                            Message msg=handler.obtainMessage();
-                            msg.what=0x101;
-                            msg.obj=list_dt;
-                            handler.sendMessage(msg);
-                        }
-                    }else {
+                }*/
+                JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MoeDet 'B','"+jtbh+"'");
+                if (list!=null){
+                    if (list.length()>0){
                         Message msg=handler.obtainMessage();
-                        msg.what=0x101;
-                        msg.obj=list_dt;
+                        msg.what=0x100;
+                        msg.obj=list;
                         handler.sendMessage(msg);
                     }
                 }else {
-                    AppUtils.uploadNetworkError("Exec PAD_Get_MoeJtxsInf 'A'",jtbh,sharedPreferences.getString("mac",""));
+                    AppUtils.uploadNetworkError("Exec PAD_Get_MoeDet",jtbh,sharedPreferences.getString("mac",""));
                 }
+
             }
         }).start();
     }
-
-
-
 
 
     private boolean isReady(){

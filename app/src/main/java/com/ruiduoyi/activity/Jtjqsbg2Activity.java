@@ -30,6 +30,9 @@ import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -155,23 +158,27 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                 super.handleMessage(msg);
                 switch (msg.what){
                     case 0x101:
-                        List<List<String>>list1= (List<List<String>>) msg.obj;
-                        List<Map<String,String>>data=new ArrayList<>();
-                        for (int i=0;i<list1.size();i++){
-                            Map<String,String>map=new HashMap<>();
-                            map.put("lab_1",list1.get(i).get(0));
-                            map.put("lab_2",list1.get(i).get(1));
-                            map.put("lab_3",list1.get(i).get(2));
-                            map.put("lab_4",list1.get(i).get(3));
-                            data.add(map);
-                        }
-                        SigleSelectJtjqsbg adapter=new SigleSelectJtjqsbg(Jtjqsbg2Activity.this,R.layout.list_item_jtjqsbg_2,data) {
-                            @Override
-                            public void onRadioSelectListener(int position, Map<String, String> map) {
-                                new_jtbh_text.setText(map.get("lab_1"));
+                        try {
+                            JSONArray list1= (JSONArray) msg.obj;
+                            List<Map<String,String>>data=new ArrayList<>();
+                            for (int i=0;i<list1.length();i++){
+                                Map<String,String>map=new HashMap<>();
+                                map.put("lab_1",list1.getJSONObject(i).getString("v_jtbh"));
+                                map.put("lab_2",list1.getJSONObject(i).getString("v_ccsl"));
+                                map.put("lab_3",list1.getJSONObject(i).getString("v_rate"));
+                                map.put("lab_4",list1.getJSONObject(i).getString("v_newsj"));
+                                data.add(map);
                             }
-                        };
-                        listView_1.setAdapter(adapter);
+                            SigleSelectJtjqsbg adapter=new SigleSelectJtjqsbg(Jtjqsbg2Activity.this,R.layout.list_item_jtjqsbg_2,data) {
+                                @Override
+                                public void onRadioSelectListener(int position, Map<String, String> map) {
+                                    new_jtbh_text.setText(map.get("lab_1"));
+                                }
+                            };
+                            listView_1.setAdapter(adapter);
+                        } catch (JSONException e) {
+                            e.printStackTrace();
+                        }
                         break;
                     case 0x102:
                         String wz= (String) msg.obj;
@@ -234,7 +241,7 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
             @Override
             public void run() {
                 //
-                List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeJtxsInf 'B','"+zzdh+"'");
+                /*List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_MoeJtxsInf 'B','"+zzdh+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>3){
@@ -243,6 +250,17 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                             msg.obj=list;
                             handler.sendMessage(msg);
                         }
+                    }
+                }else {
+                    AppUtils.uploadNetworkError("Exec PAD_Get_MoeJtXs  'B'",jtbh,sharedPreferences.getString("mac",""));
+                }*/
+                JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MoeJtxsInf 'B','"+zzdh+"'");
+                if (list!=null){
+                    if (list.length()>0){
+                        Message msg=handler.obtainMessage();
+                        msg.what=0x101;
+                        msg.obj=list;
+                        handler.sendMessage(msg);
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoeJtXs  'B'",jtbh,sharedPreferences.getString("mac",""));
@@ -260,7 +278,7 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Upd_MoeJtXs  'A','"+zzdh+"','"+new_jtbh+"','',0,0,'','"+wkno+"'");
+                /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Upd_MoeJtXs  'A','"+zzdh+"','"+new_jtbh+"','',0,0,'','"+wkno+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>0){
@@ -275,6 +293,25 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                         }
                     }
                 }else {
+                }*/
+                try {
+                    JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Upd_MoeJtXs  'A','"+zzdh+"','"+new_jtbh+"','',0,0,'','"+wkno+"'");
+                    if (list!=null){
+                        if (list.length()>0){
+                            if (list.getJSONObject(0).getString("Column1").equals("OK")){
+                                handler.sendEmptyMessage(0x107);
+                            }else {
+                                Message msg=handler.obtainMessage();
+                                msg.what=0x108;
+                                msg.obj=list.getJSONObject(0).getString("Column1");
+                                handler.sendMessage(msg);
+                            }
+                        }
+                    }else {
+                        AppUtils.uploadNetworkError("Exec PAD_Upd_MoeJtXs  'A'",jtbh,sharedPreferences.getString("mac",""));
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
                 }
             }
         }).start();
@@ -362,7 +399,7 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                         vertical=12;
                         break;
                 }
-                List<List<String>>list_dt=NetHelper.getQuerysqlResult("Exec PAD_Get_MoeJtxsInf 'A','"+zzdh+"'");
+               /* List<List<String>>list_dt=NetHelper.getQuerysqlResult("Exec PAD_Get_MoeJtxsInf 'A','"+zzdh+"'");
                 if (list_dt!=null){
                     if (list_dt.size()>0){
                         if (list_dt.get(0).size()>6){
@@ -461,6 +498,109 @@ public class Jtjqsbg2Activity extends BaseActivity implements View.OnClickListen
                     }
                 }else {
                     AppUtils.uploadNetworkError("Exec PAD_Get_MoeJtxsInf 'A'",jtbh,sharedPreferences.getString("mac",""));
+                }*/
+
+                try {
+                    JSONArray list_dt=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_MoeJtxsInf 'A','"+zzdh+"'");
+                    if (list_dt!=null){
+                        if (list_dt.length()>0){
+                            //初始化堵头信息的ListView
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x104;
+                            msg.obj=list_dt;
+                            dtxxFragment.getHandler().sendMessage(msg);
+
+
+                            //初始化堵头位置的RecyclerView;
+                            List<Map<String,String>>data=new ArrayList<Map<String, String>>();
+                            for (int i=0;i<qs;i++){
+                                Map<String,String>map=new HashMap<String, String>();
+                                int w=((i+1)/horizontal)+1;
+                                int h=(i+1)%horizontal;
+                                if (h==0){
+                                    h=horizontal;
+                                    w=w-1;
+                                }
+                                String w_str=w+"";
+                                String h_str=h+"";
+                                if (w<10){
+                                    w_str="0"+w;
+                                }
+                                if (h<10){
+                                    h_str="0"+h;
+                                }
+                                map.put("wz",w_str+"-"+h_str);
+                                map.put("isSelect","0");
+                                data.add(map);
+                            }
+                            for (int i=0;i<list_dt.length();i++){
+                                String wz=list_dt.getJSONObject(i).getString("dxd_dxwz");
+                                String[] temp=wz.split("-");
+                                int w=Integer.parseInt(temp[0]);
+                                int h=Integer.parseInt(temp[1]);
+                                int position=(w-1)*horizontal+h-1;
+                                if (position>-1){
+                                    try {
+                                        data.get(position).put("isSelect","1");
+                                    }catch (IndexOutOfBoundsException e){
+                                        Message msg_error=handler.obtainMessage();
+                                        msg_error.obj=wz;
+                                        msg_error.what=0x102;
+                                        handler.sendMessage(msg_error);
+                                    }
+                                }
+
+
+                            }
+
+
+                            Message msg_wz=handler.obtainMessage();
+                            msg_wz.what=0x104;
+                            msg_wz.obj=data;
+                            msg_wz.arg1=horizontal;
+                            msg_wz.arg2=vertical;
+                            dtwzFragment.getHandler().sendMessage(msg_wz);
+                        }else {
+                            //初始化堵头信息ListView
+                            Message msg=handler.obtainMessage();
+                            msg.what=0x104;
+                            msg.obj=list_dt;
+                            dtxxFragment.getHandler().sendMessage(msg);
+
+                            //初始化堵头位置listView
+                            List<Map<String,String>>data=new ArrayList<Map<String, String>>();
+                            for (int i=0;i<qs;i++){
+                                Map<String,String>map=new HashMap<String, String>();
+                                int w=((i+1)/horizontal)+1;
+                                int h=(i+1)%horizontal;
+                                if (h==0){
+                                    h=horizontal;
+                                    w=w-1;
+                                }
+                                String w_str=w+"";
+                                String h_str=h+"";
+                                if (w<10){
+                                    w_str="0"+w;
+                                }
+                                if (h<10){
+                                    h_str="0"+h;
+                                }
+                                map.put("wz",w_str+"-"+h_str);
+                                map.put("isSelect","0");
+                                data.add(map);
+                            }
+                            Message msg_wz=handler.obtainMessage();
+                            msg_wz.what=0x104;
+                            msg_wz.obj=data;
+                            msg_wz.arg1=horizontal;
+                            msg_wz.arg2=vertical;
+                            dtwzFragment.getHandler().sendMessage(msg_wz);
+                        }
+                    }else {
+                        AppUtils.uploadNetworkError("Exec PAD_Get_MoeJtxsInf 'A'",jtbh,sharedPreferences.getString("mac",""));
+                    }
+                }catch (JSONException e){
+                    e.printStackTrace();
                 }
             }
         }).start();

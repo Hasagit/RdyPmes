@@ -20,6 +20,9 @@ import com.ruiduoyi.utils.AppUtils;
 import com.ruiduoyi.view.PopupDialog;
 import com.ruiduoyi.view.PopupWindowSpinner;
 
+import org.json.JSONArray;
+import org.json.JSONException;
+
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -94,41 +97,44 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         thread_1.start();
     }
 
-    private void initListView(List<List<String>>list){
-        List<Map<String,String>>data=new ArrayList<>();
-        for (int i=0;i<list.size();i++){
-            List<String>item=list.get(i);
-            Map<String,String>map=new HashMap<>();
-            map.put("lab_1",item.get(2));
-            map.put("lab_2",item.get(3));
-            map.put("lab_3",item.get(4));
-            map.put("lab_4",item.get(5));
-            map.put("lab_5",item.get(6));
-            map.put("lab_6",item.get(8));
-            map.put("lab_7",item.get(9));
-            map.put("lab_8",item.get(10));
-            map.put("lab_9",item.get(11));
-            map.put("lab_10",item.get(12));
-            map.put("lab_11",item.get(13));
-            map.put("lab_12",item.get(7));
-            map.put("keyid",item.get(1));
-            data.add(map);
+    private void initListView(JSONArray list){
+        try {
+            List<Map<String,String>>data=new ArrayList<>();
+            for (int i=0;i<list.length();i++){
+                Map<String,String>map=new HashMap<>();
+                map.put("lab_1",list.getJSONObject(i).getString("v_rq"));
+                map.put("lab_2",list.getJSONObject(i).getString("v_mjbh"));
+                map.put("lab_3",list.getJSONObject(i).getString("v_mjmc"));
+                map.put("lab_4",list.getJSONObject(i).getString("v_wldm"));
+                map.put("lab_5",list.getJSONObject(i).getString("v_pmgg"));
+                map.put("lab_6",list.getJSONObject(i).getString("v_kssj"));
+                map.put("lab_7",list.getJSONObject(i).getString("v_jssj"));
+                map.put("lab_8",list.getJSONObject(i).getString("v_sjgs"));
+                map.put("lab_9",list.getJSONObject(i).getString("v_bzgs"));
+                map.put("lab_10",list.getJSONObject(i).getString("v_ksname"));
+                map.put("lab_11",list.getJSONObject(i).getString("v_jsname"));
+                map.put("lab_12",list.getJSONObject(i).getString("v_zldm"));
+                map.put("keyid",list.getJSONObject(i).getString("v_keyid"));
+                data.add(map);
+            }
+            List<TextView>list_text=new ArrayList<>();
+            list_text.add(text_1);
+            list_text.add(text_2);
+            list_text.add(text_3);
+            list_text.add(text_4);
+            list_text.add(text_5);
+            list_text.add(text_6);
+            list_text.add(text_7);
+            list_text.add(text_8);
+            list_text.add(text_9);
+            list_text.add(text_10);
+            list_text.add(text_11);
+            list_text.add(text_key);
+            YichangfenxiAdapter adapter=new YichangfenxiAdapter(YcfxActivity.this,R.layout.list_item_b7,data,list_text,handler);
+            listView.setAdapter(adapter);
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
-        List<TextView>list_text=new ArrayList<>();
-        list_text.add(text_1);
-        list_text.add(text_2);
-        list_text.add(text_3);
-        list_text.add(text_4);
-        list_text.add(text_5);
-        list_text.add(text_6);
-        list_text.add(text_7);
-        list_text.add(text_8);
-        list_text.add(text_9);
-        list_text.add(text_10);
-        list_text.add(text_11);
-        list_text.add(text_key);
-        YichangfenxiAdapter adapter=new YichangfenxiAdapter(YcfxActivity.this,R.layout.list_item_b7,data,list_text,handler);
-        listView.setAdapter(adapter);
     }
 
 
@@ -137,7 +143,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         public void handleMessage(Message msg) {
             switch (msg.what){
                 case 0x100:
-                    List<List<String>>list_1=(List<List<String>>)msg.obj;
+                    JSONArray list_1= (JSONArray) msg.obj;
                     initListView(list_1);
                     break;
                 case 0x107:
@@ -147,36 +153,44 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                     getYylb(zldm);
                     break;
                 case 0x108:
-                    final List<List<String>>list= (List<List<String>>) msg.obj;
-                    final List<String>data=new ArrayList<>();
-                    for (int i=0;i<list.size();i++){
-                        data.add(list.get(i).get(0)+"\t\t"+list.get(i).get(1));
-                    }
-                    if (data.size()>0){
-                        getListData(list,0,data);
-                    }
-                    spinner_list=new PopupWindowSpinner(YcfxActivity.this,data,R.layout.spinner_list_yyfx,
-                            R.id.lab_1,445);
-                    spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
-                        @Override
-                        public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
-                            AppUtils.sendCountdownReceiver(YcfxActivity.this);
-                            getListData(list,position,data);
-                            spinner_list.dismiss();
+                    try {
+                        final JSONArray list= (JSONArray) msg.obj;
+                        final List<String>data=new ArrayList<>();
+                        for (int i=0;i<list.length();i++){
+                            data.add(list.getJSONObject(i).getString("v_lbdm")+"\t\t"+list.getJSONObject(i).getString("v_lbmc"));
                         }
-                    });
+                        if (data.size()>0){
+                            getListData(list,0,data);
+                        }
+                        spinner_list=new PopupWindowSpinner(YcfxActivity.this,data,R.layout.spinner_list_yyfx,
+                                R.id.lab_1,445);
+                        spinner_list.getListView().setOnItemClickListener(new AdapterView.OnItemClickListener() {
+                            @Override
+                            public void onItemClick(AdapterView<?> parent, View view, final int position, long id) {
+                                AppUtils.sendCountdownReceiver(YcfxActivity.this);
+                                getListData(list,position,data);
+                                spinner_list.dismiss();
+                            }
+                        });
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
                     break;
                 case 0x109:
-                    List<List<String>>list1= (List<List<String>>) msg.obj;
-                    List<Map<String,String>>data1=new ArrayList<>();
-                    for (int i=0;i<list1.size();i++){
-                        Map<String,String>map=new HashMap<>();
-                        map.put("lab_1",list1.get(i).get(0));
-                        map.put("lab_2",list1.get(i).get(1));
-                        data1.add(map);
+                    try {
+                        JSONArray list1= (JSONArray) msg.obj;
+                        List<Map<String,String>>data1=new ArrayList<>();
+                        for (int i=0;i<list1.length();i++){
+                            Map<String,String>map=new HashMap<>();
+                            map.put("lab_1",list1.getJSONObject(i).getString("v_lbdm"));
+                            map.put("lab_2",list1.getJSONObject(i).getString("v_lbmc"));
+                            data1.add(map);
+                        }
+                        adapter=new YyfxAdapter(YcfxActivity.this,R.layout.list_item_ycfx,data1);
+                        blmsList.setAdapter(adapter);
+                    } catch (JSONException e) {
+                        e.printStackTrace();
                     }
-                    adapter=new YyfxAdapter(YcfxActivity.this,R.layout.list_item_ycfx,data1);
-                    blmsList.setAdapter(adapter);
                     break;
                 case 0x110:
                     AppUtils.sendUpdateInfoFragmentReceiver(YcfxActivity.this);
@@ -203,6 +217,18 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                     });
                     dialog.show();
                     break;
+                case 0x102:
+                    dialog.setMessageTextColor(Color.RED);
+                    dialog.setMessage((String) msg.obj);
+                    dialog.getOkbtn().setOnClickListener(new View.OnClickListener() {
+                        @Override
+                        public void onClick(View v) {
+                            AppUtils.sendCountdownReceiver(YcfxActivity.this);
+                            dialog.dismiss();
+                        }
+                    });
+                    dialog.show();
+                    break;
 
 
             }
@@ -214,7 +240,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'B','"+jtbh+"','"+zldm+"'");
+                /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'B','"+jtbh+"','"+zldm+"'");
                 if (list!=null){
                     if (list.size()>0){
                         if (list.get(0).size()>1){
@@ -229,6 +255,13 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                         msg.obj=list;
                         handler.sendMessage(msg);
                     }
+                }*/
+                JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_ZlmYywh 'B','"+jtbh+"','"+zldm+"'");
+                if (list!=null){
+                    Message msg=handler.obtainMessage();
+                    msg.what=0x108;
+                    msg.obj=list;
+                    handler.sendMessage(msg);
                 }
             }
         }).start();
@@ -242,7 +275,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
     Thread thread_1=new Thread(new Runnable() {
         @Override
         public void run() {
-            List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_YcmInf '"+jtbh+"'");
+            /*List<List<String>>list= NetHelper.getQuerysqlResult("Exec PAD_Get_YcmInf '"+jtbh+"'");
             Message msg=handler.obtainMessage();
             if(list!=null){
                 if(list.size()>0){
@@ -254,6 +287,13 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                     msg.what=0x100;
                     msg.obj=list;
                 }
+            }
+            handler.sendMessage(msg);*/
+            JSONArray list= NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_YcmInf '"+jtbh+"'");
+            Message msg=handler.obtainMessage();
+            if(list!=null){
+                msg.what=0x100;
+                msg.obj=list;
             }
             handler.sendMessage(msg);
         }
@@ -309,7 +349,7 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                                 select_str=select_str+uplaod_data.get("lab_1")+";";
                                 //upLoadOneData(uplaod_data,wkno);
                             }
-                            List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Upd_YclInfo " +
+                            /*List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Upd_YclInfo " +
                                     "'"+jtbh+"','"+text_2.getText().toString()+"','"+lbdm+"'," + "'"+select_str+"',"+keyid+",'"+wkno+"'");
                             if (list!=null){
                                 if (list.size()>0){
@@ -321,6 +361,25 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                                 }
                             }else {
                                 handler.sendEmptyMessage(0x111);
+                            }*/
+                            try {
+                                JSONArray list=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Upd_YclInfo " +
+                                        "'"+jtbh+"','"+text_2.getText().toString()+"','"+lbdm+"'," + "'"+select_str+"',"+keyid+",'"+wkno+"'");
+                                if (list!=null){
+                                    if (list.length()>0){
+                                        if (list.getJSONObject(0).getString("Column1").equals("OK")){
+                                            handler.sendEmptyMessage(0x110);
+                                        }else {
+                                            Message msg=handler.obtainMessage();
+                                            msg.obj=list.getJSONObject(0).getString("Column1");
+                                            handler.sendMessage(msg);
+                                        }
+                                    }
+                                }else {
+                                    handler.sendEmptyMessage(0x111);
+                                }
+                            } catch (JSONException e) {
+                                e.printStackTrace();
                             }
                         }
                     }).start();
@@ -332,11 +391,11 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
     }
 
 
-    private void getListData(final List<List<String>>list, final int position, List<String>data){
+    private void getListData(final JSONArray list, final int position, List<String>data){
         new Thread(new Runnable() {
             @Override
             public void run() {
-                List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'C','"+jtbh+"','"+
+                /*List<List<String>>list1=NetHelper.getQuerysqlResult("Exec PAD_Get_ZlmYywh 'C','"+jtbh+"','"+
                         list.get(position).get(0)+"'");
                 if (list1!=null){
                     if (list1.size()>0){
@@ -352,29 +411,31 @@ public class YcfxActivity extends BaseActivity implements View.OnClickListener{
                         msg.obj=list1;
                         handler.sendMessage(msg);
                     }
-                }
+                }*/
+               try {
+                   JSONArray list1=NetHelper.getQuerysqlResultJsonArray("Exec PAD_Get_ZlmYywh 'C','"+jtbh+"','"+
+                           list.getJSONObject(position).getString("v_lbdm")+"'");
+                   if (list1!=null){
+                       Message msg=handler.obtainMessage();
+                       msg.what=0x109;
+                       msg.obj=list1;
+                       handler.sendMessage(msg);
+                   }
+               } catch (JSONException e) {
+                   e.printStackTrace();
+               }
             }
         }).start();
-        lbdm=list.get(position).get(0);
-        spinner_1.setText(data.get(position));
-    }
-
-
-    private void upLoadOneData(Map<String,String>selectData,String wkno){
-        List<List<String>>list=NetHelper.getQuerysqlResult("Exec PAD_Upd_YclInfo " +
-                "'"+jtbh+"','"+text_2.getText().toString()+"','"+lbdm+"'," + "'"+selectData.get("lab_1")+"',"+keyid+",'"+wkno+"'");
-        if (list!=null){
-            if (list.size()>0){
-                if (list.get(0).size()>0){
-                    if (list.get(0).get(0).equals("OK")){
-                        handler.sendEmptyMessage(0x110);
-                    }
-                }
-            }
-        }else {
-            handler.sendEmptyMessage(0x111);
+        try {
+            lbdm=list.getJSONObject(position).getString("v_lbdm");
+            spinner_1.setText(data.get(position));
+        } catch (JSONException e) {
+            e.printStackTrace();
         }
     }
+
+
+   
 
     @Override
     protected void onDestroy() {
