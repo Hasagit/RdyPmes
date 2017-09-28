@@ -180,6 +180,13 @@ public class InfoFragment extends Fragment {
         getNetDate();
         updateDataOntime();
         initBarChart(mBarChart);
+
+        cardView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                getNetDate();
+            }
+        });
     }
 
 
